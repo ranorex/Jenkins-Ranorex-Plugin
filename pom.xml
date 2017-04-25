@@ -12,7 +12,7 @@
     <name>Ranorex Test Execution Plugin</name>
     <description>This plugin provides an easy way to run a Ranorex Test Suite in your Jenkins Job as a build step.
         The simple usage allows the user to run a Ranorex Test without any additional settings whereby the advanced usage allows you to add several parameters.</description>
-    <url>http://wiki.jenkins-ci.org/display/JENKINS/...</url>
+    <url>http://wiki.jenkins-ci.org/display/JENKINS/Ranorex-Integration</url>
     
     <licenses>
         <license>
@@ -31,9 +31,9 @@
     </developers>
     
     <scm>
-        <connection>scm:git:ssh://github.com/jenkinsci/MYPLUGINNAME.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/MYPLUGINNAME.git</developerConnection>
-        <url>https://github.com/jenkinsci/MYPLUGINNAME</url>
+        <connection>scm:git:ssh://github.com/jenkinsci/Ranorex-Integration.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/Ranorex-Integration.git</developerConnection>
+        <url>https://github.com/jenkinsci/Ranorex-Integration</url>
     </scm>
     
     <repositories>

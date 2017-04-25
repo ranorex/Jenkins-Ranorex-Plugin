@@ -1,4 +1,3 @@
-![RxLogo] (http://www.ranorex.com/fileadmin/ranorex-media/logos/ranorex.png "Ranorex Logo")
 # Jenkins Ranorex Plugin
 This plugin provides an easy way to run a Ranorex Test Suite in your Jenkins Job as a build step. The simple usage allows the user to run a Ranorex Test without any additional settings whereby the advanced usage allows you to add several parameters.
 ## How to use

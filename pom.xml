@@ -6,13 +6,13 @@
         <version>2.26</version>
     </parent>
 
-    <artifactId>Ranorex-Integration</artifactId>
+    <artifactId>ranorex-integration</artifactId>
     <packaging>hpi</packaging>
     <version>0.0.1</version>   
     <name>Ranorex Test Execution Plugin</name>
     <description>This plugin provides an easy way to run a Ranorex Test Suite in your Jenkins Job as a build step.
         The simple usage allows the user to run a Ranorex Test without any additional settings whereby the advanced usage allows you to add several parameters.</description>
-    <url>http://wiki.jenkins-ci.org/display/JENKINS/Ranorex-Integration</url>
+    <url>http://wiki.jenkins-ci.org/display/JENKINS/Ranorex+Integration+Plugin</url>
     
     <licenses>
         <license>
@@ -31,9 +31,9 @@
     </developers>
     
     <scm>
-        <connection>scm:git:ssh://github.com/jenkinsci/Ranorex-Integration.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/Ranorex-Integration.git</developerConnection>
-        <url>https://github.com/jenkinsci/Ranorex-Integration</url>
+        <connection>scm:git:ssh://github.com/jenkinsci/ranorex-integration-plugin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/ranorex-integration-plugin.git</developerConnection>
+        <url>https://github.com/jenkinsci/ranorex-integration-plugin</url>
     </scm>
     
     <repositories>

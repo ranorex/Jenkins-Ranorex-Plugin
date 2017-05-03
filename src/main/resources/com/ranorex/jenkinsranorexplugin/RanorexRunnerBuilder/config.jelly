@@ -29,15 +29,6 @@
             </f:entry>
         </f:block>
     
-        <!--Ranorex Report Extension-->
-        <!--<f:entry title="${%Ranorex Report Extension}" field="rxReportExtension">
-            <select class="setting-input" name="RanorexRunnerBuilder.rxReportExtension">
-                <option value="Default">Default</option>
-                <option value="rxlog">rxlog</option>
-                <option value="html">html</option>
-            </select>
-        </f:entry>-->
-    
         <!-- Ranorex Zipped Report with optional Block-->
         <f:block>
             <f:optionalBlock name ="RanorexRunnerBuilder.rxZippedReport" field="rxZippedReport" title="${%Compressed Copy of Ranorex Report}" inline="true">

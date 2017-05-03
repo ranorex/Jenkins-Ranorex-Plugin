@@ -1,0 +1,41 @@
+    Allows the user to add additional Ranorex command line arguments. For example
+    <table style="margin-left: auto; margin-right: auto;" border="2">
+        <tbody>
+            <tr>
+                <td>Flag</td>
+                <td>Function</td>
+            </tr>
+            <tr>
+                <td>config | cfg:&lt;config parameter name&gt;=&lt;value&gt;</td>
+                <td>&nbsp;Set values for configuration parameters.</td>
+            </tr>
+            <tr>
+                <td>reportlevel | rl: Debug|Info|Warn|Error|Success|Failure|&lt;any integer&gt;</td>
+                <td>&nbsp;Sets the minimum report level that log messages need to have in order to be included in the log file. Specify 'None' to completely disable reporting. These levels correspond to the following integer values: Debug=10,Info=20,Warn=30,Error=40,Success=110,Failure=120</td>
+            </tr>
+            <tr>
+                <td>testcase | tc:&lt;name or guid of test case&gt;</td>
+                <td>Runs this test case only.</td>
+            </tr>
+            <tr>
+                <td>testsuite | ts:&lt;path to test suite file&gt;</td>
+                <td>Runs the test cases defined by the test suite (rxtst) file. By default the rxtst file with the same name as the &lt;TestSuiteExe&gt; is used or the first rxtst file in the same folder as &lt;TestSuiteExe&gt;.</td>
+            </tr>
+            <tr>
+                <td>module | mo:&lt;module name or guid&gt;</td>
+                <td>Runs the module with the specified name or guid. Assemblies loaded by &lt;TestSuiteExe&gt; and assemblies referenced in the rxtst file are searched.</td>
+            </tr>
+            <tr>
+                <td>testcaseparam | tcpa:&lt;name or guid of test case&gt;:&lt;parameter name&gt;=&lt;value&gt;</td>
+                <td>Creates or overrides values for testcase parameters specified in the test suite.</td>
+            </tr>
+            <tr>
+                <td>runlabel | rul:&lt;custom value&gt;</td>
+                <td>Sets a custom runlabel for the test run.</td>
+            </tr>
+            <tr>
+                <td>testcasedatarange | tcdr:&lt;name or guid of test case&gt;=&lt;data range&gt;</td>
+                <td>Sets the data range for a testcase.</td>
+            </tr>
+        </tbody>
+    </table>

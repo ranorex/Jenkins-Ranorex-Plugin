@@ -1,9 +1,9 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    
     <f:section title="${%Ranorex Integration}">
-        <f:entry title="${ola}" field="useSummarize">
-            <f:checkbox title="${%Summarize arguments in Console output}"/>
+        <f:entry title="${%Summarize arguments in Console output}" field="useSummarize">
+            <f:checkbox/>
         </f:entry>        
     </f:section>
-    
 </j:jelly>

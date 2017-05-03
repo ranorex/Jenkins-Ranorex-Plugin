@@ -441,6 +441,15 @@ public class RanorexRunnerBuilder extends Builder
          */
         private boolean useSummarize;
 
+        /**
+         * In order to load the persisted global configuration, you have to call
+         * load() in the constructor.
+         */
+        public DescriptorImpl()
+        {
+            load();
+        }
+
         /*
          * Form Validation
          */

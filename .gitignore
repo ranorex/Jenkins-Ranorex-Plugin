@@ -12,7 +12,7 @@ buildNumber.properties
 !/.mvn/wrapper/maven-wrapper.jar
 
 work/
-*.html
+WebReadme.html
 CodeReview.md
 *.docx
 TODO.md

@@ -35,6 +35,7 @@ public class RanorexRunnerBuilder extends Builder
     private final String rxRunConfiguration;
     private final String rxReportDirectory;
     private final String rxReportFile;
+    private final Boolean rxJUnitReport;
     private final Boolean rxZippedReport;
     private final String rxZippedReportDirectory;
     private final String rxZippedReportFile;
@@ -62,6 +63,7 @@ public class RanorexRunnerBuilder extends Builder
      * @param rxReportDirectory The directory where the Ranorex Report should be
      * saved
      * @param rxReportFile The name of the Ranorex Report
+     * @param rxJUnitReport If true, a JUnit compatible Report will be saved
      * @param rxZippedReport If true, the report will also be saved as RXZLOG
      * @param rxZippedReportDirectory The directory where the Ranorex Zipped
      * Report should be saved
@@ -76,6 +78,7 @@ public class RanorexRunnerBuilder extends Builder
             String rxRunConfiguration,
             String rxReportDirectory,
             String rxReportFile,
+            Boolean rxJUnitReport,
             Boolean rxZippedReport,
             String rxZippedReportDirectory,
             String rxZippedReportFile,
@@ -86,6 +89,7 @@ public class RanorexRunnerBuilder extends Builder
         this.rxRunConfiguration = rxRunConfiguration;
         this.rxReportDirectory = rxReportDirectory;
         this.rxReportFile = rxReportFile;
+        this.rxJUnitReport = rxJUnitReport;
         this.rxZippedReport = rxZippedReport;
         this.rxZippedReportDirectory = rxZippedReportDirectory;
         this.rxZippedReportFile = rxZippedReportFile;
@@ -101,6 +105,11 @@ public class RanorexRunnerBuilder extends Builder
     public String getRxRunConfiguration()
     {
         return this.rxRunConfiguration;
+    }
+
+    public Boolean getrxJUnitReport()
+    {
+        return this.rxJUnitReport;
     }
 
     public Boolean getRxZippedReport()
@@ -214,6 +223,12 @@ public class RanorexRunnerBuilder extends Builder
             }
             args.add(" /reportfile:" + StringUtil.appendQuote(usedRxReportDirectory + usedRxReportFile + ".rxlog"));
 
+            //JUnit compatible Report
+            if (rxJUnitReport)
+            {
+                args.add(" /junit");
+            }
+            
             //Compressed copy of Ranorex report
             if (rxZippedReport)
             {

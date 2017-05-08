@@ -28,7 +28,12 @@
                 <f:textbox name="RanorexRunnerBuilder.rxReportFile"/>
             </f:entry>
         </f:block>
-    
+        
+        <!-- JUnit Report-->
+        <f:entry title="${%JUnit compatible Report}" description="Please note that this feature is only available for Ranorex 7 and newer">
+            <f:checkbox name="RanorexRunnerBuilder.rxJUnitReport" value="${instance.rxJUnitReport}" checked="${instance.rxJUnitReport}"/>
+        </f:entry>		
+		
         <!-- Ranorex Zipped Report with optional Block-->
         <f:block>
             <f:optionalBlock name ="RanorexRunnerBuilder.rxZippedReport" field="rxZippedReport" title="${%Compressed Copy of Ranorex Report}" inline="true">

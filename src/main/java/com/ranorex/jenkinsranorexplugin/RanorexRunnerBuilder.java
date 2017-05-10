@@ -514,7 +514,7 @@ public class RanorexRunnerBuilder extends Builder
         @Override
         public String getDisplayName()
         {
-            return "Run a Ranorex Test Suite";
+            return "Run a Ranorex test suite";
         }
 
         @Override

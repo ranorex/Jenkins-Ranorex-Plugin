@@ -1,58 +1,51 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
-    <!--<html>
-        <body>
-            <a href="http://www.ranorex.com" target="_blank">
-                <img src="https://www.etesting.com/wp-content/uploads/2016/06/Ranorex_2-1024x304.png" alt="Ranorex Logo" style="width:25%;height:25%;"/>
-            </a>
-        </body>
-    </html>-->
     <!-- Ranorex Test Suite File-->
-    <f:entry title="${%Ranorex Test Suite File}" field="rxTestSuiteFilePath">
+    <f:entry title="${%Ranorex test suite file}" field="rxTestSuiteFilePath">
         <f:textbox name="RanorexRunnerBuilder.rxTestSuiteFilePath"/>
     </f:entry>
-    
+    <!-- Advanced Section -->
     <f:advanced>
         <!--Ranorex Run Conficuration-->
-        <f:entry title="${%Ranorex Run Configuration}" field="rxRunConfiguration">
+        <f:entry title="${%Ranorex run configuration}" field="rxRunConfiguration">
             <f:textbox name="RanorexRunnerBuilder.rxRunConfiguration"/>
         </f:entry>  
         <!--Ranorex Report-->
         <!--Ranorex Report Directory-->
         <f:block> 
-            <f:entry title="${%Ranorex Report Directory}" field="rxReportDirectory">
+            <f:entry title="${%Ranorex report directory}" field="rxReportDirectory">
                 <f:textbox name="RanorexRunnerBuilder.rxReportDirectory"/>
             </f:entry>
             <!--Ranorex Report File-->
-            <f:entry title="${%Ranorex Report File}" field="rxReportFile">
+            <f:entry title="${%Ranorex report file name}" field="rxReportFile">
                 <f:textbox name="RanorexRunnerBuilder.rxReportFile"/>
             </f:entry>
         </f:block>
         
         <!-- JUnit Report-->
-        <f:entry title="${%JUnit compatible Report}" description="Please note that this feature is only available for Ranorex 7 and newer">
+        <f:entry title="${%JUnit-compatible report}" description="Available in Ranorex 7.0 and later.">
             <f:checkbox name="RanorexRunnerBuilder.rxJUnitReport" value="${instance.rxJUnitReport}" checked="${instance.rxJUnitReport}"/>
         </f:entry>		
 		
         <!-- Ranorex Zipped Report with optional Block-->
         <f:block>
-            <f:optionalBlock name ="RanorexRunnerBuilder.rxZippedReport" field="rxZippedReport" title="${%Compressed Copy of Ranorex Report}" inline="true">
-                <f:entry title="${%Zipped Report Directory}" field="rxZippedReportDirectory">
+            <f:optionalBlock name ="RanorexRunnerBuilder.rxZippedReport" field="rxZippedReport" title="${%Compressed copy of Ranorex report}" inline="true">
+                <f:entry title="${%Compressed report directory}" field="rxZippedReportDirectory">
                     <f:textbox name="RanorexRunnerBuilder.rxZippedReportDirectory"/>
                 </f:entry>
-                <f:entry title="${%Zipped Report File}" field="rxZippedReportFile">
+                <f:entry title="${%Compressed report file name}" field="rxZippedReportFile">
                     <f:textbox name="RanorexRunnerBuilder.rxZippedReportFile"/>
                 </f:entry>
             </f:optionalBlock>
         </f:block>
     
         <!--Global Parameter-->
-        <f:entry title="${%Global Parameters}" field="rxGlobalParameter">
+        <f:entry title="${%Global parameters}" field="rxGlobalParameter">
             <f:textarea name="RanorexRunnerBuilder.rxGlobalParameter"/>
         </f:entry>
     
-        <!--Other Command Line Arguments-->
-        <f:entry title="${%Other Command Line Arguments}" field="cmdLineArgs">
+        <!--Command Line Arguments-->
+        <f:entry title="${%Command line arguments}" field="cmdLineArgs">
             <f:textarea name="RanorexRunnerBuilder.cmdLineArgs"/>
         </f:entry>
     </f:advanced>

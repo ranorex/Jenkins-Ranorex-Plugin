@@ -40,7 +40,7 @@ public abstract class FileUtil
     }
 
     /**
-     * Tests whether the file denoted by this abstract pathname is a directory.
+     * Tests whether the file denoted by this abstract pathname is an existing directory.
      *
      * @param value
      * @return true when the given directory exists
@@ -52,7 +52,7 @@ public abstract class FileUtil
         {
             return true;
         }
-        return false;
+       return false;
     }
 
     /**
@@ -93,7 +93,7 @@ public abstract class FileUtil
     {
         String usedDirectory = "NULL";
 
-        if (!StringUtil.isAbsolutePath(reportDirectory))
+        if (!FileUtil.isAbsolutePath(reportDirectory))
         {
             usedDirectory = FileUtil.combinePath(workSpace, reportDirectory);
         }

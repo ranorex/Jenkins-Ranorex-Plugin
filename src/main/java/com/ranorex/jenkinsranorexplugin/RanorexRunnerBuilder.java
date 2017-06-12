@@ -192,11 +192,6 @@ public class RanorexRunnerBuilder extends Builder
             if (!StringUtil.isNullOrSpace(rxReportDirectory))
             {
                 usedRxReportDirectory = FileUtil.getAbsoluteReportDirectory(WorkSpace, rxReportDirectory);
-                if (!StringUtil.isValidDirectory(usedRxReportDirectory))
-                {
-                    listener.getLogger().println("'" + usedRxReportDirectory + "' is not a valid directory or does not exist");
-                    return false;
-                }
             }
             else
             {
@@ -207,7 +202,7 @@ public class RanorexRunnerBuilder extends Builder
             //ReportFilename
             if (!StringUtil.isNullOrSpace(rxReportFile))
             {
-                if (!StringUtil.isAbsolutePath(rxReportFile))
+                if (!FileUtil.isAbsolutePath(rxReportFile))
                 {
                     usedRxReportFile = rxReportFile;
                 }
@@ -237,11 +232,6 @@ public class RanorexRunnerBuilder extends Builder
                 if (!StringUtil.isNullOrSpace(rxZippedReportDirectory))
                 {
                     usedRxZippedReportDirectory = FileUtil.getAbsoluteReportDirectory(WorkSpace, rxZippedReportDirectory);
-                    if (!StringUtil.isValidDirectory(usedRxZippedReportDirectory))
-                    {
-                        listener.getLogger().println("'" + usedRxZippedReportDirectory + "' is not a valid directory or does not exist");
-                        return false;
-                    }
                 }
                 else
                 {
@@ -252,7 +242,7 @@ public class RanorexRunnerBuilder extends Builder
                 //Zipped Report File Name
                 if (!StringUtil.isNullOrSpace(rxZippedReportFile))
                 {
-                    if (!StringUtil.isAbsolutePath(rxZippedReportFile))
+                    if (!FileUtil.isAbsolutePath(rxZippedReportFile))
                     {
                         usedRxZippedReportFile = rxZippedReportFile;
                     }

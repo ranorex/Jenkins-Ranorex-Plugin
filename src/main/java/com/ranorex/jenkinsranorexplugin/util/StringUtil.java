@@ -1,6 +1,5 @@
 package com.ranorex.jenkinsranorexplugin.util;
 
-import java.io.File;
 import java.util.List;
 
 public abstract class StringUtil
@@ -63,21 +62,5 @@ public abstract class StringUtil
             value = String.format("%s\\", value);
         }
         return value;
-    }
-
-    public static Boolean isValidDirectory(String value)
-    {
-        File file = new File(value);
-        if (file.isDirectory())
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public static Boolean isAbsolutePath(String value)
-    {
-        File file = new File(value);
-        return file.isAbsolute();
     }
 }

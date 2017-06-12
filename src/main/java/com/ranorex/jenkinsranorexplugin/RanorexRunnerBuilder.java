@@ -274,15 +274,16 @@ public class RanorexRunnerBuilder extends Builder
             {
                 listener.getLogger().println("\n*************Start of Ranorex Summary*************");
                 listener.getLogger().println("Workspace:\t\t" + WorkSpace);
-                listener.getLogger().println("Ranorex Test Suite File:\t" + rxTestSuiteFilePath);
-                listener.getLogger().println("Ranorex Test exe File:\t\t" + rxExecuteableFile);
-                listener.getLogger().println("Ranorex Run Configuration:\t" + rxRunConfiguration);
-                listener.getLogger().println("Ranorex Report Directory:\t" + usedRxReportDirectory);
-                listener.getLogger().println("Ranorex Report Filename:\t" + usedRxReportFile);
-                listener.getLogger().println("Ranorex Report Compression:\t" + rxZippedReport);
-                listener.getLogger().println("Ranorex Zipped Report Dir:\t" + usedRxZippedReportDirectory);
-                listener.getLogger().println("Ranorex Zipped Report File:\t" + usedRxZippedReportFile);
-                listener.getLogger().println("Ranorex Global Parameters:");
+                listener.getLogger().println("Ranorex test suite file:\t" + rxTestSuiteFilePath);
+                listener.getLogger().println("Ranorex test exe file:\t\t" + rxExecuteableFile);
+                listener.getLogger().println("Ranorex run configuration:\t" + rxRunConfiguration);
+                listener.getLogger().println("Ranorex report directory:\t" + usedRxReportDirectory);
+                listener.getLogger().println("Ranorex report filename:\t" + usedRxReportFile);
+                listener.getLogger().println("Junit-compatible report:\t" + rxJUnitReport);
+                listener.getLogger().println("Ranorex report compression:\t" + rxZippedReport);
+                listener.getLogger().println("Ranorex zipped report Dir:\t" + usedRxZippedReportDirectory);
+                listener.getLogger().println("Ranorex zipped report File:\t" + usedRxZippedReportFile);
+                listener.getLogger().println("Ranorex global parameters:");
                 if (!StringUtil.isNullOrSpace(rxGlobalParameter))
                 {
                     for (String value : getParamArgs(build, env, rxGlobalParameter, true))
@@ -294,7 +295,7 @@ public class RanorexRunnerBuilder extends Builder
                 {
                     listener.getLogger().println("\t*No global parameters entered");
                 }
-                listener.getLogger().println("Additional Command Line Arguments:");
+                listener.getLogger().println("Command line arguments:");
                 if (!StringUtil.isNullOrSpace(cmdLineArgs))
                 {
                     for (String value : getParamArgs(build, env, cmdLineArgs, false))

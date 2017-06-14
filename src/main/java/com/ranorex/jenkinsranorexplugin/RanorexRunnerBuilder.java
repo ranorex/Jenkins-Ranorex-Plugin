@@ -24,6 +24,7 @@ import org.kohsuke.stapler.StaplerRequest;
 
 public class RanorexRunnerBuilder extends Builder
 {
+
     /*
      * Builder GUI Fields
      */
@@ -31,6 +32,7 @@ public class RanorexRunnerBuilder extends Builder
     private final String rxRunConfiguration;
     private final String rxReportDirectory;
     private final String rxReportFile;
+    private final String rxReportExtension;
     private final Boolean rxJUnitReport;
     private final Boolean rxZippedReport;
     private final String rxZippedReportDirectory;
@@ -59,6 +61,7 @@ public class RanorexRunnerBuilder extends Builder
      * @param rxReportDirectory The directory where the Ranorex Report should be
      * saved
      * @param rxReportFile The name of the Ranorex Report
+     * @param rxReportExtension The extension of your Ranorex Report
      * @param rxJUnitReport If true, a JUnit compatible Report will be saved
      * @param rxZippedReport If true, the report will also be saved as RXZLOG
      * @param rxZippedReportDirectory The directory where the Ranorex Zipped
@@ -74,17 +77,20 @@ public class RanorexRunnerBuilder extends Builder
             String rxRunConfiguration,
             String rxReportDirectory,
             String rxReportFile,
+            String rxReportExtension,
             Boolean rxJUnitReport,
             Boolean rxZippedReport,
             String rxZippedReportDirectory,
             String rxZippedReportFile,
             String rxGlobalParameter,
-            String cmdLineArgs)
+            String cmdLineArgs
+    )
     {
         this.rxTestSuiteFilePath = rxTestSuiteFilePath;
         this.rxRunConfiguration = rxRunConfiguration;
         this.rxReportDirectory = rxReportDirectory;
         this.rxReportFile = rxReportFile;
+        this.rxReportExtension = rxReportExtension;
         this.rxJUnitReport = rxJUnitReport;
         this.rxZippedReport = rxZippedReport;
         this.rxZippedReportDirectory = rxZippedReportDirectory;
@@ -103,6 +109,21 @@ public class RanorexRunnerBuilder extends Builder
         return this.rxRunConfiguration;
     }
 
+    public String getRxReportDirectory()
+    {
+        return this.rxReportDirectory;
+    }
+
+    public String getRxReportFile()
+    {
+        return this.rxReportFile;
+    }
+
+    public String getRxReportExtension()
+    {
+        return this.rxReportExtension;
+    }
+
     public Boolean getrxJUnitReport()
     {
         return this.rxJUnitReport;
@@ -111,31 +132,6 @@ public class RanorexRunnerBuilder extends Builder
     public Boolean getRxZippedReport()
     {
         return this.rxZippedReport;
-    }
-
-    public String getRxReportFile()
-    {
-        return this.rxReportFile;
-    }
-
-    public String getRxReportDirectory()
-    {
-        return this.rxReportDirectory;
-    }
-
-    public String getRxGlobalParameter()
-    {
-        return this.rxGlobalParameter;
-    }
-
-    public String getCmdLineArgs()
-    {
-        return this.cmdLineArgs;
-    }
-
-    public String getRxExecuteableFile()
-    {
-        return this.rxExecuteableFile;
     }
 
     public String getRxZippedReportDirectory()
@@ -148,6 +144,20 @@ public class RanorexRunnerBuilder extends Builder
         return this.rxZippedReportFile;
     }
 
+    public String getRxGlobalParameter()
+    {
+        return this.rxGlobalParameter;
+    }
+
+    public String getCmdLineArgs()
+    {
+        return this.cmdLineArgs;
+    }
+
+    //  public String getRxExecuteableFile()
+    // {
+    //     return this.rxExecuteableFile;
+    // }
     /**
      * Runs the step over the given build and reports the progress to the
      * listener
@@ -275,6 +285,7 @@ public class RanorexRunnerBuilder extends Builder
                 listener.getLogger().println("Ranorex run configuration:\t" + rxRunConfiguration);
                 listener.getLogger().println("Ranorex report directory:\t" + usedRxReportDirectory);
                 listener.getLogger().println("Ranorex report filename:\t" + usedRxReportFile);
+                listener.getLogger().println("Ranorex report extension:\t" + rxReportExtension);
                 listener.getLogger().println("Junit-compatible report:\t" + rxJUnitReport);
                 listener.getLogger().println("Ranorex report compression:\t" + rxZippedReport);
                 listener.getLogger().println("Ranorex zipped report dir:\t" + usedRxZippedReportDirectory);

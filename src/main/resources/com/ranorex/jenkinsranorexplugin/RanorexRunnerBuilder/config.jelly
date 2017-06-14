@@ -20,6 +20,13 @@
             <f:entry title="${%Ranorex report file name}" field="rxReportFile">
                 <f:textbox/>
             </f:entry>
+            <!--Ranorex Report File Extension-->
+            <f:entry title="${%Report file extension}" field="rxReportExtension">
+                <select name="RanorexRunnerBuilder.rxReportExtension">
+                    <option value="rxlog" selected="${instance.rxReportExtension=='rxlog'}">rxlog</option>
+                    <option value="html" selected="${instance.rxReportExtension=='html'}">html</option>               
+                </select>
+            </f:entry>
         </f:block>
         
         <!-- JUnit Report-->

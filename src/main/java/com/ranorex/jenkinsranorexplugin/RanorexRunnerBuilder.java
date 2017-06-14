@@ -14,20 +14,16 @@ import hudson.model.Result;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.ArgumentListBuilder;
-import hudson.util.FormValidation;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import javax.servlet.ServletException;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 public class RanorexRunnerBuilder extends Builder
 {
-
     /*
      * Builder GUI Fields
      */
@@ -223,7 +219,7 @@ public class RanorexRunnerBuilder extends Builder
             {
                 args.add(" /junit");
             }
-            
+
             //Compressed copy of Ranorex report
             if (rxZippedReport)
             {
@@ -281,8 +277,8 @@ public class RanorexRunnerBuilder extends Builder
                 listener.getLogger().println("Ranorex report filename:\t" + usedRxReportFile);
                 listener.getLogger().println("Junit-compatible report:\t" + rxJUnitReport);
                 listener.getLogger().println("Ranorex report compression:\t" + rxZippedReport);
-                listener.getLogger().println("Ranorex zipped report Dir:\t" + usedRxZippedReportDirectory);
-                listener.getLogger().println("Ranorex zipped report File:\t" + usedRxZippedReportFile);
+                listener.getLogger().println("Ranorex zipped report dir:\t" + usedRxZippedReportDirectory);
+                listener.getLogger().println("Ranorex zipped report file:\t" + usedRxZippedReportFile);
                 listener.getLogger().println("Ranorex global parameters:");
                 if (!StringUtil.isNullOrSpace(rxGlobalParameter))
                 {
@@ -456,44 +452,10 @@ public class RanorexRunnerBuilder extends Builder
             load();
         }
 
-        /*
-         * Form Validation
-         */
-        //Check Test Suite
-        public FormValidation doCheckrxTestSuiteFilePath(@QueryParameter String value) throws IOException, ServletException
-        {
-            if (!(value.contains(".rxtst")))
-            {
-                return FormValidation.error("'" + value + "'" + " is not a valid Ranorex Test Suite");
-            }
-            return FormValidation.ok();
-        }
-
-        //Check Ranorex Report FilePath
-        public FormValidation doCheckRxReportDirectory(@QueryParameter String rxReportDirectory) throws IOException, ServletException
-        {
-            if (StringUtil.isNullOrSpace(rxReportDirectory))
-            {
-                return FormValidation.ok();
-            }
-            else if (FileUtil.isValidDirectory(rxReportDirectory))
-            {
-                return FormValidation.error("'" + rxReportDirectory + "' is not a valid Report directory or des not exist");
-            }
-            else
-            {
-                return FormValidation.warning("Testmessage");
-            }
-        }
-
         @Override
         public boolean isApplicable(Class<? extends AbstractProject> aClass)
         {
             // Indicates that this builder can be used with all kinds of project types 
-            /*
-             * Possible Values:
-             *
-             */
             return true;
         }
 

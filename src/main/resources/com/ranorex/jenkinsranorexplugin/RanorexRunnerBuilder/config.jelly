@@ -8,17 +8,17 @@
     <f:advanced>
         <!--Ranorex Run Conficuration-->
         <f:entry title="${%Ranorex run configuration}" field="rxRunConfiguration">
-            <f:textbox name="RanorexRunnerBuilder.rxRunConfiguration"/>
+            <f:textbox/>
         </f:entry>  
         <!--Ranorex Report-->
         <!--Ranorex Report Directory-->
         <f:block> 
             <f:entry title="${%Ranorex report directory}" field="rxReportDirectory">
-                <f:textbox name="RanorexRunnerBuilder.rxReportDirectory"/>
+                <f:textbox/>
             </f:entry>
             <!--Ranorex Report File-->
             <f:entry title="${%Ranorex report file name}" field="rxReportFile">
-                <f:textbox name="RanorexRunnerBuilder.rxReportFile"/>
+                <f:textbox/>
             </f:entry>
         </f:block>
         
@@ -31,22 +31,22 @@
         <f:block>
             <f:optionalBlock name ="RanorexRunnerBuilder.rxZippedReport" field="rxZippedReport" title="${%Compressed copy of Ranorex report}" inline="true">
                 <f:entry title="${%Compressed report directory}" field="rxZippedReportDirectory">
-                    <f:textbox name="RanorexRunnerBuilder.rxZippedReportDirectory"/>
+                    <f:textbox/>
                 </f:entry>
                 <f:entry title="${%Compressed report file name}" field="rxZippedReportFile">
-                    <f:textbox name="RanorexRunnerBuilder.rxZippedReportFile"/>
+                    <f:textbox/>
                 </f:entry>
             </f:optionalBlock>
         </f:block>
     
         <!--Global Parameter-->
         <f:entry title="${%Global parameters}" field="rxGlobalParameter">
-            <f:textarea name="RanorexRunnerBuilder.rxGlobalParameter"/>
+            <f:textarea/>
         </f:entry>
     
         <!--Command Line Arguments-->
         <f:entry title="${%Command line arguments}" field="cmdLineArgs">
-            <f:textarea name="RanorexRunnerBuilder.cmdLineArgs"/>
+            <f:textarea/>
         </f:entry>
     </f:advanced>
 </j:jelly>

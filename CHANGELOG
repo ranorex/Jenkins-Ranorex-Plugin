@@ -1,6 +1,12 @@
 # Changelog
 ## 0.0.1
-Release version 0.0.1 2017-04-25
+### 2017-04-25
+Release version 0.0.1 
 
 ## 0.0.2
-2017-06-12 Reportdirectories will now be automatically created if they do not exist. Please be careful when using variables in the directory name
+###2017-06-12
+Reportdirectories will now be automatically created if they do not exist. Please be careful when using variables in the directory name
+
+## 0.1.0
+###2017-06-15
+Add dropdown to select report extension. Currently RXLOG and HTML are possible.

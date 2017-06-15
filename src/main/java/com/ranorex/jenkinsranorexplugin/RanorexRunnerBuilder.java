@@ -222,7 +222,7 @@ public class RanorexRunnerBuilder extends Builder
             {
                 usedRxReportFile = "%%S_%%Y%%M%%D_%%T";
             }
-            args.add(" /reportfile:" + StringUtil.appendQuote(usedRxReportDirectory + usedRxReportFile + ".rxlog"));
+            args.add(" /reportfile:" + StringUtil.appendQuote(usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension));
 
             //JUnit compatible Report
             if (rxJUnitReport)

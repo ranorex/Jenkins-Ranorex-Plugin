@@ -1,5 +1,5 @@
 # Jenkins Ranorex Plugin
-This plugin provides an easy way to run a [Ranorex}(https://www.ranorex.com/ "Test Automation for Everyone") test suite as a build step in your Jenkins job. You can run a test suite as is without any need for configuration, or you can make several different advanced settings.
+This plugin provides an easy way to run a [Ranorex](https://www.ranorex.com/ "Test Automation for Everyone") test suite as a build step in your Jenkins job. You can run a test suite as is without any need for configuration, or you can make several different advanced settings.
 
 ## Installation
 1. Open Jenkins and click "Manage Jenkins".

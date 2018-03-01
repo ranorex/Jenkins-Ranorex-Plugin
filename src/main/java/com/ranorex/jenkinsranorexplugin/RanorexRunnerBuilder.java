@@ -179,7 +179,8 @@ public class RanorexRunnerBuilder extends Builder
     @Override
     public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException
     {
-        WorkSpace = StringUtil.appendBackslash(build.getWorkspace().getRemote());
+    	WorkSpace = FileUtil.getRanorexWorkingDirectory(build.getWorkspace(), rxTestSuiteFilePath).getRemote();
+        WorkSpace = StringUtil.appendBackslash(WorkSpace);
         ArrayList<String> args = new ArrayList<>();
 
         EnvVars env = build.getEnvironment(listener);
@@ -187,11 +188,11 @@ public class RanorexRunnerBuilder extends Builder
         if (!StringUtil.isNullOrSpace(rxTestSuiteFilePath))
         {
             rxExecuteableFile = FileUtil.getExecutableFromTestSuite(rxTestSuiteFilePath);
-            args.add(StringUtil.appendQuote(rxExecuteableFile));
+            args.add(rxExecuteableFile);
             //Ranorex Run Configuration
             if (!StringUtil.isNullOrSpace(rxRunConfiguration))
             {
-                args.add(" /runconfig:" + rxRunConfiguration);
+                args.add("/runconfig:" + rxRunConfiguration);
             }
 
             //Ranorex Reportdirectory
@@ -222,18 +223,18 @@ public class RanorexRunnerBuilder extends Builder
             {
                 usedRxReportFile = "%%S_%%Y%%M%%D_%%T";
             }
-            args.add(" /reportfile:" + StringUtil.appendQuote(usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension));
+            args.add("/reportfile:" + StringUtil.appendQuote(usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension));
 
             //JUnit compatible Report
             if (rxJUnitReport)
             {
-                args.add(" /junit");
+                args.add("/junit");
             }
 
             //Compressed copy of Ranorex report
             if (rxZippedReport)
             {
-                args.add(" /zipreport");
+                args.add("/zipreport");
                 //Zipped Ranorex Reportdirectory
                 if (!StringUtil.isNullOrSpace(rxZippedReportDirectory))
                 {
@@ -262,7 +263,7 @@ public class RanorexRunnerBuilder extends Builder
                 {
                     usedRxZippedReportFile = usedRxReportFile;
                 }
-                args.add(" /zipreportfile:" + StringUtil.appendQuote(usedRxZippedReportDirectory + usedRxZippedReportFile + ".rxzlog"));
+                args.add("/zipreportfile:" + usedRxZippedReportDirectory + usedRxZippedReportFile + ".rxzlog");
             }
             //Global Parameters
             if (!StringUtil.isNullOrSpace(rxGlobalParameter))
@@ -342,15 +343,17 @@ public class RanorexRunnerBuilder extends Builder
     {
         ArgumentListBuilder cmdExecArgs = new ArgumentListBuilder();
         FilePath tmpDir = null;
-        FilePath currentWorkspace = build.getWorkspace();
+        FilePath currentWorkspace = FileUtil.getRanorexWorkingDirectory(build.getWorkspace(), rxTestSuiteFilePath);
 
-        tmpDir = currentWorkspace.createTextTempFile("exe_runner_", ".bat", StringUtil.concatString(args), false);
-        cmdExecArgs.add("cmd.exe", "/C", tmpDir.getRemote(), "&&", "exit", "%ERRORLEVEL%");
+        tmpDir = build.getWorkspace().createTextTempFile("exe_runner_", ".bat", StringUtil.concatString(args), false);
+        cmdExecArgs.add("cmd.exe", "/C");
         for (String arg : args)
         {
             cmdExecArgs.add(arg);
         }
-        listener.getLogger().println("Executing : " + cmdExecArgs.toStringWithQuote());
+        
+        cmdExecArgs.add("&&", "exit", "%ERRORLEVEL%");
+        listener.getLogger().println("Executing : " + cmdExecArgs.toString());
 
         try
         {

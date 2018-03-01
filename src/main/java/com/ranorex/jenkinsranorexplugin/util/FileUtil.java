@@ -6,6 +6,9 @@
 package com.ranorex.jenkinsranorexplugin.util;
 
 import java.io.File;
+import java.io.IOException;
+
+import hudson.FilePath;
 
 /**
  *
@@ -35,8 +38,34 @@ public abstract class FileUtil
         {
             return "Input was not a valid Test Suite File";
         }
-        return ExecuteableFile;
+        
+        String[] splittedPath = ExecuteableFile.split("/");
+        return splittedPath[splittedPath.length - 1];
 
+    }
+    
+    /**
+     * 
+     * @param testSuiteFile Test suite file
+     * @return Fully qualified directory path.
+     * @throws InterruptedException 
+     * @throws IOException 
+     */
+    public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile) throws IOException, InterruptedException {
+    	String[] splittedName = testSuiteFile.split("/");
+    	StringBuffer directory = new StringBuffer(jenkinsDirectory.getRemote());
+    	
+    	if (splittedName .length < 2) {
+    		directory.append(File.separator + (splittedName[splittedName.length - 1].split("\\."))[0] + File.separator + "bin" + File.separator + "Debug"); 
+    	} else {
+    		for (String name : splittedName) {
+    			if (!".".equals(name) && !name.contains(".rxtst")) {
+    				directory.append("\\" + name);
+    			}
+    		}
+    	}
+    	
+    	return new FilePath(new File(directory.toString()));
     }
 
     /**

@@ -102,9 +102,7 @@ public abstract class FileUtil {
 	 * @return Absolute path
 	 */
 	public static String combinePath(String WorkSpace, String relPath) {
-		File pwd = new File(WorkSpace);
-		File combinedPath = new File(pwd, relPath);
-		return combinedPath.getAbsolutePath();
+		return WorkSpace + relPath.replace("/", File.separator);
 	}
 
 	/**

@@ -48,6 +48,7 @@ public class RanorexRunnerBuilder extends Builder {
 	private String usedRxReportFile;
 	private String usedRxZippedReportDirectory;
 	private String usedRxZippedReportFile;
+	private ArgumentListBuilder jArguments;
 
 	/**
 	 * When this builder is created in the project configuration step, the builder
@@ -167,23 +168,25 @@ public class RanorexRunnerBuilder extends Builder {
 	@Override
 	public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
 			throws IOException, InterruptedException {
+		jArguments = new ArgumentListBuilder("cmd.exe", "/C");
 		WorkSpace = FileUtil.getRanorexWorkingDirectory(build.getWorkspace(), rxTestSuiteFilePath).getRemote();
 		WorkSpace = StringUtil.appendBackslash(WorkSpace);
-		ArrayList<String> args = new ArrayList<>();
 
 		EnvVars env = build.getEnvironment(listener);
 		boolean r = false;
 		if (!StringUtil.isNullOrSpace(rxTestSuiteFilePath)) {
 			rxExecuteableFile = FileUtil.getExecutableFromTestSuite(rxTestSuiteFilePath);
-			args.add(rxExecuteableFile);
+			jArguments.add(rxExecuteableFile);
 			// Ranorex Run Configuration
 			if (!StringUtil.isNullOrSpace(rxRunConfiguration)) {
-				args.add("/runconfig:" + rxRunConfiguration);
+				jArguments.add("/runconfig:" + rxRunConfiguration);
 			}
 
 			// Ranorex Reportdirectory
 			if (!StringUtil.isNullOrSpace(rxReportDirectory)) {
+				listener.getLogger().println("Reportpath to merge. Base: " + WorkSpace + " Relative: " + rxReportDirectory);
 				usedRxReportDirectory = FileUtil.getAbsoluteReportDirectory(WorkSpace, rxReportDirectory);
+				listener.getLogger().println("Merged path: " + usedRxReportDirectory);
 			} else {
 				usedRxReportDirectory = WorkSpace;
 			}
@@ -200,17 +203,16 @@ public class RanorexRunnerBuilder extends Builder {
 			} else {
 				usedRxReportFile = "%%S_%%Y%%M%%D_%%T";
 			}
-			args.add("/reportfile:"
-					+ StringUtil.appendQuote(usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension));
+			jArguments.add("/reportfile:" + StringUtil.appendQuote(usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension));
 
 			// JUnit compatible Report
 			if (rxJUnitReport) {
-				args.add("/junit");
+				jArguments.add("/junit");
 			}
 
 			// Compressed copy of Ranorex report
 			if (rxZippedReport) {
-				args.add("/zipreport");
+				jArguments.add("/zipreport");
 				// Zipped Ranorex Reportdirectory
 				if (!StringUtil.isNullOrSpace(rxZippedReportDirectory)) {
 					usedRxZippedReportDirectory = FileUtil.getAbsoluteReportDirectory(WorkSpace,
@@ -232,15 +234,15 @@ public class RanorexRunnerBuilder extends Builder {
 				} else {
 					usedRxZippedReportFile = usedRxReportFile;
 				}
-				args.add("/zipreportfile:" + usedRxZippedReportDirectory + usedRxZippedReportFile + ".rxzlog");
+				jArguments.add("/zipreportfile:" + usedRxZippedReportDirectory + usedRxZippedReportFile + ".rxzlog");
 			}
 			// Global Parameters
 			if (!StringUtil.isNullOrSpace(rxGlobalParameter)) {
-				args.addAll(getParamArgs(build, env, rxGlobalParameter, true));
+				jArguments.add(getParamArgs(build, env, rxGlobalParameter, true).toArray());
 			}
 			// Additional cmd arguments
 			if (!StringUtil.isNullOrSpace(cmdLineArgs)) {
-				args.addAll(getParamArgs(build, env, cmdLineArgs, false));
+				jArguments.add(getParamArgs(build, env, cmdLineArgs, true).toArray());
 			}
 
 			// Summarize Output
@@ -275,7 +277,7 @@ public class RanorexRunnerBuilder extends Builder {
 				}
 				listener.getLogger().println("*************End of Ranorex Summary*************\n");
 			}
-			r = exec(args, build, launcher, listener, env); // Start the given exe file with all arguments added before
+			r = exec(build, launcher, listener, env); // Start the given exe file with all arguments added before
 		} else {
 			listener.getLogger().println("No TestSuite file given");
 		}
@@ -299,23 +301,18 @@ public class RanorexRunnerBuilder extends Builder {
 	 * @throws InterruptedException
 	 * @throws IOException
 	 */
-	private boolean exec(List<String> args, AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener,
+	private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener,
 			EnvVars env) throws InterruptedException, IOException {
-		ArgumentListBuilder cmdExecArgs = new ArgumentListBuilder();
 		FilePath tmpDir = null;
 		FilePath currentWorkspace = FileUtil.getRanorexWorkingDirectory(build.getWorkspace(), rxTestSuiteFilePath);
 
-		tmpDir = build.getWorkspace().createTextTempFile("exe_runner_", ".bat", StringUtil.concatString(args), false);
-		cmdExecArgs.add("cmd.exe", "/C");
-		for (String arg : args) {
-			cmdExecArgs.add(arg);
-		}
+		tmpDir = build.getWorkspace().createTextTempFile("exe_runner_", ".bat", StringUtil.concatString(jArguments.toList()), false);
 
-		cmdExecArgs.add("&&", "exit", "%ERRORLEVEL%");
-		listener.getLogger().println("Executing : " + cmdExecArgs.toString());
+		jArguments.add("&&", "exit", "%ERRORLEVEL%");
+		listener.getLogger().println("Executing : " + jArguments.toString());
 
 		try {
-			int r = launcher.launch().cmds(cmdExecArgs).envs(env).stdout(listener).pwd(currentWorkspace).join();
+			int r = launcher.launch().cmds(jArguments).envs(env).stdout(listener).pwd(currentWorkspace).join();
 
 			if (r != 0) {
 				build.setResult(Result.FAILURE);

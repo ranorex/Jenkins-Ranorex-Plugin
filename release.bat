@@ -1,0 +1,1 @@
+mvn clean -DskipTests -Darguments=-DskipTests release:prepare release:perform -B

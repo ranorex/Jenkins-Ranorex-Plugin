@@ -16,4 +16,8 @@ WebReadme.html
 CodeReview.md
 *.docx
 TODO.md
-.log
+*.log
+.project/
+.settings/
+.classpath
+.project

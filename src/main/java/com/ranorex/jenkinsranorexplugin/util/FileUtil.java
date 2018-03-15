@@ -88,8 +88,11 @@ public abstract class FileUtil {
 	 *         and is a directory; false otherwise
 	 */
 	public static boolean isAbsolutePath(String value) {
-		File file = new File(value);
-		return file.isAbsolute();
+		char[] chars = value.toCharArray();
+		if (chars[1] == ':') {
+			return true;
+		}
+		return false;
 	}
 
 	/**

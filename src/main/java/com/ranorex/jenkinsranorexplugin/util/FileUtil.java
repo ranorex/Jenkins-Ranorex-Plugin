@@ -88,8 +88,11 @@ public abstract class FileUtil {
 	 *         and is a directory; false otherwise
 	 */
 	public static boolean isAbsolutePath(String value) {
-		File file = new File(value);
-		return file.isAbsolute();
+		char[] chars = value.toCharArray();
+		if (chars[1] == ':') {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -102,9 +105,7 @@ public abstract class FileUtil {
 	 * @return Absolute path
 	 */
 	public static String combinePath(String WorkSpace, String relPath) {
-		File pwd = new File(WorkSpace);
-		File combinedPath = new File(pwd, relPath);
-		return combinedPath.getAbsolutePath();
+		return WorkSpace + relPath.replace("/", File.separator);
 	}
 
 	/**

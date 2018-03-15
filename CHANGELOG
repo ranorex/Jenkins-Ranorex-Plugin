@@ -17,3 +17,7 @@
 * Change the working directory to the outputpath where the *.rxtst file is located
 * Fix issue with report directory path separator (use File.separator), to prevent issues if master node is installed on a unix machine
 * Code cleanup (Remove unused codes to prevent against site effects
+
+## 0.1.3
+### 2018-03-15
+* add Missing commit

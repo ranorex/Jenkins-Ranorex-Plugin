@@ -33,7 +33,7 @@ public abstract class FileUtil {
 			return "Input was not a valid Test Suite File";
 		}
 
-		String[] splittedPath = ExecuteableFile.split("/");
+		String[] splittedPath = StringUtil.splitPath(ExecuteableFile);
 		return splittedPath[splittedPath.length - 1];
 
 	}
@@ -48,17 +48,12 @@ public abstract class FileUtil {
 	 */
 	public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile)
 			throws IOException, InterruptedException {
-		String[] splittedName = testSuiteFile.split("/");
+		String[] splittedName = StringUtil.splitPath(testSuiteFile);
 		StringBuffer directory = new StringBuffer(jenkinsDirectory.getRemote());
 
-		if (splittedName.length < 2) {
-			directory.append(File.separator + (splittedName[splittedName.length - 1].split("\\."))[0] + File.separator
-					+ "bin" + File.separator + "Debug");
-		} else {
-			for (String name : splittedName) {
-				if (!".".equals(name) && !name.contains(".rxtst")) {
-					directory.append("\\" + name);
-				}
+		for (String name : splittedName) {
+			if (!".".equals(name) && !name.contains(".rxtst")) {
+				directory.append("\\" + name);
 			}
 		}
 
@@ -89,7 +84,12 @@ public abstract class FileUtil {
 	 */
 	public static boolean isAbsolutePath(String value) {
 		char[] chars = value.toCharArray();
-		if (chars[1] == ':') {
+		/*
+		 * we use this instead of file.isAbsolute() because it will provide false
+		 * negative return values if the master node is a unix based system. Since the
+		 * execution node must be a Windows system, this check should be ok.
+		 */
+		if (chars[1] == ':' || value.startsWith("//")) {
 			return true;
 		}
 		return false;

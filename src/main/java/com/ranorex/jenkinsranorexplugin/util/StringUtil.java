@@ -47,6 +47,15 @@ public abstract class StringUtil {
 		}
 		return buf.toString();
 	}
+	
+	public static String[] splitPath(String value) {
+		String[] splittedName = value.split("/");
+		if (splittedName.length == 1 && value.contains("\\")) {
+			splittedName = value.split("\\\\");
+		}
+		
+		return splittedName;
+	}
 
 	public static String appendBackslash(String value) {
 		// int length = value.length() - 1;

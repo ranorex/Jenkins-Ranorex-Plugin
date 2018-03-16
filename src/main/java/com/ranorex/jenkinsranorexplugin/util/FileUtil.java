@@ -89,7 +89,7 @@ public abstract class FileUtil {
 		 * negative return values if the master node is a unix based system. Since the
 		 * execution node must be a Windows system, this check should be ok.
 		 */
-		if (chars[1] == ':' || value.startsWith("//")) {
+		if (chars[1] == ':' || value.startsWith("\\\\")) {
 			return true;
 		}
 		return false;

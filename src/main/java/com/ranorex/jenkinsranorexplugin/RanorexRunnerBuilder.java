@@ -184,7 +184,8 @@ public class RanorexRunnerBuilder extends Builder {
 
 			// Ranorex Reportdirectory
 			if (!StringUtil.isNullOrSpace(rxReportDirectory)) {
-				listener.getLogger().println("Reportpath to merge. Base: " + WorkSpace + " Relative: " + rxReportDirectory);
+				listener.getLogger()
+						.println("Reportpath to merge. Base: " + WorkSpace + " Relative: " + rxReportDirectory);
 				usedRxReportDirectory = FileUtil.getAbsoluteReportDirectory(WorkSpace, rxReportDirectory);
 				listener.getLogger().println("Merged path: " + usedRxReportDirectory);
 			} else {
@@ -201,9 +202,10 @@ public class RanorexRunnerBuilder extends Builder {
 					return false;
 				}
 			} else {
-				usedRxReportFile = "%%S_%%Y%%M%%D_%%T";
+				usedRxReportFile = "%S_%Y%M%D_%T";
 			}
-			jArguments.add("/reportfile:" + StringUtil.appendQuote(usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension));
+			jArguments.add("/reportfile:"
+					+ StringUtil.appendQuote(usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension));
 
 			// JUnit compatible Report
 			if (rxJUnitReport) {
@@ -248,6 +250,8 @@ public class RanorexRunnerBuilder extends Builder {
 			// Summarize Output
 			if (getDescriptor().isUseSummarize()) {
 				listener.getLogger().println("\n*************Start of Ranorex Summary*************");
+				listener.getLogger()
+						.println("Current Plugin version:\t\t" + getClass().getPackage().getImplementationVersion());
 				listener.getLogger().println("Workspace:\t\t" + WorkSpace);
 				listener.getLogger().println("Ranorex test suite file:\t" + rxTestSuiteFilePath);
 				listener.getLogger().println("Ranorex test exe file:\t\t" + rxExecuteableFile);
@@ -301,12 +305,13 @@ public class RanorexRunnerBuilder extends Builder {
 	 * @throws InterruptedException
 	 * @throws IOException
 	 */
-	private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener,
-			EnvVars env) throws InterruptedException, IOException {
+	private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener, EnvVars env)
+			throws InterruptedException, IOException {
 		FilePath tmpDir = null;
 		FilePath currentWorkspace = FileUtil.getRanorexWorkingDirectory(build.getWorkspace(), rxTestSuiteFilePath);
 
-		tmpDir = build.getWorkspace().createTextTempFile("exe_runner_", ".bat", StringUtil.concatString(jArguments.toList()), false);
+		tmpDir = build.getWorkspace().createTextTempFile("exe_runner_", ".bat",
+				StringUtil.concatString(jArguments.toList()), false);
 
 		jArguments.add("&&", "exit", "%ERRORLEVEL%");
 		listener.getLogger().println("Executing : " + jArguments.toString());

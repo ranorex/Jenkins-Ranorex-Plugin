@@ -21,3 +21,9 @@
 ## 0.1.3
 ### 2018-03-15
 * add Missing commit
+
+## 0.1.4
+### 2018-03-19
+* Add support for Unix Master installation
+* Fix issue with default reportname if no reportname is specified
+* Add plugin version in log summary

@@ -252,7 +252,7 @@ public class RanorexRunnerBuilder extends Builder {
 				listener.getLogger().println("\n*************Start of Ranorex Summary*************");
 				listener.getLogger()
 						.println("Current Plugin version:\t\t" + getClass().getPackage().getImplementationVersion());
-				listener.getLogger().println("Workspace:\t\t\t" + WorkSpace);
+				listener.getLogger().println("Working Directory:\t\t" + WorkSpace);
 				listener.getLogger().println("Ranorex test suite file:\t" + rxTestSuiteFilePath);
 				listener.getLogger().println("Ranorex test exe file:\t\t" + rxExecuteableFile);
 				listener.getLogger().println("Ranorex run configuration:\t" + rxRunConfiguration);

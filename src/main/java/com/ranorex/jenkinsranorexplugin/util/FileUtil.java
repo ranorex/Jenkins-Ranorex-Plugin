@@ -49,11 +49,19 @@ public abstract class FileUtil {
 	public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile)
 			throws IOException, InterruptedException {
 		String[] splittedName = StringUtil.splitPath(testSuiteFile);
-		StringBuffer directory = new StringBuffer(jenkinsDirectory.getRemote());
+		StringBuffer directory = new StringBuffer();
+		
+		if (!isAbsolutePath(testSuiteFile)) {
+			directory.append(jenkinsDirectory.getRemote());
+		}
 
 		for (String name : splittedName) {
 			if (!".".equals(name) && !name.contains(".rxtst")) {
-				directory.append("\\" + name);
+				if ((name.toCharArray())[1] == ':') {
+					directory.append(name);
+				} else {
+					directory.append("\\" + name);
+				}
 			}
 		}
 

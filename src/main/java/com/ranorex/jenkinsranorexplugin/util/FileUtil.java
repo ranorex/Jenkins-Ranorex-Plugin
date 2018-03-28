@@ -104,7 +104,7 @@ public abstract class FileUtil {
     public static String combinePath(String WorkSpace, String relPath) {
         String substring = "NULL";
         if (relPath.toCharArray()[0] == '.') {
-            substring= relPath.substring(1, relPath.length());
+            substring = relPath.substring(1, relPath.length());
             System.out.println("Substring: '" + substring + "'");
             relPath = substring;
         }

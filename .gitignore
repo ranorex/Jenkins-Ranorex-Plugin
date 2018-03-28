@@ -21,3 +21,5 @@ TODO.md
 .settings/
 .classpath
 .project
+/nbproject/
+.vscode/

@@ -27,3 +27,11 @@
 * Add support for Unix Master installation
 * Fix issue with default reportname if no reportname is specified
 * Add plugin version in log summary
+
+
+## 0.2.0
+### 2018-03-
+
+* Changed "Workspace" to "Working Directory" in the Console Summary
+* Removed unused codes
+* Add Unit Tests

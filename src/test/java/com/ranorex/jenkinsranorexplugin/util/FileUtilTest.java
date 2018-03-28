@@ -41,23 +41,6 @@ public class FileUtilTest {
 
     public FileUtilTest() {
     }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     /**
      * Test of getExecutableFromTestSuite method, of class FileUtil. Input is a
      * .rxtst file Expected output is a .exe file

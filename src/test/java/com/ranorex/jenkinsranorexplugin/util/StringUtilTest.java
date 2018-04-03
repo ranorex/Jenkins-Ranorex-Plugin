@@ -23,11 +23,6 @@
  */
 package com.ranorex.jenkinsranorexplugin.util;
 
-import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -36,9 +31,10 @@ import static org.junit.Assert.*;
  * @author mstoegerer
  */
 public class StringUtilTest {
-    
+
     public StringUtilTest() {
     }
+
     /**
      * Test of appendQuote method, of class StringUtil.
      */
@@ -50,8 +46,8 @@ public class StringUtilTest {
         String result = StringUtil.appendQuote(value);
         assertEquals(expResult, result);
     }
-    
-        /**
+
+    /**
      * Test of appendQuote method, of class StringUtil.
      */
     @Test
@@ -74,7 +70,8 @@ public class StringUtilTest {
         boolean result = StringUtil.isNullOrSpace(value);
         assertEquals(expResult, result);
     }
-        /**
+
+    /**
      * Test of isNullOrSpace method, of class StringUtil.
      */
     @Test
@@ -87,34 +84,6 @@ public class StringUtilTest {
     }
 
     /**
-     * Test of concatString method, of class StringUtil.
-     *
-    @Test
-    public void testConcatString() {
-        System.out.println("concatString");
-        List<String> args = null;
-        String expResult = "";
-        String result = StringUtil.concatString(args);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
-
-    /**
-     * Test of splitPath method, of class StringUtil.
-     *
-    @Test
-    public void testSplitPath() {
-        System.out.println("splitPath");
-        String value = "";
-        String[] expResult = null;
-        String[] result = StringUtil.splitPath(value);
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
-
-    /**
      * Test of appendBackslash method, of class StringUtil.
      */
     @Test
@@ -125,7 +94,7 @@ public class StringUtilTest {
         String result = StringUtil.appendBackslash(value);
         assertEquals(expResult, result);
     }
-    
+
     /**
      * Test of appendBackslash method, of class StringUtil.
      */
@@ -137,5 +106,4 @@ public class StringUtilTest {
         String result = StringUtil.appendBackslash(value);
         assertEquals(expResult, result);
     }
-    
 }

@@ -26,10 +26,6 @@ package com.ranorex.jenkinsranorexplugin.util;
 import hudson.FilePath;
 
 import java.io.File;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -41,6 +37,7 @@ public class FileUtilTest {
 
     public FileUtilTest() {
     }
+
     /**
      * Test of getExecutableFromTestSuite method, of class FileUtil. Input is a
      * .rxtst file Expected output is a .exe file
@@ -93,12 +90,6 @@ public class FileUtilTest {
         System.out.println("Test :'getExecutableFromTestSuite_3' ended\n");
     }
 
-    /**
-     * Test of getRanorexWorkingDirectory method, of class FileUtil. Testing
-     * relative path of Test Suite File jenkinsDirectory =
-     * "C:\\Users\\user\\.jenkins\\workspace\\Test" testSuiteFile =
-     * ".\\bin\\Debug\\JenkinsPluginTest.rxtst"
-     */
     @Test
     public void testGetRanorexWorkingDirectory_relative() throws Exception {
         System.out.println("\nTest :'testGetRanorexWorkingDirectory_relative' started");
@@ -116,12 +107,6 @@ public class FileUtilTest {
         System.out.println("Test :'testGetRanorexWorkingDirectory_relative' ended\n");
     }
 
-    /**
-     * Test of getRanorexWorkingDirectory method, of class FileUtil. Testing
-     * Absolute path of Test Suite File jenkinsDirectory =
-     * "C:\\Users\\user\\.jenkins\\workspace\\Test" testSuiteFile =
-     * "C:\Temp\JenkinsPluginTest.rxtst"
-     */
     @Test
     public void testGetRanorexWorkingDirectory_absolute() throws Exception {
         System.out.println("\nTest :'testGetRanorexWorkingDirectory_absolute' started");
@@ -139,15 +124,6 @@ public class FileUtilTest {
         System.out.println("Test :'testGetRanorexWorkingDirectory_absolute' ended\n");
     }
 
-    /**
-     * Test of isValidDirectory method, of class FileUtil.
-     *
-     * @Test public void testIsValidDirectory() { System.out.println("\nTest
-     * :'testIsValidDirectory' started"); String value = ""; boolean expResult =
-     * false; boolean result = FileUtil.isValidDirectory(value);
-     * assertEquals(expResult, result); System.out.println("\nTest
-     * :'testIsValidDirectory' ended\n"); }
-     */
     /**
      * Test of isAbsolutePath method, of class FileUtil.
      */
@@ -230,14 +206,14 @@ public class FileUtilTest {
         String expResult = "C:\\Temp\\ReportDir";
         String result = FileUtil.getAbsoluteReportDirectory(workSpace, reportDirectory);
         assertEquals(expResult, result);
-        
+
         System.out.println("Input [Workspace] = '" + workSpace + "'");
         System.out.println("Input [reportDirectory] = '" + reportDirectory + "'");
         System.out.println("Expected output = '" + expResult + "'");
         System.out.println("Result = '" + result + "'");
         System.out.println("Test :'testGetAbsoluteReportDirectory_absoluteInput' ended\n");
     }
-    
+
     /**
      * Test of getAbsoluteReportDirectory method, of class FileUtil.
      */
@@ -249,7 +225,7 @@ public class FileUtilTest {
         String expResult = "C:\\Users\\user\\.jenkins\\workspace\\Test\\ReportDir";
         String result = FileUtil.getAbsoluteReportDirectory(workSpace, reportDirectory);
         assertEquals(expResult, result);
-        
+
         System.out.println("Input [Workspace] = '" + workSpace + "'");
         System.out.println("Input [reportDirectory] = '" + reportDirectory + "'");
         System.out.println("Expected output = '" + expResult + "'");

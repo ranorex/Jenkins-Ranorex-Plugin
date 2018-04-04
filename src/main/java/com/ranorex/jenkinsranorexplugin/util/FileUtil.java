@@ -37,17 +37,20 @@ public abstract class FileUtil {
     }
 
     /**
+     * Get the absolute path to the Ranorex Test Suite file
      *
-     * @param testSuiteFile Test suite file
-     * @return Fully qualified directory path.
-     * @throws InterruptedException
+     * @param jenkinsDirectory The current workspace for the Jenkins Job
+     * @param testSuiteFile The path to the Ranorex Test Suite
+     * @return The directory in which the Ranorex Test Suite is located
      * @throws IOException
+     * @throws InterruptedException
      */
     public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile)
             throws IOException, InterruptedException {
         String[] splittedName = StringUtil.splitPath(testSuiteFile);
         StringBuffer directory = new StringBuffer();
 
+        //If the Test Suite Path is relative, append it to the Jenkins Workspace
         if (!isAbsolutePath(testSuiteFile)) {
             directory.append(jenkinsDirectory.getRemote());
         }
@@ -61,7 +64,6 @@ public abstract class FileUtil {
                 }
             }
         }
-
         return new FilePath(new File(directory.toString()));
     }
 
@@ -69,7 +71,7 @@ public abstract class FileUtil {
      * Tests whether the file denoted by this abstract pathname is an existing
      * directory.
      *
-     * @param value
+     * @param value Input path
      * @return true when the given directory exists
      */
     public static boolean isValidDirectory(String value) {
@@ -80,7 +82,7 @@ public abstract class FileUtil {
     /**
      * Tests whether this abstract pathname is absolute.
      *
-     * @param value
+     * @param value Input path
      * @return true if and only if the file denoted by this abstract pathname
      * exists and is a directory; false otherwise
      */
@@ -103,9 +105,9 @@ public abstract class FileUtil {
      */
     public static String combinePath(String WorkSpace, String relPath) {
         String substring = "NULL";
+        //Remove '.' from the relPath
         if (relPath.toCharArray()[0] == '.') {
             substring = relPath.substring(1, relPath.length());
-            System.out.println("Substring: '" + substring + "'");
             relPath = substring;
         }
         return (WorkSpace + (relPath.replace("/", File.separator)));

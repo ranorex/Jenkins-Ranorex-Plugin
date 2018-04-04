@@ -57,7 +57,7 @@ public abstract class FileUtil {
 
 		for (String name : splittedName) {
 			if (!".".equals(name) && !name.contains(".rxtst")) {
-				if ((name.toCharArray())[1] == ':') {
+				if (name.toCharArray().length > 1 && (name.toCharArray())[1] == ':') {
 					directory.append(name);
 				} else {
 					directory.append("\\" + name);

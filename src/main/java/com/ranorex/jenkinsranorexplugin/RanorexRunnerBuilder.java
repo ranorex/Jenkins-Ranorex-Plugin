@@ -24,6 +24,7 @@ import org.kohsuke.stapler.StaplerRequest;
 
 public class RanorexRunnerBuilder extends Builder {
 
+	private static final String ZIPPED_REPORT_EXTENSION = ".rxzlog";
 	/*
 	 * Builder GUI Fields
 	 */
@@ -204,8 +205,7 @@ public class RanorexRunnerBuilder extends Builder {
 			} else {
 				usedRxReportFile = "%S_%Y%M%D_%T";
 			}
-			jArguments.add("/reportfile:"
-					+ StringUtil.appendQuote(usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension));
+			jArguments.add("/reportfile:" + usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension);
 
 			// JUnit compatible Report
 			if (rxJUnitReport) {
@@ -236,7 +236,7 @@ public class RanorexRunnerBuilder extends Builder {
 				} else {
 					usedRxZippedReportFile = usedRxReportFile;
 				}
-				jArguments.add("/zipreportfile:" + usedRxZippedReportDirectory + usedRxZippedReportFile + ".rxzlog");
+				jArguments.add("/zipreportfile:" + usedRxZippedReportDirectory + usedRxZippedReportFile + ZIPPED_REPORT_EXTENSION);
 			}
 			// Global Parameters
 			if (!StringUtil.isNullOrSpace(rxGlobalParameter)) {

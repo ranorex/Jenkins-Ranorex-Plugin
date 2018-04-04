@@ -27,3 +27,10 @@
 * Add support for Unix Master installation
 * Fix issue with default reportname if no reportname is specified
 * Add plugin version in log summary
+
+## 0.1.5
+### 2018-04-04
+* Fix report path and compressed report path (add support for white spaces)
+* Fix absolute path for test suite file on windows master node
+* Fix global parameters
+* Fix command line arguments 

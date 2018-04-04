@@ -24,6 +24,7 @@ import org.kohsuke.stapler.StaplerRequest;
 
 public class RanorexRunnerBuilder extends Builder {
 
+	private static final String ZIPPED_REPORT_EXTENSION = ".rxzlog";
 	/*
 	 * Builder GUI Fields
 	 */
@@ -204,8 +205,7 @@ public class RanorexRunnerBuilder extends Builder {
 			} else {
 				usedRxReportFile = "%S_%Y%M%D_%T";
 			}
-			jArguments.add("/reportfile:"
-					+ StringUtil.appendQuote(usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension));
+			jArguments.add("/reportfile:" + usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension);
 
 			// JUnit compatible Report
 			if (rxJUnitReport) {
@@ -236,15 +236,19 @@ public class RanorexRunnerBuilder extends Builder {
 				} else {
 					usedRxZippedReportFile = usedRxReportFile;
 				}
-				jArguments.add("/zipreportfile:" + usedRxZippedReportDirectory + usedRxZippedReportFile + ".rxzlog");
+				jArguments.add("/zipreportfile:" + usedRxZippedReportDirectory + usedRxZippedReportFile + ZIPPED_REPORT_EXTENSION);
 			}
 			// Global Parameters
 			if (!StringUtil.isNullOrSpace(rxGlobalParameter)) {
-				jArguments.add(getParamArgs(build, env, rxGlobalParameter, true).toArray());
+				for (String str : getParamArgs(build, env, rxGlobalParameter, true)) {
+					jArguments.add(str);
+				}
 			}
 			// Additional cmd arguments
 			if (!StringUtil.isNullOrSpace(cmdLineArgs)) {
-				jArguments.add(getParamArgs(build, env, cmdLineArgs, true).toArray());
+				for (String args : getParamArgs(build, env, cmdLineArgs, false)) {
+					jArguments.add(args);
+				}
 			}
 
 			// Summarize Output
@@ -307,13 +311,8 @@ public class RanorexRunnerBuilder extends Builder {
 	 */
 	private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener, EnvVars env)
 			throws InterruptedException, IOException {
-		FilePath tmpDir = null;
 		FilePath currentWorkspace = FileUtil.getRanorexWorkingDirectory(build.getWorkspace(), rxTestSuiteFilePath);
 
-		tmpDir = build.getWorkspace().createTextTempFile("exe_runner_", ".bat",
-				StringUtil.concatString(jArguments.toList()), false);
-
-		jArguments.add("&&", "exit", "%ERRORLEVEL%");
 		listener.getLogger().println("Executing : " + jArguments.toString());
 
 		try {
@@ -326,15 +325,6 @@ public class RanorexRunnerBuilder extends Builder {
 		} catch (IOException e) {
 			e.printStackTrace(listener.fatalError("execution failed"));
 			return false;
-		} finally {
-			try {
-				if (tmpDir != null) {
-					tmpDir.delete();
-				}
-			} catch (IOException e) {
-				Util.displayIOException(e, listener);
-				e.printStackTrace(listener.fatalError("temporary file delete failed"));
-			}
 		}
 	}
 

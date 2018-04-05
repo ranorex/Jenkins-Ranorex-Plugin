@@ -41,7 +41,7 @@ Compresses the report and the associated files into a single archive with the .r
 Allows you to specify the directory that your compressed report will be saved to. If you don’t specify a path, the directory where your test executable is located will be used.
 ##### Compressed report file
 
-Allows you to specify the file name of the compressed report with the standard placeholders available in the test suite Settings. By default, the file name specified in the test suite settings is used (for example: %S_%Y%M%D_%T.rxlog).
+Allows you to specify the file name of the compressed report with the standard placeholders available in the test suite Settings. If no filename is specified, the same name as the "Ranorex Report File Name" is used.
 
 #### Global parameters
 Allows you to create or override values for global parameters set in the test suite.

@@ -93,6 +93,7 @@ public class FileUtilTest {
 
     @Test
     public void testGetRanorexWorkingDirectory_relative() {
+        try{
         System.out.println("\nTest :'testGetRanorexWorkingDirectory_relative' started");
         FilePath jenkinsDirectory = new FilePath(new File("C:\\Users\\user\\.jenkins\\workspace\\Test"));
         String testSuiteFile = ".\\bin\\Debug\\JenkinsPluginTest.rxtst";
@@ -106,10 +107,15 @@ public class FileUtilTest {
         System.out.println("Result = '" + result + "'");
 
         System.out.println("Test :'testGetRanorexWorkingDirectory_relative' ended\n");
+        }catch(Exception e)
+        {
+            System.out.println("Error: " + e.toString());
+        }
     }
 
     @Test
     public void testGetRanorexWorkingDirectory_absolute() {
+        try{
         System.out.println("\nTest :'testGetRanorexWorkingDirectory_absolute' started");
         FilePath jenkinsDirectory = new FilePath(new File("C:\\Users\\user\\.jenkins\\workspace\\Test"));
         String testSuiteFile = "C:\\Temp\\JenkinsPluginTest.rxtst";
@@ -123,6 +129,10 @@ public class FileUtilTest {
         System.out.println("Result = '" + result + "'");
 
         System.out.println("Test :'testGetRanorexWorkingDirectory_absolute' ended\n");
+        }catch(Exception e)
+        {
+            System.out.println("Error: " + e.toString());
+        }
     }
 
     /**
@@ -233,5 +243,4 @@ public class FileUtilTest {
         System.out.println("Result = '" + result + "'");
         System.out.println("Test :'testGetAbsoluteReportDirectory_relativeInput' ended\n");
     }
-
 }

@@ -30,8 +30,11 @@
 
 
 ## 0.2.0
-### 2018-03-
-
-* Changed "Workspace" to "Working Directory" in the Console Summary
-* Removed unused codes
+### 2018-04-
 * Add Unit Tests
+* Changed "Workspace" to "Ranorex Working Directory" in the Console Summary
+* Clean up code
+* Fix report path and compressed report path (add support for white spaces)
+* Fix absolute path for test suite file on windows master node
+* Fix global parameters
+* Fix command line arguments 

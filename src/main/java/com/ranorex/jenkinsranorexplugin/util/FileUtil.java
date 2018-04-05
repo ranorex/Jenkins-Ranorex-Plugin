@@ -5,9 +5,10 @@
  */
 package com.ranorex.jenkinsranorexplugin.util;
 
-import java.io.File;
-
 import hudson.FilePath;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author mstoegerer
@@ -32,6 +33,7 @@ public abstract class FileUtil {
 
         String[] splittedPath = StringUtil.splitPath(ExecuteableFile);
         return splittedPath[splittedPath.length - 1];
+
     }
 
     /**
@@ -40,25 +42,28 @@ public abstract class FileUtil {
      * @param jenkinsDirectory The current workspace for the Jenkins Job
      * @param testSuiteFile    The path to the Ranorex Test Suite
      * @return The directory in which the Ranorex Test Suite is located
+     * @throws InterruptedException
+     * @throws IOException
      */
-    public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile) {
+    public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile) throws IOException, InterruptedException {
         String[] splittedName = StringUtil.splitPath(testSuiteFile);
         StringBuilder directory = new StringBuilder();
 
         //If the Test Suite Path is relative, append it to the Jenkins Workspace
-        if (!isAbsolutePath(testSuiteFile)) {
+        if (! isAbsolutePath(testSuiteFile)) {
             directory.append(jenkinsDirectory.getRemote());
         }
 
         for (String name : splittedName) {
-            if (!".".equals(name) && !name.contains(".rxtst")) {
-                if ((name.toCharArray())[1] == ':') {
+            if (! ".".equals(name) && ! name.contains(".rxtst")) {
+                if (name.toCharArray().length > 1 && (name.toCharArray())[1] == ':') {
                     directory.append(name);
                 } else {
                     directory.append("\\").append(name);
                 }
             }
         }
+
         return new FilePath(new File(directory.toString()));
     }
 
@@ -76,7 +81,7 @@ public abstract class FileUtil {
          * negative return values if the master node is a unix based system. Since the
          * execution node must be a Windows system, this check should be ok.
          */
-        return chars[1] == ':' || value.startsWith("\\\\");
+        return (chars[1] == ':' || value.startsWith("\\\\"));
     }
 
     /**
@@ -111,7 +116,7 @@ public abstract class FileUtil {
     public static String getAbsoluteReportDirectory(String workSpace, String reportDirectory) {
         String usedDirectory;
 
-        if (!FileUtil.isAbsolutePath(reportDirectory)) {
+        if (! FileUtil.isAbsolutePath(reportDirectory)) {
             usedDirectory = FileUtil.combinePath(workSpace, reportDirectory);
         } else {
             usedDirectory = reportDirectory;

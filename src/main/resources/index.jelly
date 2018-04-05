@@ -1,4 +1,4 @@
 <?jelly escape-by-default='true'?>
 <div>
- This plugin provides an easy way to run a Ranorex test suite as a build step in your Jenkins job.
+    This plugin provides an easy way to run a Ranorex test suite as a build step in your Jenkins job.
 </div>

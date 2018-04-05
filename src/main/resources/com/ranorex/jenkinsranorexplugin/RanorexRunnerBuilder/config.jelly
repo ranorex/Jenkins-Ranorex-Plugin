@@ -9,10 +9,10 @@
         <!--Ranorex Run Conficuration-->
         <f:entry title="${%Ranorex run configuration}" field="rxRunConfiguration">
             <f:textbox/>
-        </f:entry>  
+        </f:entry>
         <!--Ranorex Report-->
         <!--Ranorex Report Directory-->
-        <f:block> 
+        <f:block>
             <f:entry title="${%Ranorex report directory}" field="rxReportDirectory">
                 <f:textbox/>
             </f:entry>
@@ -24,19 +24,19 @@
             <f:entry title="${%Report file extension}" field="rxReportExtension">
                 <select name="RanorexRunnerBuilder.rxReportExtension">
                     <option value="rxlog" selected="${instance.rxReportExtension.equals('rxlog')? 'true':null}">rxlog</option>
-                    <option value="html" selected="${instance.rxReportExtension.equals('html')? 'true':null}">html</option>               
+                    <option value="html" selected="${instance.rxReportExtension.equals('html')? 'true':null}">html</option>
                 </select>
             </f:entry>
         </f:block>
-        
+
         <!-- JUnit Report-->
         <f:entry title="${%JUnit-compatible report}" description="Available in Ranorex 7.0 and later.">
             <f:checkbox name="RanorexRunnerBuilder.rxJUnitReport" value="${instance.rxJUnitReport}" checked="${instance.rxJUnitReport}"/>
-        </f:entry>		
-		
+        </f:entry>
+
         <!-- Ranorex Zipped Report with optional Block-->
         <f:block>
-            <f:optionalBlock name ="RanorexRunnerBuilder.rxZippedReport" field="rxZippedReport" title="${%Compressed copy of Ranorex report}" inline="true">
+            <f:optionalBlock name="RanorexRunnerBuilder.rxZippedReport" field="rxZippedReport" title="${%Compressed copy of Ranorex report}" inline="true">
                 <f:entry title="${%Compressed report directory}" field="rxZippedReportDirectory">
                     <f:textbox/>
                 </f:entry>
@@ -45,12 +45,12 @@
                 </f:entry>
             </f:optionalBlock>
         </f:block>
-    
+
         <!--Global Parameter-->
         <f:entry title="${%Global parameters}" field="rxGlobalParameter">
             <f:textarea/>
         </f:entry>
-    
+
         <!--Command Line Arguments-->
         <f:entry title="${%Command line arguments}" field="cmdLineArgs">
             <f:textarea/>

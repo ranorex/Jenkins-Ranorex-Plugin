@@ -30,7 +30,7 @@
 
 
 ## 0.2.0
-### 2018-04-
+### 2018-04-05
 * Add Unit Tests
 * Changed "Workspace" to "Ranorex Working Directory" in the Console Summary
 * Clean up code

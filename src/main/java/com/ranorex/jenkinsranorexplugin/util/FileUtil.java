@@ -6,12 +6,10 @@
 package com.ranorex.jenkinsranorexplugin.util;
 
 import java.io.File;
-import java.io.IOException;
 
 import hudson.FilePath;
 
 /**
- *
  * @author mstoegerer
  */
 public abstract class FileUtil {
@@ -40,15 +38,12 @@ public abstract class FileUtil {
      * Get the absolute path to the Ranorex Test Suite file
      *
      * @param jenkinsDirectory The current workspace for the Jenkins Job
-     * @param testSuiteFile The path to the Ranorex Test Suite
+     * @param testSuiteFile    The path to the Ranorex Test Suite
      * @return The directory in which the Ranorex Test Suite is located
-     * @throws IOException
-     * @throws InterruptedException
      */
-    public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile)
-            throws IOException, InterruptedException {
+    public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile) {
         String[] splittedName = StringUtil.splitPath(testSuiteFile);
-        StringBuffer directory = new StringBuffer();
+        StringBuilder directory = new StringBuilder();
 
         //If the Test Suite Path is relative, append it to the Jenkins Workspace
         if (!isAbsolutePath(testSuiteFile)) {
@@ -60,23 +55,11 @@ public abstract class FileUtil {
                 if ((name.toCharArray())[1] == ':') {
                     directory.append(name);
                 } else {
-                    directory.append("\\" + name);
+                    directory.append("\\").append(name);
                 }
             }
         }
         return new FilePath(new File(directory.toString()));
-    }
-
-    /**
-     * Tests whether the file denoted by this abstract pathname is an existing
-     * directory.
-     *
-     * @param value Input path
-     * @return true when the given directory exists
-     */
-    public static boolean isValidDirectory(String value) {
-        File file = new File(value);
-        return file.isDirectory();
     }
 
     /**
@@ -89,9 +72,9 @@ public abstract class FileUtil {
     public static boolean isAbsolutePath(String value) {
         char[] chars = value.toCharArray();
         /*
-		 * we use this instead of file.isAbsolute() because it will provide false
-		 * negative return values if the master node is a unix based system. Since the
-		 * execution node must be a Windows system, this check should be ok.
+         * we use this instead of file.isAbsolute() because it will provide false
+         * negative return values if the master node is a unix based system. Since the
+         * execution node must be a Windows system, this check should be ok.
          */
         return chars[1] == ':' || value.startsWith("\\\\");
     }
@@ -100,28 +83,33 @@ public abstract class FileUtil {
      * Combines the current workspace with a relative path
      *
      * @param WorkSpace The current workspace
-     * @param relPath A relative path
+     * @param relPath   A relative path
      * @return Absolute path
      */
     public static String combinePath(String WorkSpace, String relPath) {
-        String substring = "NULL";
-        //Remove '.' from the relPath
+        String substring;
+        //Remove '.\' from the beginning at relPath
         if (relPath.toCharArray()[0] == '.') {
             substring = relPath.substring(1, relPath.length());
             relPath = substring;
         }
+       /* //Remove '\' from the beginning at relPath
+        if (relPath.toCharArray()[0] == '\\') {
+            substring = relPath.substring(1, relPath.length());
+            relPath = substring;
+        }*/
         return (WorkSpace + (relPath.replace("/", File.separator)));
     }
 
     /**
      * Tests if the given reportDirectory is Absolute,
      *
-     * @param workSpace
-     * @param reportDirectory
+     * @param workSpace       The current Jenkins Job workspace
+     * @param reportDirectory The Ranorex Report directory
      * @return Absolute Path to the ReportDirectory
      */
     public static String getAbsoluteReportDirectory(String workSpace, String reportDirectory) {
-        String usedDirectory = "NULL";
+        String usedDirectory;
 
         if (!FileUtil.isAbsolutePath(reportDirectory)) {
             usedDirectory = FileUtil.combinePath(workSpace, reportDirectory);

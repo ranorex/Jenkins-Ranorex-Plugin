@@ -26,11 +26,12 @@ package com.ranorex.jenkinsranorexplugin.util;
 import hudson.FilePath;
 
 import java.io.File;
+
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
- *
  * @author mstoegerer
  */
 public class FileUtilTest {
@@ -91,7 +92,7 @@ public class FileUtilTest {
     }
 
     @Test
-    public void testGetRanorexWorkingDirectory_relative() throws Exception {
+    public void testGetRanorexWorkingDirectory_relative() {
         System.out.println("\nTest :'testGetRanorexWorkingDirectory_relative' started");
         FilePath jenkinsDirectory = new FilePath(new File("C:\\Users\\user\\.jenkins\\workspace\\Test"));
         String testSuiteFile = ".\\bin\\Debug\\JenkinsPluginTest.rxtst";
@@ -108,7 +109,7 @@ public class FileUtilTest {
     }
 
     @Test
-    public void testGetRanorexWorkingDirectory_absolute() throws Exception {
+    public void testGetRanorexWorkingDirectory_absolute() {
         System.out.println("\nTest :'testGetRanorexWorkingDirectory_absolute' started");
         FilePath jenkinsDirectory = new FilePath(new File("C:\\Users\\user\\.jenkins\\workspace\\Test"));
         String testSuiteFile = "C:\\Temp\\JenkinsPluginTest.rxtst";

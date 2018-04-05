@@ -14,10 +14,12 @@ import hudson.model.Result;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.ArgumentListBuilder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
@@ -25,7 +27,7 @@ import org.kohsuke.stapler.StaplerRequest;
 public class RanorexRunnerBuilder extends Builder {
 
     /*
-	 * Builder GUI Fields
+     * Builder GUI Fields
      */
     private final String rxTestSuiteFilePath;
     private final String rxRunConfiguration;
@@ -40,7 +42,7 @@ public class RanorexRunnerBuilder extends Builder {
     private final String cmdLineArgs;
 
     /*
-	 * Other Variables
+     * Other Variables
      */
     private String rxExecuteableFile;
     private String WorkSpace;
@@ -54,27 +56,27 @@ public class RanorexRunnerBuilder extends Builder {
      * When this builder is created in the project configuration step, the
      * builder object will be created from the strings below
      *
-     * @param rxTestSuiteFilePath The name/location of the Ranorex Test Suite /
-     * Ranorex Test Exe File
-     * @param rxRunConfiguration The Ranorex Run configuration which will be
-     * executed
-     * @param rxReportDirectory The directory where the Ranorex Report should be
-     * saved
-     * @param rxReportFile The name of the Ranorex Report
-     * @param rxReportExtension The extension of your Ranorex Report
-     * @param rxJUnitReport If true, a JUnit compatible Report will be saved
-     * @param rxZippedReport If true, the report will also be saved as RXZLOG
+     * @param rxTestSuiteFilePath     The name/location of the Ranorex Test Suite /
+     *                                Ranorex Test Exe File
+     * @param rxRunConfiguration      The Ranorex Run configuration which will be
+     *                                executed
+     * @param rxReportDirectory       The directory where the Ranorex Report should be
+     *                                saved
+     * @param rxReportFile            The name of the Ranorex Report
+     * @param rxReportExtension       The extension of your Ranorex Report
+     * @param rxJUnitReport           If true, a JUnit compatible Report will be saved
+     * @param rxZippedReport          If true, the report will also be saved as RXZLOG
      * @param rxZippedReportDirectory The directory where the Ranorex Zipped
-     * Report should be saved
-     * @param rxZippedReportFile The name of the zipped Ranorex Report
-     * @param rxGlobalParameter Global test suite parameters
-     * @param cmdLineArgs Additional CMD line arguments
+     *                                Report should be saved
+     * @param rxZippedReportFile      The name of the zipped Ranorex Report
+     * @param rxGlobalParameter       Global test suite parameters
+     * @param cmdLineArgs             Additional CMD line arguments
      */
     @DataBoundConstructor
 
     public RanorexRunnerBuilder(String rxTestSuiteFilePath, String rxRunConfiguration, String rxReportDirectory,
-            String rxReportFile, String rxReportExtension, Boolean rxJUnitReport, Boolean rxZippedReport,
-            String rxZippedReportDirectory, String rxZippedReportFile, String rxGlobalParameter, String cmdLineArgs) {
+                                String rxReportFile, String rxReportExtension, Boolean rxJUnitReport, Boolean rxZippedReport,
+                                String rxZippedReportDirectory, String rxZippedReportFile, String rxGlobalParameter, String cmdLineArgs) {
         this.rxTestSuiteFilePath = rxTestSuiteFilePath;
         this.rxRunConfiguration = rxRunConfiguration;
         this.rxReportDirectory = rxReportDirectory;
@@ -136,6 +138,7 @@ public class RanorexRunnerBuilder extends Builder {
     // {
     // return this.rxExecuteableFile;
     // }
+
     /**
      * Runs the step over the given build and reports the progress to the
      * listener
@@ -144,15 +147,15 @@ public class RanorexRunnerBuilder extends Builder {
      * @param launcher Starts a process
      * @param listener Receives events that happen during a build
      * @return Receives events that happen during a build
-     * @throws IOException - If the build is interrupted by the user (in an
-     * attempt to abort the build.) Normally the BuildStep implementations may
-     * simply forward the exception it got from its lower-level functions.
+     * @throws IOException          - If the build is interrupted by the user (in an
+     *                              attempt to abort the build.) Normally the BuildStep implementations may
+     *                              simply forward the exception it got from its lower-level functions.
      * @throws InterruptedException - If the implementation wants to abort the
-     * processing when an IOException happens, it can simply propagate the
-     * exception to the caller. This will cause the build to fail, with the
-     * default error message. Implementations are encouraged to catch
-     * IOException on its own to provide a better error message, if it can do
-     * so, so that users have better understanding on why it failed.
+     *                              processing when an IOException happens, it can simply propagate the
+     *                              exception to the caller. This will cause the build to fail, with the
+     *                              default error message. Implementations are encouraged to catch
+     *                              IOException on its own to provide a better error message, if it can do
+     *                              so, so that users have better understanding on why it failed.
      */
     @Override
     public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
@@ -284,18 +287,16 @@ public class RanorexRunnerBuilder extends Builder {
     /**
      * Starts the given executeable file with all arguments and parameters
      *
-     * @param args List of strings containing all arguments
      * @param build
      * @param launcher Starts a process
      * @param listener Receives events that happen during a build
-     * @param env Environmental variables to be used for launching processes for
-     * this build.
+     * @param env      Environmental variables to be used for launching processes for
+     *                 this build.
      * @return
      * @throws InterruptedException
-     * @throws IOException
      */
     private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener, EnvVars env)
-            throws InterruptedException, IOException {
+            throws InterruptedException {
         FilePath currentWorkspace = FileUtil.getRanorexWorkingDirectory(build.getWorkspace(), rxTestSuiteFilePath);
 
         listener.getLogger().println("Executing : " + jArguments.toString());
@@ -317,17 +318,14 @@ public class RanorexRunnerBuilder extends Builder {
      * Separates string into substrings
      *
      * @param build
-     * @param env Environmental variables to be used for launching processes for
-     * this build.
-     * @param values string containing either parameters or arguments
+     * @param env     Environmental variables to be used for launching processes for
+     *                this build.
+     * @param values  string containing either parameters or arguments
      * @param isParam true if the string 'values' contains parameters, otherwise
-     * false
+     *                false
      * @return a list of strings containing parameters or arguments
-     * @throws InterruptedException
-     * @throws IOException
      */
-    private List<String> getParamArgs(AbstractBuild<?, ?> build, EnvVars env, String values, boolean isParam)
-            throws InterruptedException, IOException {
+    private List<String> getParamArgs(AbstractBuild<?, ?> build, EnvVars env, String values, boolean isParam) {
         ArrayList<String> args = new ArrayList<>();
         StringTokenizer valuesToknzr = new StringTokenizer(values, "\t\r\n;");
         String argumentToAdd;
@@ -365,7 +363,7 @@ public class RanorexRunnerBuilder extends Builder {
     public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
 
         /*
-		 * Configure Variables
+         * Configure Variables
          */
         private boolean useSummarize;
 

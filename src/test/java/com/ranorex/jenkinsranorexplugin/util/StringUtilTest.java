@@ -24,10 +24,10 @@
 package com.ranorex.jenkinsranorexplugin.util;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
- *
  * @author mstoegerer
  */
 public class StringUtilTest {

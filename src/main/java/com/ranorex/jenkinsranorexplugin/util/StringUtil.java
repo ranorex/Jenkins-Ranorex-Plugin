@@ -1,7 +1,5 @@
 package com.ranorex.jenkinsranorexplugin.util;
 
-import java.util.List;
-
 public abstract class StringUtil {
 
     private StringUtil() {
@@ -28,23 +26,6 @@ public abstract class StringUtil {
      */
     public static boolean isNullOrSpace(String value) {
         return (value == null || value.trim().length() == 0);
-    }
-
-    /**
-     * Converts the input list into a single string separated by " "
-     *
-     * @param args A list of Strings that should be connected
-     * @return A connected String
-     */
-    public static String concatString(List<String> args) {
-        StringBuilder buf = new StringBuilder();
-        for (String arg : args) {
-            if (buf.length() > 0) {
-                buf.append(' ');
-            }
-            buf.append(arg);
-        }
-        return buf.toString();
     }
 
     /**

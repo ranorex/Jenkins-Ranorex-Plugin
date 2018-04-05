@@ -24,12 +24,11 @@
 package com.ranorex.jenkinsranorexplugin.util;
 
 import hudson.FilePath;
+import org.junit.Test;
 
 import java.io.File;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author mstoegerer
@@ -93,44 +92,42 @@ public class FileUtilTest {
 
     @Test
     public void testGetRanorexWorkingDirectory_relative() {
-        try{
-        System.out.println("\nTest :'testGetRanorexWorkingDirectory_relative' started");
-        FilePath jenkinsDirectory = new FilePath(new File("C:\\Users\\user\\.jenkins\\workspace\\Test"));
-        String testSuiteFile = ".\\bin\\Debug\\JenkinsPluginTest.rxtst";
-        FilePath expResult = new FilePath(new File("C:\\Users\\user\\.jenkins\\workspace\\Test\\bin\\Debug"));
-        FilePath result = FileUtil.getRanorexWorkingDirectory(jenkinsDirectory, testSuiteFile);
-        assertEquals(expResult, result);
+        try {
+            System.out.println("\nTest :'testGetRanorexWorkingDirectory_relative' started");
+            FilePath jenkinsDirectory = new FilePath(new File("C:\\Users\\user\\.jenkins\\workspace\\Test"));
+            String testSuiteFile = ".\\bin\\Debug\\JenkinsPluginTest.rxtst";
+            FilePath expResult = new FilePath(new File("C:\\Users\\user\\.jenkins\\workspace\\Test\\bin\\Debug"));
+            FilePath result = FileUtil.getRanorexWorkingDirectory(jenkinsDirectory, testSuiteFile);
+            assertEquals(expResult, result);
 
-        System.out.println("jenkinsDirectory = '" + jenkinsDirectory + "'");
-        System.out.println("testSuiteFile = '" + testSuiteFile + "'");
-        System.out.println("Expected output = '" + expResult + "'");
-        System.out.println("Result = '" + result + "'");
+            System.out.println("jenkinsDirectory = '" + jenkinsDirectory + "'");
+            System.out.println("testSuiteFile = '" + testSuiteFile + "'");
+            System.out.println("Expected output = '" + expResult + "'");
+            System.out.println("Result = '" + result + "'");
 
-        System.out.println("Test :'testGetRanorexWorkingDirectory_relative' ended\n");
-        }catch(Exception e)
-        {
+            System.out.println("Test :'testGetRanorexWorkingDirectory_relative' ended\n");
+        } catch (Exception e) {
             System.out.println("Error: " + e.toString());
         }
     }
 
     @Test
     public void testGetRanorexWorkingDirectory_absolute() {
-        try{
-        System.out.println("\nTest :'testGetRanorexWorkingDirectory_absolute' started");
-        FilePath jenkinsDirectory = new FilePath(new File("C:\\Users\\user\\.jenkins\\workspace\\Test"));
-        String testSuiteFile = "C:\\Temp\\JenkinsPluginTest.rxtst";
-        FilePath expResult = new FilePath(new File("C:\\Temp"));
-        FilePath result = FileUtil.getRanorexWorkingDirectory(jenkinsDirectory, testSuiteFile);
-        assertEquals(expResult, result);
+        try {
+            System.out.println("\nTest :'testGetRanorexWorkingDirectory_absolute' started");
+            FilePath jenkinsDirectory = new FilePath(new File("C:\\Users\\user\\.jenkins\\workspace\\Test"));
+            String testSuiteFile = "C:\\Temp\\JenkinsPluginTest.rxtst";
+            FilePath expResult = new FilePath(new File("C:\\Temp"));
+            FilePath result = FileUtil.getRanorexWorkingDirectory(jenkinsDirectory, testSuiteFile);
+            assertEquals(expResult, result);
 
-        System.out.println("jenkinsDirectory = '" + jenkinsDirectory + "'");
-        System.out.println("testSuiteFile = '" + testSuiteFile + "'");
-        System.out.println("Expected output = '" + expResult + "'");
-        System.out.println("Result = '" + result + "'");
+            System.out.println("jenkinsDirectory = '" + jenkinsDirectory + "'");
+            System.out.println("testSuiteFile = '" + testSuiteFile + "'");
+            System.out.println("Expected output = '" + expResult + "'");
+            System.out.println("Result = '" + result + "'");
 
-        System.out.println("Test :'testGetRanorexWorkingDirectory_absolute' ended\n");
-        }catch(Exception e)
-        {
+            System.out.println("Test :'testGetRanorexWorkingDirectory_absolute' ended\n");
+        } catch (Exception e) {
             System.out.println("Error: " + e.toString());
         }
     }

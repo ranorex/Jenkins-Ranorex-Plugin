@@ -12,7 +12,7 @@ public abstract class StringUtil {
      * @return The initial string with appended quotes
      */
     public static String appendQuote(String value) {
-        if (!(value.charAt(0) == '"') && !(value.charAt(value.length() - 1) == '"')) {
+        if (! (value.charAt(0) == '"') && ! (value.charAt(value.length() - 1) == '"')) {
             return String.format("\"%s\"", value);
         }
         return value;
@@ -29,11 +29,12 @@ public abstract class StringUtil {
     }
 
     /**
-     * Splits the input string by "/"
+     * Splits the input string by "/" or "\\"
      *
      * @param value input string
      * @return String array
      */
+    //TODO: Move to fileUtil
     public static String[] splitPath(String value) {
         String[] splittedName = value.split("/");
         if (splittedName.length == 1 && value.contains("\\")) {
@@ -49,7 +50,6 @@ public abstract class StringUtil {
      * @return input string + \
      */
     public static String appendBackslash(String value) {
-        // int length = value.length() - 1;
         char charAtLastPosition = value.charAt(value.length() - 1);
         if (charAtLastPosition != '\\') {
             value = String.format("%s\\", value);

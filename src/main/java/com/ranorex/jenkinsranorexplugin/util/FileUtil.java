@@ -45,7 +45,7 @@ public abstract class FileUtil {
      * @throws InterruptedException
      * @throws IOException
      */
-    public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile) throws IOException, InterruptedException {
+    public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile) {
         String[] splittedName = StringUtil.splitPath(testSuiteFile);
         StringBuilder directory = new StringBuilder();
 
@@ -91,18 +91,19 @@ public abstract class FileUtil {
      * @param relPath   A relative path
      * @return Absolute path
      */
+    //TODO: Method returns path with double "\"
     public static String combinePath(String WorkSpace, String relPath) {
         String substring;
-        //Remove '.\' from the beginning at relPath
-        if (relPath.toCharArray()[0] == '.') {
+        //Remove '.' from the beginning at relPath
+        if (relPath.charAt(0) == '.') {
             substring = relPath.substring(1, relPath.length());
             relPath = substring;
         }
-       /* //Remove '\' from the beginning at relPath
-        if (relPath.toCharArray()[0] == '\\') {
+        //Remove '\' from the beginning at relPath
+        if (relPath.charAt(0) == '\\' && WorkSpace.charAt(WorkSpace.length()-1)=='\\') {
             substring = relPath.substring(1, relPath.length());
             relPath = substring;
-        }*/
+        }
         return (WorkSpace + (relPath.replace("/", File.separator)));
     }
 

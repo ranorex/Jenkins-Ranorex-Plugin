@@ -31,79 +31,129 @@ import static org.junit.Assert.assertEquals;
  * @author mstoegerer
  */
 public class StringUtilTest {
+    private final String _textWithQuotes = "\"This is a sample text\"";
+    private final String _textWithoutQuotes = "This is a sample text";
+    private String _textWithBackslash = "This is a sample text\\";
+    private String _textWithoutBackslash = "This is a sample text";
 
     public StringUtilTest() {
     }
 
     /**
-     * Test of appendQuote method, of class StringUtil.
+     * Test appendQuote method
+     *
+     * @Input Text without quotes
+     * @ExpectedResult Text with quotes
      */
     @Test
-    public void testAppendQuote() {
-        System.out.println("appendQuote");
-        String value = "test";
-        String expResult = "\"test\"";
-        String result = StringUtil.appendQuote(value);
-        assertEquals(expResult, result);
+    public void AppendQuote_TextWithoutQuotes_TextWithQuotes() {
+        String actualResult = StringUtil.appendQuote(_textWithoutQuotes);
+        assertEquals(_textWithQuotes, actualResult);
     }
 
     /**
-     * Test of appendQuote method, of class StringUtil.
+     * Test appendQuote method
+     *
+     * @Input Text with quotes
+     * @ExpectedResult Text with quotes
      */
     @Test
-    public void testAppendQuote2() {
-        System.out.println("appendQuote2");
-        String value = "\"test2\"";
-        String expResult = "\"test2\"";
-        String result = StringUtil.appendQuote(value);
-        assertEquals(expResult, result);
+    public void AppendQuote_TextWithQuotes_TextWithQuotes() {
+        String actualResult = StringUtil.appendQuote(_textWithQuotes);
+        assertEquals(_textWithQuotes, actualResult);
     }
 
     /**
-     * Test of isNullOrSpace method, of class StringUtil.
+     * Test isNullOrSpace method
+     *
+     * @Input NULL
+     * @ExpectedResult true
      */
     @Test
-    public void testIsNullOrSpace_NULL() {
-        System.out.println("testIsNullOrSpace_NULL");
-        String value = "";
-        boolean expResult = true;
-        boolean result = StringUtil.isNullOrSpace(value);
-        assertEquals(expResult, result);
+    public void IsNullOrSpace_NULL_True() {
+        String input = null;
+        boolean actualResult = StringUtil.isNullOrSpace(input);
+        assertEquals(true, actualResult);
     }
 
     /**
-     * Test of isNullOrSpace method, of class StringUtil.
+     * Test isNullOrSpace method
+     *
+     * @Input SPACE
+     * @ExpectedResult true
      */
     @Test
-    public void testIsNullOrSpace_space() {
-        System.out.println("testIsNullOrSpace_space");
-        String value = " ";
-        boolean expResult = true;
-        boolean result = StringUtil.isNullOrSpace(value);
-        assertEquals(expResult, result);
+    public void IsNullOrSpace_SPACE_True() {
+
+        String input = " ";
+        boolean actualResult = StringUtil.isNullOrSpace(input);
+        assertEquals(true, actualResult);
     }
 
     /**
-     * Test of appendBackslash method, of class StringUtil.
+     * Test isNullOrSpace method
+     *
+     * @Input EMPTY
+     * @ExpectedResult true
      */
     @Test
-    public void testAppendBackslash() {
-        System.out.println("appendBackslash");
-        String value = "TestString";
-        String expResult = "TestString\\";
-        String result = StringUtil.appendBackslash(value);
-        assertEquals(expResult, result);
+    public void IsNullOrSpace_EMPTY_True() {
+        String input = "";
+        boolean actualResult = StringUtil.isNullOrSpace(input);
+        assertEquals(true, actualResult);
     }
 
     /**
-     * Test of appendBackslash method, of class StringUtil.
+     * Test appendBackslash method
+     *
+     * @Input Text without backslash
+     * @ExpectedResult Text with backslash
      */
     @Test
-    public void testAppendBackslash2() {
-        System.out.println("appendBackslash");
-        String value = "TestString\\";
-        String expResult = "TestString\\";
-        String result = StringUtil.appendBackslash(value);
-        assertEquals(expResult, result);
+    public void AppendBackslash_TextWithoutBackslash_TextWithBackslash() {
+        String expectedResult = _textWithBackslash;
+        String actualResult = StringUtil.appendBackslash(_textWithoutBackslash);
+        assertEquals(expectedResult, actualResult);
+    }
+
+    /**
+     * Test appendBackslash method
+     *
+     * @Input Text with backslash
+     * @ExpectedResult Text with backslash
+     */
+    @Test
+    public void AppendBackslash_TextWithBackslash_TextWithBackslash() {
+        String actualResult = StringUtil.appendBackslash(_textWithBackslash);
+        assertEquals(_textWithBackslash, actualResult);
+    }
+
+    /**
+     * Test splitPath method
+     *
+     * @Input Absolute Path with backslashes
+     * @ExpectedResult Array of strings (directories)
+     */
+    @Test
+    public void SplitPath_PathWithBackslashes_ArrayOfDirectories() {
+        String inputPath = "C:\\Temp\\Test Directory\\Banana\\";
+        String[] splittedPath = {"C:", "Temp", "Test Directory", "Banana"};
+        String[] actualResult = StringUtil.splitPath(inputPath);
+        //TODO: Change AssertMethod
+        assertEquals(splittedPath, actualResult);
+    }
+    /**
+     * Test splitPath method
+     *
+     * @Input Absolute Path with slashes
+     * @ExpectedResult Array of strings (directories)
+     */
+    @Test
+    public void SplitPath_PathSlashes_ArrayOfDirectories() {
+        String inputPath = "C:/Temp/Test Directory/Banana/";
+        String[] splittedPath = {"C:", "Temp", "Test Directory", "Banana"};
+        String[] actualResult = StringUtil.splitPath(inputPath);
+        //TODO: Change AssertMethod
+        assertEquals(splittedPath, actualResult);
     }
 }

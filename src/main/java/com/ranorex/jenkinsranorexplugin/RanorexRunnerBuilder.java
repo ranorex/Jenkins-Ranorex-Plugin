@@ -307,7 +307,7 @@ public class RanorexRunnerBuilder extends Builder {
      * @throws InterruptedException
      * @throws IOException
      */
-    private List<String> getParamArgs(AbstractBuild<?, ?> build, EnvVars env, String values, boolean isParam) throws InterruptedException, IOException {
+    private List<String> getParamArgs(AbstractBuild<?, ?> build, EnvVars env, String values, boolean isParam) {
         ArrayList<String> args = new ArrayList<>();
         StringTokenizer valuesToknzr = new StringTokenizer(values, "\t\r\n;");
         String argumentToAdd;

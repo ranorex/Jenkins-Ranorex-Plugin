@@ -10,8 +10,10 @@ import hudson.model.Result;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.ArgumentListBuilder;
+import hudson.util.FormValidation;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
@@ -329,6 +331,7 @@ public class RanorexRunnerBuilder extends Builder {
         return r;
     }
 
+
     /**
      * Starts the given executeable file with all arguments and parameters
      *
@@ -431,6 +434,24 @@ public class RanorexRunnerBuilder extends Builder {
         public String getDisplayName() {
             return "Run a Ranorex test suite";
         }
+
+        //Formvalidations
+        // Check Test Rail Username
+        public FormValidation doCheckRxTestRailUser(@QueryParameter String value) {
+            if (!StringUtil.isNullOrSpace(value)) {
+                return FormValidation.ok();
+            }
+            return FormValidation.error("Username is required");
+
+        }
+        // Check Test Rail Password
+        public FormValidation doCheckRxTestRailPassword(@QueryParameter String value){
+            if (!StringUtil.isNullOrSpace(value)) {
+                return FormValidation.ok();
+            }
+            return FormValidation.error("Password is required");
+        }
+
 
         @Override
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {

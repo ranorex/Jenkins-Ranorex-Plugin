@@ -36,6 +36,11 @@ public class RanorexRunnerBuilder extends Builder {
     private final String rxZippedReportFile;
     private final String rxGlobalParameter;
     private final String cmdLineArgs;
+    private final Boolean rxTestRail;
+    private final String rxTestRailUser;
+    private final String rxTestRailPassword;
+    private final String rxTestRailRID;
+    private final String rxTestRailRunName;
 
     /*
      * Other Variables
@@ -66,7 +71,7 @@ public class RanorexRunnerBuilder extends Builder {
      */
     @DataBoundConstructor
 
-    public RanorexRunnerBuilder(String rxTestSuiteFilePath, String rxRunConfiguration, String rxReportDirectory, String rxReportFile, String rxReportExtension, Boolean rxJUnitReport, Boolean rxZippedReport, String rxZippedReportDirectory, String rxZippedReportFile, String rxGlobalParameter, String cmdLineArgs) {
+    public RanorexRunnerBuilder(String rxTestSuiteFilePath, String rxRunConfiguration, String rxReportDirectory, String rxReportFile, String rxReportExtension, Boolean rxJUnitReport, Boolean rxZippedReport, String rxZippedReportDirectory, String rxZippedReportFile, Boolean rxTestRail, String rxTestRailUser, String rxTestRailPassword, String rxTestRailRID, String rxTestRailRunName, String rxGlobalParameter, String cmdLineArgs) {
         this.rxTestSuiteFilePath = rxTestSuiteFilePath;
         this.rxRunConfiguration = rxRunConfiguration;
         this.rxReportDirectory = rxReportDirectory;
@@ -76,8 +81,14 @@ public class RanorexRunnerBuilder extends Builder {
         this.rxZippedReport = rxZippedReport;
         this.rxZippedReportDirectory = rxZippedReportDirectory;
         this.rxZippedReportFile = rxZippedReportFile;
+        this.rxTestRail = rxTestRail;
+        this.rxTestRailUser = rxTestRailUser;
+        this.rxTestRailPassword = rxTestRailPassword;
+        this.rxTestRailRID = rxTestRailRID;
+        this.rxTestRailRunName = rxTestRailRunName;
         this.rxGlobalParameter = rxGlobalParameter;
         this.cmdLineArgs = cmdLineArgs;
+
     }
 
     public String getRxTestSuiteFilePath() {
@@ -114,6 +125,26 @@ public class RanorexRunnerBuilder extends Builder {
 
     public String getRxZippedReportFile() {
         return this.rxZippedReportFile;
+    }
+
+    public Boolean getRxTestRail() {
+        return this.rxTestRail;
+    }
+
+    public String getRxTestRailUser() {
+        return this.rxTestRailUser;
+    }
+
+    public String getRxTestRailPassword() {
+        return this.rxTestRailPassword;
+    }
+
+    public String getRxTestRailRID() {
+        return this.rxTestRailRID;
+    }
+
+    public String getRxTestRailRunName() {
+        return this.rxTestRailRunName;
     }
 
     public String getRxGlobalParameter() {
@@ -216,6 +247,30 @@ public class RanorexRunnerBuilder extends Builder {
                 }
                 jArguments.add("/zipreportfile:" + usedRxZippedReportDirectory + usedRxZippedReportFile + ZIPPED_REPORT_EXTENSION);
             }
+
+            //Test Rail
+            if (rxTestRail) {
+                jArguments.add("/testrail");
+                //TODO: Use Credentialmanager instead
+                if (! StringUtil.isNullOrSpace(rxTestRailUser) && ! StringUtil.isNullOrSpace(rxTestRailPassword)) {
+                    jArguments.add("/truser=" + rxTestRailUser);
+                    jArguments.add("/trpass=" + rxTestRailPassword);
+                } else {
+                    listener.getLogger().println("Username and password are required");
+                    return false;
+                }
+                if (! StringUtil.isNullOrSpace(rxTestRailRID)) {
+                    jArguments.add("/trrunid=" + rxTestRailRID);
+                }
+                if (! StringUtil.isNullOrSpace(rxTestRailRunName)) {
+                    jArguments.add("/trrunname=" + rxTestRailRunName);
+                }
+                listener.getLogger().println("#######################DEBUG################################");
+                listener.getLogger().println("User: " + rxTestRailUser);
+                listener.getLogger().println("Pass: " + rxTestRailPassword);
+                listener.getLogger().println("RunId: " + rxTestRailRID);
+                listener.getLogger().println("RunName: " + rxTestRailRunName);
+            }
             // Global Parameters
             if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
                 for (String str : getParamArgs(build, env, rxGlobalParameter, true)) {
@@ -244,6 +299,11 @@ public class RanorexRunnerBuilder extends Builder {
                 listener.getLogger().println("Ranorex report compression:\t" + rxZippedReport);
                 listener.getLogger().println("Ranorex zipped report dir:\t" + usedRxZippedReportDirectory);
                 listener.getLogger().println("Ranorex zipped report file:\t" + usedRxZippedReportFile);
+                listener.getLogger().println("Ranorex Test Rail Integration:\t" + rxTestRail);
+                listener.getLogger().println("Ranorex Test Rail User:\t\t" + rxTestRailUser);
+                listener.getLogger().println("Ranorex Test Rail Password:\t" + "*****************");
+                listener.getLogger().println("Ranorex Test Rail Run ID:\t" + rxTestRailRID);
+                listener.getLogger().println("Ranorex Test Rail Run Name:\t" + rxTestRailRunName);
                 listener.getLogger().println("Ranorex global parameters:");
                 if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
                     for (String value : getParamArgs(build, env, rxGlobalParameter, true)) {
@@ -276,7 +336,7 @@ public class RanorexRunnerBuilder extends Builder {
      * @param launcher Starts a process
      * @param listener Receives events that happen during a build
      * @param env      Environmental variables to be used for launching processes for this build.
-     * @return
+     * @return true if execution was succesfull; otherwise false
      * @throws InterruptedException
      * @throws IOException
      */

@@ -23,20 +23,24 @@
             <!--Ranorex Report File Extension-->
             <f:entry title="${%Report file extension}" field="rxReportExtension">
                 <select name="RanorexRunnerBuilder.rxReportExtension">
-                    <option value="rxlog" selected="${instance.rxReportExtension.equals('rxlog')? 'true':null}">rxlog</option>
-                    <option value="html" selected="${instance.rxReportExtension.equals('html')? 'true':null}">html</option>
+                    <option value="rxlog" selected="${instance.rxReportExtension.equals('rxlog')? 'true':null}">rxlog
+                    </option>
+                    <option value="html" selected="${instance.rxReportExtension.equals('html')? 'true':null}">html
+                    </option>
                 </select>
             </f:entry>
         </f:block>
 
         <!-- JUnit Report-->
         <f:entry title="${%JUnit-compatible report}" description="Available in Ranorex 7.0 and later.">
-            <f:checkbox name="RanorexRunnerBuilder.rxJUnitReport" value="${instance.rxJUnitReport}" checked="${instance.rxJUnitReport}"/>
+            <f:checkbox name="RanorexRunnerBuilder.rxJUnitReport" value="${instance.rxJUnitReport}"
+                        checked="${instance.rxJUnitReport}"/>
         </f:entry>
 
         <!-- Ranorex Zipped Report with optional Block-->
         <f:block>
-            <f:optionalBlock name="RanorexRunnerBuilder.rxZippedReport" field="rxZippedReport" title="${%Compressed copy of Ranorex report}" inline="true">
+            <f:optionalBlock name="RanorexRunnerBuilder.rxZippedReport" field="rxZippedReport"
+                             title="${%Compressed copy of Ranorex report}" inline="true">
                 <f:entry title="${%Compressed report directory}" field="rxZippedReportDirectory">
                     <f:textbox/>
                 </f:entry>
@@ -46,6 +50,28 @@
             </f:optionalBlock>
         </f:block>
 
+        <!--TestRail Integration-->
+        <f:block>
+            <f:optionalBlock name="RanorexRunnerBuilder.rxTestRail" field="rxTestRail" title="${%TestRail integration}"
+                             inline="true">
+                <!--Test Rail User-->
+                <f:entry title="${%Test Rail User}" field="rxTestRailUser">
+                    <f:textbox/>
+                </f:entry>
+                <!--Test Rail Password-->
+                <f:entry title="${%Test Rail Password}" field="rxTestRailPassword">
+                    <f:textbox/>
+                </f:entry>
+                <!--Test Rail Run ID-->
+                <f:entry title="${%Test Rail Run ID}" field="rxTestRailRID">
+                    <f:textbox/>
+                </f:entry>
+                <!--Test Rail Run Name-->
+                <f:entry title="${%Test Rail Run Name}" field="rxTestRailRunName">
+                    <f:textbox/>
+                </f:entry>
+            </f:optionalBlock>
+        </f:block>
         <!--Global Parameter-->
         <f:entry title="${%Global parameters}" field="rxGlobalParameter">
             <f:textarea/>

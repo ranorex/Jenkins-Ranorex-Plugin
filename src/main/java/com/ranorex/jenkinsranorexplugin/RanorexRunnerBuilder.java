@@ -11,7 +11,6 @@ import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.ArgumentListBuilder;
 import hudson.util.FormValidation;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
@@ -19,17 +18,16 @@ import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.text.Normalizer;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 public class RanorexRunnerBuilder extends Builder {
 
     private static final String ZIPPED_REPORT_EXTENSION = ".rxzlog";
-    private static final String[] IGNORE_PARAMS = {"listconfigparams", "lcp", "reportfile", "rf", "zipreport", "zr", "junit", "ju", "zipreportfile", "zrf", "listglobalparams", "lp", "listtestcaseparams", "ltcpa", "testsuite", "ts", "runconfig", "rc", "param", "pa", "testrail", "truser", "trpass", "trrunid", "trrunname"};
+    private static final ArrayList<String> IGNORE_PARAMS = new ArrayList<>(Arrays.asList("listconfigparams", "lcp", "reportfile", "rf", "zipreport", "zr", "junit", "ju", "zipreportfile", "zrf", "listglobalparams", "lp", "listtestcaseparams", "ltcpa", "testsuite", "ts", "runconfig", "rc", "param", "pa", "testrail", "truser", "trpass", "trrunid", "trrunname"));
     private static PrintStream LOGGER;
     /*
      * Builder GUI Fields
@@ -227,13 +225,13 @@ public class RanorexRunnerBuilder extends Builder {
             }
             // Global Parameters
             if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
-                for (String str : getParamArgs(build, env, rxGlobalParameter, true, null)) {
+                for (String str : getParamArgs(build, env, rxGlobalParameter, true, null, false)) {
                     jArguments.add(str);
                 }
             }
             // Additional cmd arguments
             if (! StringUtil.isNullOrSpace(cmdLineArgs)) {
-                for (String args : getParamArgs(build, env, cmdLineArgs, false, IGNORE_PARAMS)) {
+                for (String args : getParamArgs(build, env, cmdLineArgs, false, IGNORE_PARAMS, false)) {
                     jArguments.add(args);
                 }
             }
@@ -255,16 +253,16 @@ public class RanorexRunnerBuilder extends Builder {
                 listener.getLogger().println("Ranorex zipped report file:\t" + usedRxZippedReportFile);
                 listener.getLogger().println("Ranorex global parameters:");
                 if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
-                    for (String value : getParamArgs(build, env, rxGlobalParameter, true, null)) {
-                        listener.getLogger().println("*\t" + value);
+                    for (String value : getParamArgs(build, env, rxGlobalParameter, true, null, true)) {
+                        listener.getLogger().println("\t*" + value);
                     }
                 } else {
                     listener.getLogger().println("\t*No global parameters entered");
                 }
                 listener.getLogger().println("Command line arguments:");
                 if (! StringUtil.isNullOrSpace(cmdLineArgs)) {
-                    for (String value : getParamArgs(build, env, cmdLineArgs, false, IGNORE_PARAMS)) {
-                        listener.getLogger().println("*\t" + value);
+                    for (String value : getParamArgs(build, env, cmdLineArgs, false, IGNORE_PARAMS, true)) {
+                        listener.getLogger().println("\t*" + value);
                     }
                 } else {
                     listener.getLogger().println("\t*No command line arguments entered");
@@ -309,23 +307,30 @@ public class RanorexRunnerBuilder extends Builder {
      * Separates string into substrings
      *
      * @param build
-     * @param env     Environmental variables to be used for launching processes for this build.
-     * @param values  string containing either parameters or arguments
-     * @param isParam true if the string 'values' contains parameters, otherwise false
+     * @param env        Environmental variables to be used for launching processes for this build.
+     * @param values     string containing either parameters or arguments
+     * @param isParam    true if the string 'values' contains parameters, otherwise false
+     * @param ignoreList List of parameters to ignore
+     * @param output     true if logger should write to console
      * @return a list of strings containing parameters or arguments
-     * @throws InterruptedException
-     * @throws IOException
      */
-    private List<String> getParamArgs(AbstractBuild<?, ?> build, EnvVars env, String values, boolean isParam, String[] ignoreList) {
+    private List<String> getParamArgs(AbstractBuild<?, ?> build, EnvVars env, String values, boolean isParam, ArrayList<String> ignoreList, Boolean output) {
         ArrayList<String> args = new ArrayList<>();
         StringTokenizer valuesToknzr = new StringTokenizer(values, "\t\r\n;");
+        ArrayList<String> separators = new ArrayList<>(Arrays.asList(":", "="));
         String argumentToAdd;
         while (valuesToknzr.hasMoreTokens()) {
             String value = valuesToknzr.nextToken();
             value = Util.replaceMacro(value, env);
             value = Util.replaceMacro(value, build.getBuildVariables());
-            LOGGER.println("$$$$$$$$$$$$$$$$$$$$Checking" + value);
-            if (! StringUtil.isNullOrSpace(value) && ! (Arrays.asList(ignoreList)).contains(value)) {
+            String pureArgument = value.replace("/", "");//Remove the '/' from the argument
+            for (String val : separators) {
+                int position = pureArgument.indexOf(val);
+                if (position > 0) {
+                    pureArgument = pureArgument.substring(0, position); //only check for the argument without value
+                }
+            }
+            if (! StringUtil.isNullOrSpace(value) && ! ignoreList.contains(pureArgument)) {
                 if (isParam) {
                     if (! value.contains(("/pa:"))) {
                         argumentToAdd = "/pa:" + value;
@@ -337,7 +342,9 @@ public class RanorexRunnerBuilder extends Builder {
                 }
                 args.add(argumentToAdd.trim());
             } else {
-                LOGGER.println("$$$$$$$$$$$$$$$$$$$$Argument " + value + "will be ignored");
+                if (output) {
+                    LOGGER.println("\t" + value + " will be ignored since the argument should be set via the desired input fields");
+                }
             }
         }
         return args;

@@ -75,13 +75,18 @@ public abstract class FileUtil {
      * exists and is a directory; false otherwise
      */
     public static boolean isAbsolutePath(String value) {
-        char[] chars = value.toCharArray();
-        /*
-         * we use this instead of file.isAbsolute() because it will provide false
-         * negative return values if the master node is a unix based system. Since the
-         * execution node must be a Windows system, this check should be ok.
-         */
-        return (chars[1] == ':' || value.startsWith("\\\\"));
+        if (! StringUtil.isNullOrSpace(value)) {
+            char[] chars = value.toCharArray();
+            /*
+             * we use this instead of file.isAbsolute() because it will provide false
+             * negative return values if the master node is a unix based system. Since the
+             * execution node must be a Windows system, this check should be ok.
+             */
+
+            return (chars[1] == ':' || value.startsWith("\\\\"));
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -100,7 +105,7 @@ public abstract class FileUtil {
             relPath = substring;
         }
         //Remove '\' from the beginning at relPath
-        if (relPath.charAt(0) == '\\' && WorkSpace.charAt(WorkSpace.length()-1)=='\\') {
+        if (relPath.charAt(0) == '\\' && WorkSpace.charAt(WorkSpace.length() - 1) == '\\') {
             substring = relPath.substring(1, relPath.length());
             relPath = substring;
         }

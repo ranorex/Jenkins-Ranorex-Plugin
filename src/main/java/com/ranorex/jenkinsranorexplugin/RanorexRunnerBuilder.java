@@ -274,11 +274,6 @@ public class RanorexRunnerBuilder extends Builder {
                 if (! StringUtil.isNullOrSpace(rxTestRailRunName)) {
                     jArguments.add("/trrunname=" + rxTestRailRunName);
                 }
-                listener.getLogger().println("#######################DEBUG################################");
-                listener.getLogger().println("User: " + rxTestRailUser);
-                listener.getLogger().println("Pass: " + rxTestRailPassword);
-                listener.getLogger().println("RunId: " + rxTestRailRID);
-                listener.getLogger().println("RunName: " + rxTestRailRunName);
             }
             // Global Parameters
             if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {

@@ -129,4 +129,21 @@ public abstract class FileUtil {
         }
         return usedDirectory;
     }
+
+
+    /**
+     * @param fileName The filename including the extension
+     * @return The filename without extension
+     */
+    public static String ignoreFileExtension(String fileName) {
+        if (! StringUtil.isNullOrSpace(fileName)) {
+            String fileNameWithoutExtension;
+            int position = fileName.lastIndexOf(".");
+            if (position > 0) {
+                fileNameWithoutExtension = fileName.substring(0, position);
+                return fileNameWithoutExtension;
+            }
+        }
+        return fileName;
+    }
 }

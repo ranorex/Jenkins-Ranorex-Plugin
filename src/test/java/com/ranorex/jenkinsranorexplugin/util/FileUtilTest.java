@@ -55,11 +55,16 @@ public class FileUtilTest {
     private final String _absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpaceWithoutBackslash = "C:\\Temp";
     private final String _absoluteTestSuiteDirectoryOutsideJenkinsWithSpaceWithoutBackslash = "C:\\Temp Directory\\";
 
+    private final String _FileNameWithoutSpaceWithZippedExtension = "RanorexReport.rxzlog";
+    private final String _FileNameWithoutSpaceWithoutExtension = "RanorexReport";
+    private final String _FileNameWithSpaceWithZippedExtension = "Ranorex Rep ort.rxzlog";
+    private final String _FileNameWithSpaceWithoutExtension = "Ranorex Rep ort";
+
     /**
      * Combined Constants
      **/
-    private final String _absoluteJenkinsJobWithoutSpace = _jenkinsWorkSpaceWithoutSpace + _jenkinsJobNameWithoutSpace;
-    private final String _absoluteJenkinsJobWithSpace = _jenkinsWorkSpaceWithSpace + _jenkinsJobNameWithSpace;
+    private final String _absoluteJenkinsJobWithoutSpace = _jenkinsWorkSpaceWithoutSpace + _jenkinsJobNameWithoutSpace; // "C:\\Users\\user\\.jenkins\\workspace\\TestJobWithOutSpace"
+    private final String _absoluteJenkinsJobWithSpace = _jenkinsWorkSpaceWithSpace + _jenkinsJobNameWithSpace; //"C:\\Users\\us er\\.jenkins\\workspace\\Test Job with Space"
     private final String _absoluteTestSuiteDirectoryInJenkinsWorkSpaceWithoutSpace = _absoluteJenkinsJobWithoutSpace + "\\bin\\Debug";
     private final String _absoluteTestSuiteDirectoryInJenkinsWorkSpaceWithSpace = _absoluteJenkinsJobWithSpace + "\\bin\\De b ug";
 
@@ -344,7 +349,7 @@ public class FileUtilTest {
         String actualResult = FileUtil.combinePath(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace, _relativeDirectoryWithoutDotWithSpace);
         assertEquals(expectedResult, actualResult);
     }
-    
+
     /**
      * Test getAbsoluteReportDirectory method
      *
@@ -395,5 +400,65 @@ public class FileUtilTest {
     public void GetAbsoluteReportDirectory_RelativePathWithSpace_AbsolutePathWithSpace() {
         String actualResult = FileUtil.getAbsoluteReportDirectory(_relativeDirectoryWithoutDotWithSpace, _absoluteTestSuiteDirectoryOutsideJenkinsWithSpace);
         assertEquals(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace, actualResult);
+    }
+
+    /**
+     * Test ignoreFileExtension method
+     *
+     * @Input Valid filename without space with extension
+     * @Expectedresult Valid filename without space without extension
+     */
+    @Test
+    public void IgnoreFileExtension_ValidFileNameWithoutSpaceWithZippedExtension_ValidFileNameWithoutSpaceWithoutExtension() {
+        String actualResult = FileUtil.ignoreFileExtension(_FileNameWithoutSpaceWithZippedExtension);
+        assertEquals(_FileNameWithoutSpaceWithoutExtension, actualResult);
+    }
+
+    /**
+     * Test ignoreFileExtension method
+     *
+     * @Input Valid filename with space with extension
+     * @Expectedresult Valid filename with space without extension
+     */
+    @Test
+    public void IgnoreFileExtension_ValidFileNameWithSpaceWithZippedExtension_ValidFileNameWithoutSpaceWithoutExtension() {
+        String actualResult = FileUtil.ignoreFileExtension(_FileNameWithSpaceWithZippedExtension);
+        assertEquals(_FileNameWithSpaceWithoutExtension, actualResult);
+    }
+
+    /**
+     * Test ignoreFileExtension method
+     *
+     * @Input null
+     * @Expectedresult null
+     */
+    @Test
+    public void IgnoreFileExtension_NULL_NULL() {
+        String actualResult = FileUtil.ignoreFileExtension(null);
+        assertEquals(null, actualResult);
+    }
+
+    /**
+     * Test ignoreFileExtension method
+     *
+     * @Input " "
+     * @Expectedresult null
+     */
+    @Test
+    public void IgnoreFileExtension_SPACE_SPACE() {
+        String actualResult = FileUtil.ignoreFileExtension(" ");
+        assertEquals(" ", actualResult);
+    }
+
+    /**
+     * Test ignoreFileExtension method
+     *
+     * @Input Valid filename with space and extension
+     * @Expectedresult Valid filename with space without extension
+     */
+    @Test
+    public void IgnoreFileExtension_InvalidFileName_NULL() {
+        String actualResult = FileUtil.ignoreFileExtension("ThisFileHasNoExtension");
+        assertEquals("ThisFileHasNoExtension", actualResult);
     }
 }

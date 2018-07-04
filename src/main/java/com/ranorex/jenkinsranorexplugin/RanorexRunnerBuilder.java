@@ -204,9 +204,9 @@ public class RanorexRunnerBuilder extends Builder {
 
             // Ranorex Reportdirectory
             if (! StringUtil.isNullOrSpace(rxReportDirectory)) {
-                listener.getLogger().println("Reportpath to merge. Base: " + WorkSpace + " Relative: " + rxReportDirectory);
+                LOGGER.println("Reportpath to merge. Base: " + WorkSpace + " Relative: " + rxReportDirectory);
                 usedRxReportDirectory = FileUtil.getAbsoluteReportDirectory(WorkSpace, rxReportDirectory);
-                listener.getLogger().println("Merged path: " + usedRxReportDirectory);
+                LOGGER.println("Merged path: " + usedRxReportDirectory);
             } else {
                 usedRxReportDirectory = WorkSpace;
             }
@@ -217,7 +217,7 @@ public class RanorexRunnerBuilder extends Builder {
                 if (! FileUtil.isAbsolutePath(rxReportFile)) {
                     usedRxReportFile = rxReportFile;
                 } else {
-                    listener.getLogger().println("'" + rxReportFile + "' is not a valid Ranorex Report filename");
+                    LOGGER.println("'" + rxReportFile + "' is not a valid Ranorex Report filename");
                     return false;
                 }
             } else {
@@ -247,7 +247,7 @@ public class RanorexRunnerBuilder extends Builder {
                     if (! FileUtil.isAbsolutePath(rxZippedReportFile)) {
                         usedRxZippedReportFile = rxZippedReportFile;
                     } else {
-                        listener.getLogger().println("'" + rxZippedReportFile + "' is not a valid Ranorex Report filename");
+                        LOGGER.println("'" + rxZippedReportFile + "' is not a valid Ranorex Report filename");
                         return false;
                     }
                 } else {
@@ -265,7 +265,7 @@ public class RanorexRunnerBuilder extends Builder {
                     jArguments.add("/truser=" + rxTestRailUser);
                     jArguments.add("/trpass=" + rxTestRailPassword);
                 } else {
-                    listener.getLogger().println("Username and password are required");
+                    LOGGER.println("Username and password are required");
                     return false;
                 }
                 if (! StringUtil.isNullOrSpace(rxTestRailRID)) {
@@ -290,45 +290,45 @@ public class RanorexRunnerBuilder extends Builder {
 
             // Summarize Output
             if (getDescriptor().isUseSummarize()) {
-                listener.getLogger().println("\n*************Start of Ranorex Summary*************");
-                listener.getLogger().println("Current Plugin version:\t\t" + getClass().getPackage().getImplementationVersion());
-                listener.getLogger().println("Ranorex Working Directory:\t" + WorkSpace);
-                listener.getLogger().println("Ranorex test suite file:\t" + rxTestSuiteFilePath);
-                listener.getLogger().println("Ranorex test exe file:\t\t" + rxExecuteableFile);
-                listener.getLogger().println("Ranorex run configuration:\t" + rxRunConfiguration);
-                listener.getLogger().println("Ranorex report directory:\t" + usedRxReportDirectory);
-                listener.getLogger().println("Ranorex report filename:\t" + usedRxReportFile);
-                listener.getLogger().println("Ranorex report extension:\t" + rxReportExtension);
-                listener.getLogger().println("Junit-compatible report:\t" + rxJUnitReport);
-                listener.getLogger().println("Ranorex report compression:\t" + rxZippedReport);
-                listener.getLogger().println("Ranorex zipped report dir:\t" + usedRxZippedReportDirectory);
-                listener.getLogger().println("Ranorex zipped report file:\t" + usedRxZippedReportFile);
-                listener.getLogger().println("Ranorex Test Rail Integration:\t" + rxTestRail);
-                listener.getLogger().println("Ranorex Test Rail User:\t\t" + rxTestRailUser);
-                listener.getLogger().println("Ranorex Test Rail Password:\t" + "*****************");
-                listener.getLogger().println("Ranorex Test Rail Run ID:\t" + rxTestRailRID);
-                listener.getLogger().println("Ranorex Test Rail Run Name:\t" + rxTestRailRunName);
-                listener.getLogger().println("Ranorex global parameters:");
+                LOGGER.println("\n*************Start of Ranorex Summary*************");
+                LOGGER.println("Current Plugin version:\t\t" + getClass().getPackage().getImplementationVersion());
+                LOGGER.println("Ranorex Working Directory:\t" + WorkSpace);
+                LOGGER.println("Ranorex test suite file:\t" + rxTestSuiteFilePath);
+                LOGGER.println("Ranorex test exe file:\t\t" + rxExecuteableFile);
+                LOGGER.println("Ranorex run configuration:\t" + rxRunConfiguration);
+                LOGGER.println("Ranorex report directory:\t" + usedRxReportDirectory);
+                LOGGER.println("Ranorex report filename:\t" + usedRxReportFile);
+                LOGGER.println("Ranorex report extension:\t" + rxReportExtension);
+                LOGGER.println("Junit-compatible report:\t" + rxJUnitReport);
+                LOGGER.println("Ranorex report compression:\t" + rxZippedReport);
+                LOGGER.println("Ranorex zipped report dir:\t" + usedRxZippedReportDirectory);
+                LOGGER.println("Ranorex zipped report file:\t" + usedRxZippedReportFile);
+                LOGGER.println("Ranorex Test Rail Integration:\t" + rxTestRail);
+                LOGGER.println("Ranorex Test Rail User:\t\t" + rxTestRailUser);
+                LOGGER.println("Ranorex Test Rail Password:\t" + "*****************");
+                LOGGER.println("Ranorex Test Rail Run ID:\t" + rxTestRailRID);
+                LOGGER.println("Ranorex Test Rail Run Name:\t" + rxTestRailRunName);
+                LOGGER.println("Ranorex global parameters:");
                 if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
                     for (String value : getParamArgs(build, env, rxGlobalParameter, true, null, true)) {
-                        listener.getLogger().println("\t*" + value);
+                        LOGGER.println("\t*" + value);
                     }
                 } else {
-                    listener.getLogger().println("\t*No global parameters entered");
+                    LOGGER.println("\t*No global parameters entered");
                 }
-                listener.getLogger().println("Command line arguments:");
+                LOGGER.println("Command line arguments:");
                 if (! StringUtil.isNullOrSpace(cmdLineArgs)) {
                     for (String value : getParamArgs(build, env, cmdLineArgs, false, IGNORE_PARAMS, true)) {
-                        listener.getLogger().println("\t*" + value);
+                        LOGGER.println("\t*" + value);
                     }
                 } else {
-                    listener.getLogger().println("\t*No command line arguments entered");
+                    LOGGER.println("\t*No command line arguments entered");
                 }
-                listener.getLogger().println("*************End of Ranorex Summary*************\n");
+                LOGGER.println("*************End of Ranorex Summary*************\n");
             }
             r = exec(build, launcher, listener, env); // Start the given exe file with all arguments added before
         } else {
-            listener.getLogger().println("No TestSuite file given");
+            LOGGER.println("No TestSuite file given");
         }
         return r;
     }
@@ -347,7 +347,7 @@ public class RanorexRunnerBuilder extends Builder {
      */
     private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener, EnvVars env) throws InterruptedException, IOException {
         FilePath currentWorkspace = FileUtil.getRanorexWorkingDirectory(build.getWorkspace(), rxTestSuiteFilePath);
-        listener.getLogger().println("Executing : " + jArguments.toString());
+        LOGGER.println("Executing : " + jArguments.toString());
         try {
             int r = launcher.launch().cmds(jArguments).envs(env).stdout(listener).pwd(currentWorkspace).join();
 

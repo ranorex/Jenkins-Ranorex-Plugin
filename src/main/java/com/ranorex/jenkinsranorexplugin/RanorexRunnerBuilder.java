@@ -17,6 +17,7 @@ import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -416,6 +417,48 @@ public class RanorexRunnerBuilder extends Builder {
          */
         public DescriptorImpl() {
             load();
+        }
+
+        //Check Report Directory
+        public FormValidation doCheckRxReportDirectory(@QueryParameter String value) {
+            if (! StringUtil.isNullOrSpace(value)) {
+                return FormValidation.ok();
+            } else {
+                return FormValidation.warning("Current Ranorex Working directory will be used");
+            }
+        }
+
+        // Check Report Filename
+        public FormValidation doCheckRxReportFile(@QueryParameter String value) {
+            if (! StringUtil.isNullOrSpace(value) && ! FileUtil.isAbsolutePath(value)) {
+                return FormValidation.ok();
+            } else if (FileUtil.isAbsolutePath(value)) {
+                return FormValidation.error("'" + value + "' is not a valid Ranorex Report filename");
+            } else {
+                return FormValidation.warning("'%S_%Y%M%D_%T' will be used");
+            }
+        }
+
+        // Check Zipped Report Directory
+        public FormValidation doCheckRxZippedReportDirectory(@QueryParameter String value) {
+            if (! StringUtil.isNullOrSpace(value)) {
+                return FormValidation.ok();
+            } else {
+                return FormValidation.warning("Current Ranorex Working directory will be used");
+            }
+        }
+
+        // Check Zipped Report Filename
+        public FormValidation doCheckRxZippedReportFile(@QueryParameter String value, @QueryParameter String rxReportFile) {
+            if (! StringUtil.isNullOrSpace(value) && ! FileUtil.isAbsolutePath(value)) {
+                return FormValidation.ok();
+            } else if (FileUtil.isAbsolutePath(value)) {
+                return FormValidation.error("'" + value + "' is not a valid Ranorex Report filename");
+            } else if (StringUtil.isNullOrSpace(value)) {
+                return FormValidation.warning("'%S_%Y%M%D_%T' will be used");
+            } else {
+                return FormValidation.warning("'" + rxReportFile + "' will be used");
+            }
         }
 
         @SuppressWarnings ("rawtypes")

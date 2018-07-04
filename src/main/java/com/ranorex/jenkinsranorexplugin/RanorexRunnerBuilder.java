@@ -192,6 +192,7 @@ public class RanorexRunnerBuilder extends Builder {
             } else {
                 usedRxReportFile = "%S_%Y%M%D_%T";
             }
+            usedRxReportFile = FileUtil.ignoreFileExtension(usedRxReportFile);
             jArguments.add("/reportfile:" + usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension);
 
             // JUnit compatible Report
@@ -221,6 +222,7 @@ public class RanorexRunnerBuilder extends Builder {
                 } else {
                     usedRxZippedReportFile = usedRxReportFile;
                 }
+                usedRxZippedReportFile = FileUtil.ignoreFileExtension(usedRxZippedReportFile);
                 jArguments.add("/zipreportfile:" + usedRxZippedReportDirectory + usedRxZippedReportFile + ZIPPED_REPORT_EXTENSION);
             }
             // Global Parameters

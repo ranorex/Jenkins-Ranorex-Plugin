@@ -25,6 +25,7 @@ package com.ranorex.jenkinsranorexplugin.util;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -139,9 +140,9 @@ public class StringUtilTest {
         String inputPath = "C:\\Temp\\Test Directory\\Banana\\";
         String[] splittedPath = {"C:", "Temp", "Test Directory", "Banana"};
         String[] actualResult = StringUtil.splitPath(inputPath);
-        //TODO: Change AssertMethod
-        assertEquals(splittedPath, actualResult);
+        assertArrayEquals(splittedPath, actualResult);
     }
+
     /**
      * Test splitPath method
      *
@@ -153,7 +154,6 @@ public class StringUtilTest {
         String inputPath = "C:/Temp/Test Directory/Banana/";
         String[] splittedPath = {"C:", "Temp", "Test Directory", "Banana"};
         String[] actualResult = StringUtil.splitPath(inputPath);
-        //TODO: Change AssertMethod
-        assertEquals(splittedPath, actualResult);
+        assertArrayEquals(splittedPath, actualResult);
     }
 }

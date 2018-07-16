@@ -264,7 +264,7 @@ public class RanorexRunnerBuilder extends Builder {
                     jArguments.add("/truser=" + rxTestRailUser);
                     jArguments.add("/trpass=" + rxTestRailPassword);
                 } else {
-                    LOGGER.println("Username and password are required");
+                    LOGGER.println("Testrail username and password are required");
                     return false;
                 }
                 if (! StringUtil.isNullOrSpace(rxTestRailRID)) {

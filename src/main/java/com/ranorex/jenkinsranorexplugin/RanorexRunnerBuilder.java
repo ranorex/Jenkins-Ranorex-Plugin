@@ -466,7 +466,7 @@ public class RanorexRunnerBuilder extends Builder {
                 return FormValidation.ok();
             } else if (FileUtil.isAbsolutePath(value)) {
                 return FormValidation.error("'" + value + "' is not a valid Ranorex Report filename");
-            } else if (StringUtil.isNullOrSpace(value) && StringUtil.isNullOrSpace(rxReportFile)) {
+            } else if ((StringUtil.isNullOrSpace(value) && StringUtil.isNullOrSpace(rxReportFile)) || (StringUtil.isNullOrSpace(value) && FileUtil.isAbsolutePath(rxReportFile))) {
                 return FormValidation.warning("'%S_%Y%M%D_%T' will be used");
             } else {
                 return FormValidation.warning("'" + rxReportFile + "' will be used");
@@ -493,15 +493,16 @@ public class RanorexRunnerBuilder extends Builder {
         //Formvalidations
         // Check Test Rail Username
         public FormValidation doCheckRxTestRailUser(@QueryParameter String value) {
-            if (!StringUtil.isNullOrSpace(value)) {
+            if (! StringUtil.isNullOrSpace(value)) {
                 return FormValidation.ok();
             }
             return FormValidation.error("Username is required");
 
         }
+
         // Check Test Rail Password
-        public FormValidation doCheckRxTestRailPassword(@QueryParameter String value){
-            if (!StringUtil.isNullOrSpace(value)) {
+        public FormValidation doCheckRxTestRailPassword(@QueryParameter String value) {
+            if (! StringUtil.isNullOrSpace(value)) {
                 return FormValidation.ok();
             }
             return FormValidation.error("Password is required");

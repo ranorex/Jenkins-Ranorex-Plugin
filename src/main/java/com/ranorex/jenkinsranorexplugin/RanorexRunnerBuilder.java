@@ -466,7 +466,7 @@ public class RanorexRunnerBuilder extends Builder {
                 return FormValidation.ok();
             } else if (FileUtil.isAbsolutePath(value)) {
                 return FormValidation.error("'" + value + "' is not a valid Ranorex Report filename");
-            } else if (StringUtil.isNullOrSpace(value)) {
+            } else if (StringUtil.isNullOrSpace(value) && StringUtil.isNullOrSpace(rxReportFile)) {
                 return FormValidation.warning("'%S_%Y%M%D_%T' will be used");
             } else {
                 return FormValidation.warning("'" + rxReportFile + "' will be used");

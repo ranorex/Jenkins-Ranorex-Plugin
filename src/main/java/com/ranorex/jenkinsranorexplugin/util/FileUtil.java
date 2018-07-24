@@ -44,7 +44,7 @@ public abstract class FileUtil {
      * @return The directory in which the Ranorex Test Suite is located
      */
     public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile) {
-        String[] splittedName = StringUtil.splitPath(testSuiteFile);
+        String[] splitName = StringUtil.splitPath(testSuiteFile);
         StringBuilder directory = new StringBuilder();
 
         //If the Test Suite Path is relative, append it to the Jenkins Workspace
@@ -52,7 +52,7 @@ public abstract class FileUtil {
             directory.append(jenkinsDirectory.getRemote());
         }
 
-        for (String name : splittedName) {
+        for (String name : splitName) {
             if (! ".".equals(name) && ! name.contains(".rxtst")) {
                 if (name.toCharArray().length > 1 && (name.toCharArray())[1] == ':') {
                     directory.append(name);

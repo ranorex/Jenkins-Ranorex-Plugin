@@ -193,6 +193,7 @@ public class RanorexRunnerBuilder extends Builder {
         LOGGER = listener.getLogger();
         EnvVars env = build.getEnvironment(listener);
         boolean r = false;
+
         if (! StringUtil.isNullOrSpace(rxTestSuiteFilePath)) {
             rxExecuteableFile = FileUtil.getExecutableFromTestSuite(rxTestSuiteFilePath);
             jArguments.add(rxExecuteableFile);
@@ -222,7 +223,7 @@ public class RanorexRunnerBuilder extends Builder {
             } else {
                 usedRxReportFile = "%S_%Y%M%D_%T";
             }
-            usedRxReportFile = FileUtil.ignoreFileExtension(usedRxReportFile);
+            usedRxReportFile = FileUtil.removeFileExtension(usedRxReportFile);
             jArguments.add("/reportfile:" + usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension);
 
             // JUnit compatible Report
@@ -252,7 +253,7 @@ public class RanorexRunnerBuilder extends Builder {
                 } else {
                     usedRxZippedReportFile = usedRxReportFile;
                 }
-                usedRxZippedReportFile = FileUtil.ignoreFileExtension(usedRxZippedReportFile);
+                usedRxZippedReportFile = FileUtil.removeFileExtension(usedRxZippedReportFile);
                 jArguments.add("/zipreportfile:" + usedRxZippedReportDirectory + usedRxZippedReportFile + ZIPPED_REPORT_EXTENSION);
             }
 

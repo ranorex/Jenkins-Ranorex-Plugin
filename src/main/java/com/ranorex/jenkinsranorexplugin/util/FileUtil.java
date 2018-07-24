@@ -8,7 +8,6 @@ package com.ranorex.jenkinsranorexplugin.util;
 import hudson.FilePath;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * @author mstoegerer
@@ -94,20 +93,20 @@ public abstract class FileUtil {
      * @param relPath   A relative path
      * @return Absolute path
      */
-    //TODO: Method returns path with double "\"
     public static String combinePath(String WorkSpace, String relPath) {
-        String substring;
         //Remove '.' from the beginning at relPath
         if (relPath.charAt(0) == '.') {
-            substring = relPath.substring(1, relPath.length());
-            relPath = substring;
+            relPath = removeFirstCharacterOfString(relPath);
         }
         //Remove '\' from the beginning at relPath
         if (relPath.charAt(0) == '\\' && WorkSpace.charAt(WorkSpace.length() - 1) == '\\') {
-            substring = relPath.substring(1, relPath.length());
-            relPath = substring;
+            relPath = removeFirstCharacterOfString(relPath);
         }
         return (WorkSpace + (relPath.replace("/", File.separator)));
+    }
+
+    private static String removeFirstCharacterOfString(String value) {
+        return value.substring(1, value.length());
     }
 
     /**

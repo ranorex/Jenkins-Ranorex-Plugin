@@ -8,7 +8,6 @@ package com.ranorex.jenkinsranorexplugin.util;
 import hudson.FilePath;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * @author mstoegerer
@@ -22,17 +21,17 @@ public abstract class FileUtil {
      * @return The filepath for the Ranorex Test Exe file
      */
     public static String getExecutableFromTestSuite(String TestSuiteFile) {
-        String ExecuteableFile;
+        String ExecutableFile;
         if (TestSuiteFile.contains(".rxtst")) {
-            ExecuteableFile = TestSuiteFile.replace(".rxtst", ".exe");
+            ExecutableFile = TestSuiteFile.replace(".rxtst", ".exe");
         } else if (TestSuiteFile.contains(".exe")) {
-            ExecuteableFile = TestSuiteFile;
+            ExecutableFile = TestSuiteFile;
         } else {
             return "Input was not a valid Test Suite File";
         }
 
-        String[] splittedPath = StringUtil.splitPath(ExecuteableFile);
-        return splittedPath[splittedPath.length - 1];
+        String[] splitPath = StringUtil.splitPath(ExecutableFile);
+        return splitPath[splitPath.length - 1];
 
     }
 
@@ -42,11 +41,9 @@ public abstract class FileUtil {
      * @param jenkinsDirectory The current workspace for the Jenkins Job
      * @param testSuiteFile    The path to the Ranorex Test Suite
      * @return The directory in which the Ranorex Test Suite is located
-     * @throws InterruptedException
-     * @throws IOException
      */
     public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile) {
-        String[] splittedName = StringUtil.splitPath(testSuiteFile);
+        String[] splitName = StringUtil.splitPath(testSuiteFile);
         StringBuilder directory = new StringBuilder();
 
         //If the Test Suite Path is relative, append it to the Jenkins Workspace
@@ -54,7 +51,7 @@ public abstract class FileUtil {
             directory.append(jenkinsDirectory.getRemote());
         }
 
-        for (String name : splittedName) {
+        for (String name : splitName) {
             if (! ".".equals(name) && ! name.contains(".rxtst")) {
                 if (name.toCharArray().length > 1 && (name.toCharArray())[1] == ':') {
                     directory.append(name);
@@ -96,20 +93,20 @@ public abstract class FileUtil {
      * @param relPath   A relative path
      * @return Absolute path
      */
-    //TODO: Method returns path with double "\"
     public static String combinePath(String WorkSpace, String relPath) {
-        String substring;
         //Remove '.' from the beginning at relPath
         if (relPath.charAt(0) == '.') {
-            substring = relPath.substring(1, relPath.length());
-            relPath = substring;
+            relPath = removeFirstCharacterOfString(relPath);
         }
         //Remove '\' from the beginning at relPath
         if (relPath.charAt(0) == '\\' && WorkSpace.charAt(WorkSpace.length() - 1) == '\\') {
-            substring = relPath.substring(1, relPath.length());
-            relPath = substring;
+            relPath = removeFirstCharacterOfString(relPath);
         }
         return (WorkSpace + (relPath.replace("/", File.separator)));
+    }
+
+    private static String removeFirstCharacterOfString(String value) {
+        return value.substring(1, value.length());
     }
 
     /**
@@ -135,7 +132,7 @@ public abstract class FileUtil {
      * @param fileName The filename including the extension
      * @return The filename without extension
      */
-    public static String ignoreFileExtension(String fileName) {
+    public static String removeFileExtension(String fileName) {
         if (! StringUtil.isNullOrSpace(fileName)) {
             String fileNameWithoutExtension;
             int position = fileName.lastIndexOf(".");

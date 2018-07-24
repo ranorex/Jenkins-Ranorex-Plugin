@@ -28,9 +28,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-/**
- * @author mstoegerer
- */
 public class StringUtilTest {
     private final String _textWithQuotes = "\"This is a sample text\"";
     private final String _textWithoutQuotes = "This is a sample text";
@@ -40,36 +37,20 @@ public class StringUtilTest {
     public StringUtilTest() {
     }
 
-    /**
-     * Test appendQuote method
-     *
-     * @Input Text without quotes
-     * @ExpectedResult Text with quotes
-     */
     @Test
     public void AppendQuote_TextWithoutQuotes_TextWithQuotes() {
         String actualResult = StringUtil.appendQuote(_textWithoutQuotes);
         assertEquals(_textWithQuotes, actualResult);
     }
 
-    /**
-     * Test appendQuote method
-     *
-     * @Input Text with quotes
-     * @ExpectedResult Text with quotes
-     */
+
     @Test
     public void AppendQuote_TextWithQuotes_TextWithQuotes() {
         String actualResult = StringUtil.appendQuote(_textWithQuotes);
         assertEquals(_textWithQuotes, actualResult);
     }
 
-    /**
-     * Test isNullOrSpace method
-     *
-     * @Input NULL
-     * @ExpectedResult true
-     */
+
     @Test
     public void IsNullOrSpace_NULL_True() {
         String input = null;
@@ -77,12 +58,7 @@ public class StringUtilTest {
         assertEquals(true, actualResult);
     }
 
-    /**
-     * Test isNullOrSpace method
-     *
-     * @Input SPACE
-     * @ExpectedResult true
-     */
+
     @Test
     public void IsNullOrSpace_SPACE_True() {
 
@@ -91,12 +67,7 @@ public class StringUtilTest {
         assertEquals(true, actualResult);
     }
 
-    /**
-     * Test isNullOrSpace method
-     *
-     * @Input EMPTY
-     * @ExpectedResult true
-     */
+
     @Test
     public void IsNullOrSpace_EMPTY_True() {
         String input = "";
@@ -104,12 +75,7 @@ public class StringUtilTest {
         assertEquals(true, actualResult);
     }
 
-    /**
-     * Test appendBackslash method
-     *
-     * @Input Text without backslash
-     * @ExpectedResult Text with backslash
-     */
+
     @Test
     public void AppendBackslash_TextWithoutBackslash_TextWithBackslash() {
         String expectedResult = _textWithBackslash;
@@ -117,24 +83,14 @@ public class StringUtilTest {
         assertEquals(expectedResult, actualResult);
     }
 
-    /**
-     * Test appendBackslash method
-     *
-     * @Input Text with backslash
-     * @ExpectedResult Text with backslash
-     */
+
     @Test
     public void AppendBackslash_TextWithBackslash_TextWithBackslash() {
         String actualResult = StringUtil.appendBackslash(_textWithBackslash);
         assertEquals(_textWithBackslash, actualResult);
     }
 
-    /**
-     * Test splitPath method
-     *
-     * @Input Absolute Path with backslashes
-     * @ExpectedResult Array of strings (directories)
-     */
+
     @Test
     public void SplitPath_PathWithBackslashes_ArrayOfDirectories() {
         String inputPath = "C:\\Temp\\Test Directory\\Banana\\";
@@ -143,12 +99,7 @@ public class StringUtilTest {
         assertArrayEquals(splittedPath, actualResult);
     }
 
-    /**
-     * Test splitPath method
-     *
-     * @Input Absolute Path with slashes
-     * @ExpectedResult Array of strings (directories)
-     */
+   
     @Test
     public void SplitPath_PathSlashes_ArrayOfDirectories() {
         String inputPath = "C:/Temp/Test Directory/Banana/";

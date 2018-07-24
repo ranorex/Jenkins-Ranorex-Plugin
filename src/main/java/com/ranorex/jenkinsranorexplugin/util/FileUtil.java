@@ -42,8 +42,6 @@ public abstract class FileUtil {
      * @param jenkinsDirectory The current workspace for the Jenkins Job
      * @param testSuiteFile    The path to the Ranorex Test Suite
      * @return The directory in which the Ranorex Test Suite is located
-     * @throws InterruptedException
-     * @throws IOException
      */
     public static FilePath getRanorexWorkingDirectory(FilePath jenkinsDirectory, String testSuiteFile) {
         String[] splittedName = StringUtil.splitPath(testSuiteFile);

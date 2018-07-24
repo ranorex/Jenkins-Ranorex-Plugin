@@ -31,8 +31,8 @@ public abstract class FileUtil {
             return "Input was not a valid Test Suite File";
         }
 
-        String[] splittedPath = StringUtil.splitPath(ExecuteableFile);
-        return splittedPath[splittedPath.length - 1];
+        String[] splitPath = StringUtil.splitPath(ExecuteableFile);
+        return splitPath[splitPath.length - 1];
 
     }
 

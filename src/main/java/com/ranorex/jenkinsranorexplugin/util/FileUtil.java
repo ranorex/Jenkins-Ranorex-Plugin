@@ -22,16 +22,16 @@ public abstract class FileUtil {
      * @return The filepath for the Ranorex Test Exe file
      */
     public static String getExecutableFromTestSuite(String TestSuiteFile) {
-        String ExecuteableFile;
+        String ExecutableFile;
         if (TestSuiteFile.contains(".rxtst")) {
-            ExecuteableFile = TestSuiteFile.replace(".rxtst", ".exe");
+            ExecutableFile = TestSuiteFile.replace(".rxtst", ".exe");
         } else if (TestSuiteFile.contains(".exe")) {
-            ExecuteableFile = TestSuiteFile;
+            ExecutableFile = TestSuiteFile;
         } else {
             return "Input was not a valid Test Suite File";
         }
 
-        String[] splitPath = StringUtil.splitPath(ExecuteableFile);
+        String[] splitPath = StringUtil.splitPath(ExecutableFile);
         return splitPath[splitPath.length - 1];
 
     }

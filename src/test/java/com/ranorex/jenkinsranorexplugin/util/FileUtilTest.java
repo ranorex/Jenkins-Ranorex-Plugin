@@ -265,34 +265,34 @@ public class FileUtilTest {
 
     @Test
     public void IgnoreFileExtension_ValidFileNameWithoutSpaceWithZippedExtension_ValidFileNameWithoutSpaceWithoutExtension() {
-        String actualResult = FileUtil.ignoreFileExtension(_FileNameWithoutSpaceWithZippedExtension);
+        String actualResult = FileUtil.removeFileExtension(_FileNameWithoutSpaceWithZippedExtension);
         assertEquals(_FileNameWithoutSpaceWithoutExtension, actualResult);
     }
 
 
     @Test
     public void IgnoreFileExtension_ValidFileNameWithSpaceWithZippedExtension_ValidFileNameWithoutSpaceWithoutExtension() {
-        String actualResult = FileUtil.ignoreFileExtension(_FileNameWithSpaceWithZippedExtension);
+        String actualResult = FileUtil.removeFileExtension(_FileNameWithSpaceWithZippedExtension);
         assertEquals(_FileNameWithSpaceWithoutExtension, actualResult);
     }
 
     @Test
     public void IgnoreFileExtension_NULL_NULL() {
-        String actualResult = FileUtil.ignoreFileExtension(null);
+        String actualResult = FileUtil.removeFileExtension(null);
         assertEquals(null, actualResult);
     }
 
 
     @Test
     public void IgnoreFileExtension_SPACE_SPACE() {
-        String actualResult = FileUtil.ignoreFileExtension(" ");
+        String actualResult = FileUtil.removeFileExtension(" ");
         assertEquals(" ", actualResult);
     }
 
 
     @Test
     public void IgnoreFileExtension_InvalidFileName_NULL() {
-        String actualResult = FileUtil.ignoreFileExtension("ThisFileHasNoExtension");
+        String actualResult = FileUtil.removeFileExtension("ThisFileHasNoExtension");
         assertEquals("ThisFileHasNoExtension", actualResult);
     }
 }

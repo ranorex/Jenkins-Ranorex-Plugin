@@ -132,7 +132,7 @@ public abstract class FileUtil {
      * @param fileName The filename including the extension
      * @return The filename without extension
      */
-    public static String ignoreFileExtension(String fileName) {
+    public static String removeFileExtension(String fileName) {
         if (! StringUtil.isNullOrSpace(fileName)) {
             String fileNameWithoutExtension;
             int position = fileName.lastIndexOf(".");

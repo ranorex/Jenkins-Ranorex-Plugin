@@ -38,17 +38,9 @@ public class CmdArgument {
         return argumentValue;
     }
 
-    public CmdArgument(String argFlag, String argName) {
-        this(argFlag + SEPARATOR + argName);
-    }
-
-    public CmdArgument(String argFlag, String argName, String argValue) {
-        this(argFlag + SEPARATOR + argName + "=" + argValue);
-    }
-
     public CmdArgument(String argumentString) {
         try {
-            String splitArgument[] = splitArgumentString(argumentString);
+            String splitArgument[] = trySplitArgumentString(argumentString);
             switch (splitArgument.length) {
                 case 3:
                     this.argumentValue = splitArgument[2];
@@ -75,11 +67,10 @@ public class CmdArgument {
         return ! IGNORE_ARGUMENTS.contains(argumentFlag);
     }
 
-    protected static String[] splitArgumentString(String argumentString) {
+    protected static String[] trySplitArgumentString(String argumentString) {
         if (StringUtil.isNullOrSpace(argumentString)) {
             throw new InvalidParameterException("Can't split empty string");
         }
-
         String flag;
         String[] splitArgument;
 

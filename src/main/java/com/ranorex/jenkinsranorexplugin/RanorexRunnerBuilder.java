@@ -1,6 +1,8 @@
 package com.ranorex.jenkinsranorexplugin;
 
+import com.ranorex.jenkinsranorexplugin.util.CmdArgument;
 import com.ranorex.jenkinsranorexplugin.util.FileUtil;
+import com.ranorex.jenkinsranorexplugin.util.RanorexParameter;
 import com.ranorex.jenkinsranorexplugin.util.StringUtil;
 import hudson.*;
 import hudson.model.AbstractBuild;
@@ -18,6 +20,7 @@ import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +29,7 @@ import java.util.StringTokenizer;
 public class RanorexRunnerBuilder extends Builder {
 
     private static final String ZIPPED_REPORT_EXTENSION = ".rxzlog";
-    private static final ArrayList<String> IGNORE_PARAMS = new ArrayList<>(Arrays.asList("listconfigparams", "lcp", "reportfile", "rf", "zipreport", "zr", "junit", "ju", "zipreportfile", "zrf", "listglobalparams", "lp", "listtestcaseparams", "ltcpa", "testsuite", "ts", "runconfig", "rc", "param", "pa", "testrail", "truser", "trpass", "trrunid", "trrunname"));
+    private static final String ARGUMENT_SEPARATOR = "\t\r\n;";
     private static PrintStream LOGGER;
     /*
      * Builder GUI Fields
@@ -274,19 +277,33 @@ public class RanorexRunnerBuilder extends Builder {
                     jArguments.add("/trrunname=" + rxTestRailRunName);
                 }
             }
-            // Global Parameters
+
+            // Parse Global Parameters
             if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
-                for (String str : getParamArgs(build, env, rxGlobalParameter, true, null, false)) {
-                    jArguments.add(str);
-                }
-            }
-            // Additional cmd arguments
-            if (! StringUtil.isNullOrSpace(cmdLineArgs)) {
-                for (String args : getParamArgs(build, env, cmdLineArgs, false, IGNORE_PARAMS, false)) {
-                    jArguments.add(args);
+                for (String param : StringUtil.splitBy(rxGlobalParameter, ARGUMENT_SEPARATOR)) {
+                    if (RanorexParameter.isValid(param)) {
+                        RanorexParameter rxParam = new RanorexParameter(param);
+                        rxParam.trim();
+                        jArguments.add(rxParam.toString());
+                    } else {
+                        //Parameter will be ignored
+                        //TODO: Add nice error message here
+                    }
                 }
             }
 
+            // Additional cmd arguments
+            if (! StringUtil.isNullOrSpace(cmdLineArgs)) {
+               /* for (String argument : RxUtil.parseCommandLineArguments(build, env, cmdLineArgs)) {
+                    jArguments.add(argument);
+                }*/
+                LOGGER.println("All args: " + cmdLineArgs);
+                for (String argument : StringUtil.splitBy(cmdLineArgs, ARGUMENT_SEPARATOR)) {
+                    //Check if argument is not ignored
+                    CmdArgument arg = new CmdArgument(argument);
+                    LOGGER.println(argument + " ->  " + arg.toString());
+                }
+            }
             // Summarize Output
             if (getDescriptor().isUseSummarize()) {
                 LOGGER.println("\n*************Start of Ranorex Summary*************");
@@ -309,24 +326,31 @@ public class RanorexRunnerBuilder extends Builder {
                 LOGGER.println("Ranorex Test Rail Run Name:\t" + rxTestRailRunName);
                 LOGGER.println("Ranorex global parameters:");
                 if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
-                    for (String value : getParamArgs(build, env, rxGlobalParameter, true, null, true)) {
-                        LOGGER.println("\t*" + value);
+                    for (String param : StringUtil.splitBy(rxGlobalParameter, "\t\r\n;")) {
+                        RanorexParameter rxParam = new RanorexParameter(param);
+                        rxParam.trim();
+                        LOGGER.println("\t*" + rxParam.toString());
                     }
                 } else {
                     LOGGER.println("\t*No global parameters entered");
                 }
                 LOGGER.println("Command line arguments:");
                 if (! StringUtil.isNullOrSpace(cmdLineArgs)) {
-                    for (String value : getParamArgs(build, env, cmdLineArgs, false, IGNORE_PARAMS, true)) {
-                        LOGGER.println("\t*" + value);
-                    }
+                    //for (String value : getParamArgs(build, env, cmdLineArgs, false, IGNORE_PARAMS, true)) {
+                    /*for (String argument : RxUtil.parseCommandLineArguments(build, env, cmdLineArgs)) {
+                        LOGGER.println("\t*" + argument);
+                    }*/
                 } else {
                     LOGGER.println("\t*No command line arguments entered");
                 }
+                LOGGER.println("Final Arguments");
+                LOGGER.println(jArguments);
                 LOGGER.println("*************End of Ranorex Summary*************\n");
             }
             r = exec(build, launcher, listener, env); // Start the given exe file with all arguments added before
-        } else {
+        } else
+
+        {
             LOGGER.println("No TestSuite file given");
         }
         return r;
@@ -344,7 +368,8 @@ public class RanorexRunnerBuilder extends Builder {
      * @throws InterruptedException
      * @throws IOException
      */
-    private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener, EnvVars env) throws InterruptedException, IOException {
+    private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener, EnvVars env) throws
+            InterruptedException, IOException {
         FilePath currentWorkspace = FileUtil.getRanorexWorkingDirectory(build.getWorkspace(), rxTestSuiteFilePath);
         LOGGER.println("Executing : " + jArguments.toString());
         try {
@@ -371,7 +396,8 @@ public class RanorexRunnerBuilder extends Builder {
      * @param output     true if logger should write to console
      * @return a list of strings containing parameters or arguments
      */
-    private List<String> getParamArgs(AbstractBuild<?, ?> build, EnvVars env, String values, boolean isParam, ArrayList<String> ignoreList, Boolean output) {
+    private List<String> getParamArgs(AbstractBuild<?, ?> build, EnvVars env, String values, boolean isParam, ArrayList<
+            String> ignoreList, Boolean output) {
         ArrayList<String> args = new ArrayList<>();
         StringTokenizer valuesToknzr = new StringTokenizer(values, "\t\r\n;");
         ArrayList<String> separators = new ArrayList<>(Arrays.asList(":", "="));

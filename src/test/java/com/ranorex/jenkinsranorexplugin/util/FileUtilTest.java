@@ -1,40 +1,15 @@
-/*
- * The MIT License
- *
- * Copyright 2018 mstoegerer.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 package com.ranorex.jenkinsranorexplugin.util;
 
 import hudson.FilePath;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class FileUtilTest {
+class FileUtilTest {
     private final String _testSuiteFileWithoutSpace = "TestSuite.rxtst";
     private final String _testSuiteFileWithSpace = "Test Suite.rxtst";
-    private final String _invalidTestSuiteFileWithoutSpace = "TestSuite.xyz";
-    private final String _invalidTestSuiteFileWithSpace = "Test Suite.xyz";
     private final String _testExeFileWithoutSpace = "TestSuite.exe";
     private final String _testExeFileWithSpace = "Test Suite.exe";
     private final String _jenkinsWorkSpaceWithoutSpace = "C:\\Users\\user\\.jenkins\\workspace\\";
@@ -49,72 +24,61 @@ public class FileUtilTest {
     private final String _absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpace = "C:\\Temp\\";
     private final String _absoluteTestSuiteDirectoryOutsideJenkinsWithSpace = "C:\\Temp Directory\\";
 
-    private final String _absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpaceWithoutBackslash = "C:\\Temp";
-    private final String _absoluteTestSuiteDirectoryOutsideJenkinsWithSpaceWithoutBackslash = "C:\\Temp Directory\\";
-
-    private final String _FileNameWithoutSpaceWithZippedExtension = "RanorexReport.rxzlog";
-    private final String _FileNameWithoutSpaceWithoutExtension = "RanorexReport";
-    private final String _FileNameWithSpaceWithZippedExtension = "Ranorex Rep ort.rxzlog";
-    private final String _FileNameWithSpaceWithoutExtension = "Ranorex Rep ort";
-
     /**
      * Combined Values
      **/
     private final String _absoluteJenkinsJobWithoutSpace = _jenkinsWorkSpaceWithoutSpace + _jenkinsJobNameWithoutSpace; // "C:\\Users\\user\\.jenkins\\workspace\\TestJobWithOutSpace"
     private final String _absoluteJenkinsJobWithSpace = _jenkinsWorkSpaceWithSpace + _jenkinsJobNameWithSpace; //"C:\\Users\\us er\\.jenkins\\workspace\\Test Job with Space"
-    private final String _absoluteTestSuiteDirectoryInJenkinsWorkSpaceWithoutSpace = _absoluteJenkinsJobWithoutSpace + "\\bin\\Debug";
-    private final String _absoluteTestSuiteDirectoryInJenkinsWorkSpaceWithSpace = _absoluteJenkinsJobWithSpace + "\\bin\\De b ug";
-
-
-    public FileUtilTest() {
-    }
 
 
     @Test
-    public void GetExecutableFromTestSuite_TestSuiteWithoutSpace_ExeWithoutSpace() {
+    void GetExecutableFromTestSuite_TestSuiteWithoutSpace_ExeWithoutSpace() {
         String actualResult = FileUtil.getExecutableFromTestSuite(_testSuiteFileWithoutSpace);
         assertEquals(_testExeFileWithoutSpace, actualResult);
     }
 
     @Test
-    public void GetExecutableFromTestSuite_TestSuiteWithSpace_ExeWithSpace() {
+    void GetExecutableFromTestSuite_TestSuiteWithSpace_ExeWithSpace() {
         String actualResult = FileUtil.getExecutableFromTestSuite(_testSuiteFileWithSpace);
         assertEquals(_testExeFileWithSpace, actualResult);
     }
 
     @Test
-    public void GetExecutableFromTestSuite_ExeWithoutSpace_ExeWithoutSpace() {
+    void GetExecutableFromTestSuite_ExeWithoutSpace_ExeWithoutSpace() {
         String actualResult = FileUtil.getExecutableFromTestSuite(_testExeFileWithoutSpace);
         assertEquals(_testExeFileWithoutSpace, actualResult);
     }
 
     @Test
-    public void GetExecutableFromTestSuite_ExeWithSpace_ExeWithSpace() {
+    void GetExecutableFromTestSuite_ExeWithSpace_ExeWithSpace() {
         String actualResult = FileUtil.getExecutableFromTestSuite(_testExeFileWithSpace);
         assertEquals(_testExeFileWithSpace, actualResult);
     }
 
 
     @Test
-    public void GetExecutableFromTestSuite_InvalidTestSuiteWithoutSpace_ErrorMessage() {
+    void GetExecutableFromTestSuite_InvalidTestSuiteWithoutSpace_ErrorMessage() {
         String expectedResult = "Input was not a valid Test Suite File";
+        String _invalidTestSuiteFileWithoutSpace = "TestSuite.xyz";
         String actualResult = FileUtil.getExecutableFromTestSuite(_invalidTestSuiteFileWithoutSpace);
         assertEquals(expectedResult, actualResult);
     }
 
 
     @Test
-    public void GetExecutableFromTestSuite_InvalidTestSuiteWithSpace_ErrorMessage() {
+    void GetExecutableFromTestSuite_InvalidTestSuiteWithSpace_ErrorMessage() {
         String expectedResult = "Input was not a valid Test Suite File";
+        String _invalidTestSuiteFileWithSpace = "Test Suite.xyz";
         String actualResult = FileUtil.getExecutableFromTestSuite(_invalidTestSuiteFileWithSpace);
         assertEquals(expectedResult, actualResult);
     }
 
 
     @Test
-    public void GetRanorexWorkingDirectory_RelativeTestSuitePathWithoutSpace_AbsoluteTestSuitePathWithoutSpace() {
+    void GetRanorexWorkingDirectory_RelativeTestSuitePathWithoutSpace_AbsoluteTestSuitePathWithoutSpace() {
         FilePath JenkinsJobDirectory = new FilePath(new File(_absoluteJenkinsJobWithoutSpace));
         String relativeTestSuitePath = _relativeDirectoryWithDotWithoutSpace + _testSuiteFileWithoutSpace;
+        String _absoluteTestSuiteDirectoryInJenkinsWorkSpaceWithoutSpace = _absoluteJenkinsJobWithoutSpace + "\\bin\\Debug";
         FilePath expectedResult = new FilePath(new File(_absoluteTestSuiteDirectoryInJenkinsWorkSpaceWithoutSpace));
         FilePath actualResult = FileUtil.getRanorexWorkingDirectory(JenkinsJobDirectory, relativeTestSuitePath);
         assertEquals(expectedResult, actualResult);
@@ -122,9 +86,10 @@ public class FileUtilTest {
 
 
     @Test
-    public void GetRanorexWorkingDirectory_RelativeTestSuitePathWithSpace_AbsoluteTestSuitePathWithSpace() {
+    void GetRanorexWorkingDirectory_RelativeTestSuitePathWithSpace_AbsoluteTestSuitePathWithSpace() {
         FilePath JenkinsJobDirectory = new FilePath(new File(_absoluteJenkinsJobWithSpace));
         String relativeTestSuitePath = _relativeDirectoryWithDotWithSpace + _testSuiteFileWithSpace;
+        String _absoluteTestSuiteDirectoryInJenkinsWorkSpaceWithSpace = _absoluteJenkinsJobWithSpace + "\\bin\\De b ug";
         FilePath expectedResult = new FilePath(new File(_absoluteTestSuiteDirectoryInJenkinsWorkSpaceWithSpace));
         FilePath actualResult = FileUtil.getRanorexWorkingDirectory(JenkinsJobDirectory, relativeTestSuitePath);
         assertEquals(expectedResult, actualResult);
@@ -132,7 +97,7 @@ public class FileUtilTest {
     }
 
     @Test
-    public void GetRanorexWorkingDirectory_AbsoluteTestSuitePathWithoutSpace_AbsoluteTestSuitePathWithoutSpace() {
+    void GetRanorexWorkingDirectory_AbsoluteTestSuitePathWithoutSpace_AbsoluteTestSuitePathWithoutSpace() {
 
         FilePath jenkinsDirectory = new FilePath(new File(_absoluteJenkinsJobWithoutSpace));
         String absoluteTestSuitePath = _absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpace + _testSuiteFileWithoutSpace;
@@ -144,53 +109,45 @@ public class FileUtilTest {
 
 
     @Test
-    public void GetRanorexWorkingDirectory_AbsoluteTestSuitePathWithSpace_AbsoluteTestSuitePathWithSpace() {
-        try {
-            FilePath jenkinsDirectory = new FilePath(new File(_absoluteJenkinsJobWithSpace));
-            String absoluteTestSuitePath = _absoluteTestSuiteDirectoryOutsideJenkinsWithSpace + _testSuiteFileWithSpace;
-            FilePath expectedResult = new FilePath(new File(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace));
-            FilePath actualResult = FileUtil.getRanorexWorkingDirectory(jenkinsDirectory, absoluteTestSuitePath);
-            assertEquals(expectedResult, actualResult);
-        } catch (Exception e) {
-            System.out.println("Error: " + e.toString());
-        }
+    void GetRanorexWorkingDirectory_AbsoluteTestSuitePathWithSpace_AbsoluteTestSuitePathWithSpace() {
+        FilePath jenkinsDirectory = new FilePath(new File(_absoluteJenkinsJobWithSpace));
+        String absoluteTestSuitePath = _absoluteTestSuiteDirectoryOutsideJenkinsWithSpace + _testSuiteFileWithSpace;
+        FilePath expectedResult = new FilePath(new File(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace));
+        FilePath actualResult = FileUtil.getRanorexWorkingDirectory(jenkinsDirectory, absoluteTestSuitePath);
+        assertEquals(expectedResult, actualResult);
     }
 
 
     @Test
-    public void IsAbsolutePath_AbsolutePathWithoutSpace_True() {
-        String input = _absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpace;
-        boolean actualResult = FileUtil.isAbsolutePath(input);
-        assertEquals(true, actualResult);
+    void IsAbsolutePath_AbsolutePathWithoutSpace_True() {
+        boolean actualResult = FileUtil.isAbsolutePath(_absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpace);
+        assertTrue(actualResult);
     }
 
 
     @Test
-    public void IsAbsolutePath_AbsolutePathWithSpace_True() {
-        String input = _absoluteTestSuiteDirectoryOutsideJenkinsWithSpace;
-        boolean actualResult = FileUtil.isAbsolutePath(input);
-        assertEquals(true, actualResult);
+    void IsAbsolutePath_AbsolutePathWithSpace_True() {
+        boolean actualResult = FileUtil.isAbsolutePath(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace);
+        assertTrue(actualResult);
     }
 
 
     @Test
-    public void IsAbsolutePath_RelativePathWithoutSpace_False() {
-        String input = _relativeDirectoryWithDotWithoutSpace;
-        boolean actualResult = FileUtil.isAbsolutePath(input);
-        assertEquals(false, actualResult);
+    void IsAbsolutePath_RelativePathWithoutSpace_False() {
+        boolean actualResult = FileUtil.isAbsolutePath(_relativeDirectoryWithDotWithoutSpace);
+        assertFalse(actualResult);
     }
 
 
     @Test
-    public void IsAbsolutePath_RelativePathWithSpace_False() {
-        String input = _relativeDirectoryWithDotWithSpace;
-        boolean actualResult = FileUtil.isAbsolutePath(input);
-        assertEquals(false, actualResult);
+    void IsAbsolutePath_RelativePathWithSpace_False() {
+        boolean actualResult = FileUtil.isAbsolutePath(_relativeDirectoryWithDotWithSpace);
+        assertFalse(actualResult);
     }
 
 
     @Test
-    public void CombinePath_AbsoluePathWithDotWithoutSpace_AbsolutePathWithoutDotWithoutSpace() {
+    void CombinePath_AbsoluePathWithDotWithoutSpace_AbsolutePathWithoutDotWithoutSpace() {
         String expectedResult = "C:\\Temp\\bin\\Debug\\";
         String actualResult = FileUtil.combinePath(_absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpace, _relativeDirectoryWithDotWithoutSpace);
         assertEquals(expectedResult, actualResult);
@@ -198,23 +155,25 @@ public class FileUtilTest {
 
 
     @Test
-    public void CombinePath_AbsolutePathWithDotWithSpaceWithoutBackslash_AbsolutePathWithoutDotWithSpace() {
+    void CombinePath_AbsolutePathWithDotWithSpaceWithoutBackslash_AbsolutePathWithoutDotWithSpace() {
         String expectedResult = "C:\\Temp Directory\\bin\\De b ug\\";
+        String _absoluteTestSuiteDirectoryOutsideJenkinsWithSpaceWithoutBackslash = "C:\\Temp Directory\\";
         String actualResult = FileUtil.combinePath(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpaceWithoutBackslash, _relativeDirectoryWithDotWithSpace);
         assertEquals(expectedResult, actualResult);
     }
 
 
     @Test
-    public void CombinePath_AbsolutePathWithDotWithoutSpaceWithoutBackslash_AbsolutePathWithoutDotWithoutSpace() {
+    void CombinePath_AbsolutePathWithDotWithoutSpaceWithoutBackslash_AbsolutePathWithoutDotWithoutSpace() {
         String expectedResult = "C:\\Temp\\bin\\Debug\\";
+        String _absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpaceWithoutBackslash = "C:\\Temp";
         String actualResult = FileUtil.combinePath(_absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpaceWithoutBackslash, _relativeDirectoryWithDotWithoutSpace);
         assertEquals(expectedResult, actualResult);
     }
 
 
     @Test
-    public void CombinePath_AbsoluePathWithDotWithSpace_AbsolutePathWithoutDotWithSpace() {
+    void CombinePath_AbsoluePathWithDotWithSpace_AbsolutePathWithoutDotWithSpace() {
         String expectedResult = "C:\\Temp Directory\\bin\\De b ug\\";
         String actualResult = FileUtil.combinePath(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace, _relativeDirectoryWithDotWithSpace);
         assertEquals(expectedResult, actualResult);
@@ -222,14 +181,14 @@ public class FileUtilTest {
 
 
     @Test
-    public void CombinePath_AbsolutePathWithoutDotWithoutSpace_AbsolutePathWithoutDotWithoutSpace() {
+    void CombinePath_AbsolutePathWithoutDotWithoutSpace_AbsolutePathWithoutDotWithoutSpace() {
         String expectedResult = "C:\\Temp\\bin\\Debug\\";
         String actualResult = FileUtil.combinePath(_absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpace, _relativeDirectoryWithouDotWithoutSpace);
         assertEquals(expectedResult, actualResult);
     }
 
     @Test
-    public void CombinePath_AbsolutePathWithoutDotWithSpace_AbsolutePathWithoutDotWithSpace() {
+    void CombinePath_AbsolutePathWithoutDotWithSpace_AbsolutePathWithoutDotWithSpace() {
         String expectedResult = "C:\\Temp Directory\\bin\\D e b u g\\";
         String actualResult = FileUtil.combinePath(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace, _relativeDirectoryWithoutDotWithSpace);
         assertEquals(expectedResult, actualResult);
@@ -237,61 +196,65 @@ public class FileUtilTest {
 
 
     @Test
-    public void GetAbsoluteReportDirectory_AbsolutePathWithoutSpace_AbsolutePathWithoutSpace() {
+    void GetAbsoluteReportDirectory_AbsolutePathWithoutSpace_AbsolutePathWithoutSpace() {
         String actualResult = FileUtil.getAbsoluteReportDirectory(_absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpace, _absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpace);
         assertEquals(_absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpace, actualResult);
     }
 
 
     @Test
-    public void GetAbsoluteReportDirectory_AbsolutePathWithSpace_AbsolutePathWithSpace() {
+    void GetAbsoluteReportDirectory_AbsolutePathWithSpace_AbsolutePathWithSpace() {
         String actualResult = FileUtil.getAbsoluteReportDirectory(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace, _absoluteTestSuiteDirectoryOutsideJenkinsWithSpace);
         assertEquals(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace, actualResult);
     }
 
 
     @Test
-    public void GetAbsoluteReportDirectory_RelativePathWithoutSpace_AbsolutePathWithoutSpace() {
+    void GetAbsoluteReportDirectory_RelativePathWithoutSpace_AbsolutePathWithoutSpace() {
         String actualResult = FileUtil.getAbsoluteReportDirectory(_relativeDirectoryWithouDotWithoutSpace, _absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpace);
         assertEquals(_absoluteTestSuiteDirectoryOutsideJenkinsWithoutSpace, actualResult);
     }
 
 
     @Test
-    public void GetAbsoluteReportDirectory_RelativePathWithSpace_AbsolutePathWithSpace() {
+    void GetAbsoluteReportDirectory_RelativePathWithSpace_AbsolutePathWithSpace() {
         String actualResult = FileUtil.getAbsoluteReportDirectory(_relativeDirectoryWithoutDotWithSpace, _absoluteTestSuiteDirectoryOutsideJenkinsWithSpace);
         assertEquals(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace, actualResult);
     }
 
     @Test
-    public void IgnoreFileExtension_ValidFileNameWithoutSpaceWithZippedExtension_ValidFileNameWithoutSpaceWithoutExtension() {
+    void IgnoreFileExtension_ValidFileNameWithoutSpaceWithZippedExtension_ValidFileNameWithoutSpaceWithoutExtension() {
+        String _FileNameWithoutSpaceWithZippedExtension = "RanorexReport.rxzlog";
         String actualResult = FileUtil.removeFileExtension(_FileNameWithoutSpaceWithZippedExtension);
+        String _FileNameWithoutSpaceWithoutExtension = "RanorexReport";
         assertEquals(_FileNameWithoutSpaceWithoutExtension, actualResult);
     }
 
 
     @Test
-    public void IgnoreFileExtension_ValidFileNameWithSpaceWithZippedExtension_ValidFileNameWithoutSpaceWithoutExtension() {
+    void IgnoreFileExtension_ValidFileNameWithSpaceWithZippedExtension_ValidFileNameWithoutSpaceWithoutExtension() {
+        String _FileNameWithSpaceWithZippedExtension = "Ranorex Rep ort.rxzlog";
         String actualResult = FileUtil.removeFileExtension(_FileNameWithSpaceWithZippedExtension);
+        String _FileNameWithSpaceWithoutExtension = "Ranorex Rep ort";
         assertEquals(_FileNameWithSpaceWithoutExtension, actualResult);
     }
 
     @Test
-    public void IgnoreFileExtension_NULL_NULL() {
+    void IgnoreFileExtension_NULL_NULL() {
         String actualResult = FileUtil.removeFileExtension(null);
-        assertEquals(null, actualResult);
+        assertNull(actualResult);
     }
 
 
     @Test
-    public void IgnoreFileExtension_SPACE_SPACE() {
+    void IgnoreFileExtension_SPACE_SPACE() {
         String actualResult = FileUtil.removeFileExtension(" ");
         assertEquals(" ", actualResult);
     }
 
 
     @Test
-    public void IgnoreFileExtension_InvalidFileName_NULL() {
+    void IgnoreFileExtension_InvalidFileName_NULL() {
         String actualResult = FileUtil.removeFileExtension("ThisFileHasNoExtension");
         assertEquals("ThisFileHasNoExtension", actualResult);
     }

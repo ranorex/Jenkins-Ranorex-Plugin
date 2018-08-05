@@ -1,5 +1,10 @@
 package com.ranorex.jenkinsranorexplugin.util;
 
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 public abstract class StringUtil {
 
     private StringUtil() {
@@ -36,11 +41,11 @@ public abstract class StringUtil {
      */
     //TODO: Move to fileUtil
     public static String[] splitPath(String value) {
-        String[] splittedName = value.split("/");
-        if (splittedName.length == 1 && value.contains("\\")) {
-            splittedName = value.split("\\\\");
+        String[] splitName = value.split("/");
+        if (splitName.length == 1 && value.contains("\\")) {
+            splitName = value.split("\\\\");
         }
-        return splittedName;
+        return splitName;
     }
 
     /**
@@ -53,6 +58,35 @@ public abstract class StringUtil {
         char charAtLastPosition = value.charAt(value.length() - 1);
         if (charAtLastPosition != '\\') {
             value = String.format("%s\\", value);
+        }
+        return value;
+    }
+
+
+    public static List<String> splitBy(String input, String delimiters) {
+        StringTokenizer valuesToknzr = new StringTokenizer(input, delimiters);
+        ArrayList<String> splitInput = new ArrayList<>();
+        while (valuesToknzr.hasMoreTokens()) {
+            String value = valuesToknzr.nextToken();
+            splitInput.add(value);
+        }
+        return splitInput;
+
+    }
+
+    /**
+     * Remove the heading slash of given string
+     *
+     * @param value String containing a '/' at the beginning
+     * @return String without '/' at the beginning
+     */
+    public static String removeHeadingSlash(String value) {
+        if (StringUtil.isNullOrSpace(value)) {
+            throw new InvalidParameterException("Argument is empty");
+        }
+        int positionOfSlash = value.indexOf('/');
+        if (positionOfSlash >= 0) {
+            return value.replace("/", "");
         }
         return value;
     }

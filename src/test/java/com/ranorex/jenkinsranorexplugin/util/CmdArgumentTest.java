@@ -346,11 +346,11 @@ class CmdArgumentTest {
         assertTrue(result);
     }
 
-    ///////////splitArgumentString
+    ///////////trySplitArgumentString
     @Test
     void splitArgumentString_Empty_ThrowsInvalidParameterException() {
         try {
-            CmdArgument.splitArgumentString("");
+            CmdArgument.trySplitArgumentString("");
         } catch (InvalidParameterException e) {
             assertEquals("Can't split empty string", e.getMessage());
         }
@@ -359,7 +359,7 @@ class CmdArgumentTest {
     @Test
     void splitArgumentString_NULL_ThrowsInvalidParameterException() {
         try {
-            CmdArgument.splitArgumentString(null);
+            CmdArgument.trySplitArgumentString(null);
         } catch (InvalidParameterException e) {
             assertEquals("Can't split empty string", e.getMessage());
         }
@@ -368,7 +368,7 @@ class CmdArgumentTest {
     @Test
     void splitArgumentString_IncorrectArgument_ThrowsInvalidParameterException() {
         try {
-            CmdArgument.splitArgumentString("NotValid=Value");
+            CmdArgument.trySplitArgumentString("NotValid=Value");
         } catch (InvalidParameterException e) {
             assertEquals("Argument 'NotValid=Value' is not valid", e.getMessage());
         }
@@ -376,7 +376,7 @@ class CmdArgumentTest {
 
     @Test
     void splitArgumentString_CorrectFlagWithName_SplitArguments() {
-        String[] splitArgs = CmdArgument.splitArgumentString("/rul:MyRunLabel");
+        String[] splitArgs = CmdArgument.trySplitArgumentString("/rul:MyRunLabel");
         assertEquals(2, splitArgs.length);
         assertEquals("rul", splitArgs[0]);
         assertEquals("MyRunLabel", splitArgs[1]);
@@ -384,7 +384,7 @@ class CmdArgumentTest {
 
     @Test
     void splitArgumentString_CorrectFlagWithNameAndValue_SplitArguments() {
-        String[] splitArgs = CmdArgument.splitArgumentString("/testcaseparam:MyParam=MyValue");
+        String[] splitArgs = CmdArgument.trySplitArgumentString("/testcaseparam:MyParam=MyValue");
         assertEquals(3, splitArgs.length);
         assertEquals("testcaseparam", splitArgs[0]);
         assertEquals("MyParam", splitArgs[1]);
@@ -394,7 +394,7 @@ class CmdArgumentTest {
     @Test
     void splitArgumentString_CorrectFlagWithNameAndValue_Exception() {
         try {
-            CmdArgument.splitArgumentString("/testcaseparam:MyParam=");
+            CmdArgument.trySplitArgumentString("/testcaseparam:MyParam=");
         } catch (Exception e) {
             assertEquals("Value must not be null or empty", e.getMessage());
         }

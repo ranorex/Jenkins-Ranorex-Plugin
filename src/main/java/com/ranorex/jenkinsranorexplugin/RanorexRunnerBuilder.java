@@ -281,27 +281,26 @@ public class RanorexRunnerBuilder extends Builder {
             // Parse Global Parameters
             if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
                 for (String param : StringUtil.splitBy(rxGlobalParameter, ARGUMENT_SEPARATOR)) {
-                    if (RanorexParameter.isValid(param)) {
+                    try {
                         RanorexParameter rxParam = new RanorexParameter(param);
                         rxParam.trim();
                         jArguments.add(rxParam.toString());
-                    } else {
-                        //Parameter will be ignored
-                        //TODO: Add nice error message here
+                    } catch (InvalidParameterException e) {
+                        LOGGER.println("Parameter '" + param + "' will be ignored");
                     }
                 }
             }
 
             // Additional cmd arguments
             if (! StringUtil.isNullOrSpace(cmdLineArgs)) {
-               /* for (String argument : RxUtil.parseCommandLineArguments(build, env, cmdLineArgs)) {
-                    jArguments.add(argument);
-                }*/
-                LOGGER.println("All args: " + cmdLineArgs);
                 for (String argument : StringUtil.splitBy(cmdLineArgs, ARGUMENT_SEPARATOR)) {
-                    //Check if argument is not ignored
-                    CmdArgument arg = new CmdArgument(argument);
-                    LOGGER.println(argument + " ->  " + arg.toString());
+                    try {
+                        //Check if argument is not ignored
+                        CmdArgument arg = new CmdArgument(argument);
+                        LOGGER.println(argument + " ->  " + arg.toString());
+                    } catch (InvalidParameterException e) {
+
+                    }
                 }
             }
             // Summarize Output
@@ -348,9 +347,7 @@ public class RanorexRunnerBuilder extends Builder {
                 LOGGER.println("*************End of Ranorex Summary*************\n");
             }
             r = exec(build, launcher, listener, env); // Start the given exe file with all arguments added before
-        } else
-
-        {
+        } else {
             LOGGER.println("No TestSuite file given");
         }
         return r;

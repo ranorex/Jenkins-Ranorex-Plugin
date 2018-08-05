@@ -15,13 +15,17 @@ public class RanorexParameter {
     private String parameterValue;
 
     public RanorexParameter(String parameterString) {
-        try {
-            String[] splitParam = trySplitParameterString(parameterString);
-            this.parameterFlag = splitParam[0];
-            this.parameterName = splitParam[1];
-            this.parameterValue = splitParam[2];
-        } catch (InvalidParameterException e) {
-            throw e;
+        if (isValid(parameterString)) {
+            try {
+                String[] splitParam = trySplitParameterString(parameterString);
+                this.parameterFlag = splitParam[0];
+                this.parameterName = splitParam[1];
+                this.parameterValue = splitParam[2];
+            } catch (InvalidParameterException e) {
+                throw e;
+            }
+        } else {
+            throw new InvalidParameterException("'" + parameterString + "' is not a valid Parameter");
         }
     }
 
@@ -29,8 +33,8 @@ public class RanorexParameter {
         if (StringUtil.isNullOrSpace(parameterString)) {
             throw new InvalidParameterException("parameterString is null or empty");
         }
-        String splitParam[] = new String[3];
 
+        String splitParam[] = new String[3];
         try {
             splitParam[0] = tryExtractFlag(parameterString);
         } catch (InvalidParameterException e) {

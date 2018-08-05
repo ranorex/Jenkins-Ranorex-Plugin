@@ -110,7 +110,7 @@ class RanorexParameterTest {
         try {
             RanorexParameter invalid = new RanorexParameter("/pa:TestNameTestValue");
         } catch (InvalidParameterException e) {
-            assertEquals("Parameter is not valid", e.getMessage());
+            assertEquals("'/pa:TestNameTestValue' is not a valid Parameter", e.getMessage());
         }
     }
 

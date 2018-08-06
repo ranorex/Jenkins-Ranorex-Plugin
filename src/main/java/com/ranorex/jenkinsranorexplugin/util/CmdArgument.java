@@ -99,7 +99,7 @@ public class CmdArgument {
             this.argumentName.trim();
             this.argumentValue.trim();
         } catch (NullPointerException e) {
-            System.out.println("Exception " + e.getMessage());
+            System.out.println("[WARNING] [CmdArgument] - Method trim() threw NullPointerException because part of the Argument where null or empty");
         }
     }
 

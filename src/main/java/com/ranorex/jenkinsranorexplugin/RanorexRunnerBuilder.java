@@ -320,10 +320,12 @@ public class RanorexRunnerBuilder extends Builder {
                     LOGGER.println("Ranorex zipped report file:\t\t" + usedRxZippedReportFile);
                 }
                 LOGGER.println("Ranorex Test Rail Integration:\t" + rxTestRail);
-                LOGGER.println("Ranorex Test Rail User:\t\t" + rxTestRailUser);
-                LOGGER.println("Ranorex Test Rail Password:\t" + "*****************");
-                LOGGER.println("Ranorex Test Rail Run ID:\t" + rxTestRailRID);
-                LOGGER.println("Ranorex Test Rail Run Name:\t" + rxTestRailRunName);
+                if (rxTestRail) {
+                    LOGGER.println("Ranorex Test Rail User:\t\t" + rxTestRailUser);
+                    LOGGER.println("Ranorex Test Rail Password:\t" + "*****************");
+                    LOGGER.println("Ranorex Test Rail Run ID:\t" + rxTestRailRID);
+                    LOGGER.println("Ranorex Test Rail Run Name:\t" + rxTestRailRunName);
+                }
                 LOGGER.println("Ranorex global parameters:");
                 if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
                     for (String param : StringUtil.splitBy(rxGlobalParameter, ARGUMENT_SEPARATOR)) {

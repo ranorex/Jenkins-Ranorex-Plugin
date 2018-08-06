@@ -334,7 +334,7 @@ public class RanorexRunnerBuilder extends Builder {
                             rxParam.trim();
                             LOGGER.println("\t*" + rxParam.toString());
                         } catch (InvalidParameterException e) {
-                            LOGGER.println("\t" + param + " will be ignored");
+                            LOGGER.println("\t!" + param + " will be ignored");
                         }
                     }
                 } else {
@@ -348,7 +348,7 @@ public class RanorexRunnerBuilder extends Builder {
                             arg.trim();
                             LOGGER.println("\t*" + arg.toString());
                         } catch (InvalidParameterException e) {
-                            LOGGER.println("\t" + argument + " will be ignored ");
+                            LOGGER.println("\t!" + argument + " will be ignored ");
                         }
                     }
                 } else {

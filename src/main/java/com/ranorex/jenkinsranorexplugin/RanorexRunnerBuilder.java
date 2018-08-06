@@ -375,7 +375,8 @@ public class RanorexRunnerBuilder extends Builder {
      * @throws InterruptedException
      * @throws IOException
      */
-    private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener, EnvVars env) {
+    private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener, EnvVars env) throws
+            InterruptedException, IOException {
         FilePath currentWorkspace = FileUtil.getRanorexWorkingDirectory(build.getWorkspace(), rxTestSuiteFilePath);
         LOGGER.println("Executing : " + jArguments.toString());
         try {
@@ -385,9 +386,6 @@ public class RanorexRunnerBuilder extends Builder {
                 build.setResult(Result.FAILURE);
             }
             return true;
-        } catch (InterruptedException e) {
-            e.printStackTrace(listener.fatalError("execution failed"));
-            return false;
         } catch (IOException e) {
             e.printStackTrace(listener.fatalError("execution failed"));
             return false;

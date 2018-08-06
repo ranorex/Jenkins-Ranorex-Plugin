@@ -38,7 +38,7 @@ public class RanorexParameter {
         try {
             splitParam[0] = tryExtractFlag(parameterString);
         } catch (InvalidParameterException e) {
-            System.out.println(e.getMessage() + " use 'pa' instead");
+            System.out.println("[INFO] [RanorexParameter]: Method tryExtractFlag() threw an InvalidParameterException \n" + e.getMessage() + "\nParameterflag 'pa' will be used as default");
             splitParam[0] = "pa";
         }
         if (containsValidNameValuePair(parameterString)) {

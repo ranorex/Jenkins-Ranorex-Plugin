@@ -286,7 +286,7 @@ public class RanorexRunnerBuilder extends Builder {
                         rxParam.trim();
                         jArguments.add(rxParam.toString());
                     } catch (InvalidParameterException e) {
-                        System.out.println("[INFO] Parameter '" + param + "' will be ignored");
+                        System.out.println("[INFO] [RanorexRunnerBuilder] Parameter '" + param + "' will be ignored");
                     }
                 }
             }
@@ -298,7 +298,7 @@ public class RanorexRunnerBuilder extends Builder {
                         CmdArgument arg = new CmdArgument(argument);
                         jArguments.add(arg.toString());
                     } catch (InvalidParameterException e) {
-                        System.out.println("[INFO] Argument '" + argument + "' will be ignored ");
+                        System.out.println("[INFO] [RanorexRunnerBuilder] Argument '" + argument + "' will be ignored ");
                     }
                 }
             }

@@ -112,7 +112,7 @@ public class RanorexParameter {
         StringBuilder sb = new StringBuilder();
         sb.append("/");
         sb.append(this.parameterFlag);
-        sb.append(this.SEPARATOR);
+        sb.append(SEPARATOR);
         sb.append(this.parameterName);
         sb.append("=");
         sb.append(this.parameterValue);

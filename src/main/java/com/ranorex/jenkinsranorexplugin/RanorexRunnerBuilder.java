@@ -286,7 +286,7 @@ public class RanorexRunnerBuilder extends Builder {
                         rxParam.trim();
                         jArguments.add(rxParam.toString());
                     } catch (InvalidParameterException e) {
-                        LOGGER.println("Parameter '" + param + "' will be ignored");
+                        System.out.println("[INFO] [RanorexRunnerBuilder] Parameter '" + param + "' will be ignored");
                     }
                 }
             }
@@ -298,7 +298,7 @@ public class RanorexRunnerBuilder extends Builder {
                         CmdArgument arg = new CmdArgument(argument);
                         jArguments.add(arg.toString());
                     } catch (InvalidParameterException e) {
-                        LOGGER.println("Argument '" + argument + "' will be ignored ");
+                        System.out.println("[INFO] [RanorexRunnerBuilder] Argument '" + argument + "' will be ignored ");
                     }
                 }
             }
@@ -315,22 +315,26 @@ public class RanorexRunnerBuilder extends Builder {
                 LOGGER.println("Ranorex report extension:\t" + rxReportExtension);
                 LOGGER.println("Junit-compatible report:\t" + rxJUnitReport);
                 LOGGER.println("Ranorex report compression:\t" + rxZippedReport);
-                LOGGER.println("Ranorex zipped report dir:\t" + usedRxZippedReportDirectory);
-                LOGGER.println("Ranorex zipped report file:\t" + usedRxZippedReportFile);
+                if (rxZippedReport) {
+                    LOGGER.println("\tRanorex zipped report dir:\t" + usedRxZippedReportDirectory);
+                    LOGGER.println("\tRanorex zipped report file:\t" + usedRxZippedReportFile);
+                }
                 LOGGER.println("Ranorex Test Rail Integration:\t" + rxTestRail);
-                LOGGER.println("Ranorex Test Rail User:\t\t" + rxTestRailUser);
-                LOGGER.println("Ranorex Test Rail Password:\t" + "*****************");
-                LOGGER.println("Ranorex Test Rail Run ID:\t" + rxTestRailRID);
-                LOGGER.println("Ranorex Test Rail Run Name:\t" + rxTestRailRunName);
+                if (rxTestRail) {
+                    LOGGER.println("\tRanorex Test Rail User:\t\t" + rxTestRailUser);
+                    LOGGER.println("\tRanorex Test Rail Password:\t" + "*****************");
+                    LOGGER.println("\tRanorex Test Rail Run ID:\t" + rxTestRailRID);
+                    LOGGER.println("\tRanorex Test Rail Run Name:\t" + rxTestRailRunName);
+                }
                 LOGGER.println("Ranorex global parameters:");
                 if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
                     for (String param : StringUtil.splitBy(rxGlobalParameter, ARGUMENT_SEPARATOR)) {
                         try {
                             RanorexParameter rxParam = new RanorexParameter(param);
                             rxParam.trim();
-                            LOGGER.println("\t\t" + rxParam.toString());
+                            LOGGER.println("\t*" + rxParam.toString());
                         } catch (InvalidParameterException e) {
-                            LOGGER.println("\t\t!!Parameter '" + param + "' will be ignored");
+                            LOGGER.println("\t!" + param + " will be ignored");
                         }
                     }
                 } else {
@@ -342,9 +346,9 @@ public class RanorexRunnerBuilder extends Builder {
                         try {
                             CmdArgument arg = new CmdArgument(argument);
                             arg.trim();
-                            LOGGER.println("\t\t" + arg.toString());
+                            LOGGER.println("\t*" + arg.toString());
                         } catch (InvalidParameterException e) {
-                            LOGGER.println("\t\tArgument '" + argument + "' will be ignored ");
+                            LOGGER.println("\t!" + argument + " will be ignored ");
                         }
                     }
                 } else {

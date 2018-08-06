@@ -316,15 +316,15 @@ public class RanorexRunnerBuilder extends Builder {
                 LOGGER.println("Junit-compatible report:\t" + rxJUnitReport);
                 LOGGER.println("Ranorex report compression:\t" + rxZippedReport);
                 if (rxZippedReport) {
-                    LOGGER.println("Ranorex zipped report dir:\t" + usedRxZippedReportDirectory);
-                    LOGGER.println("Ranorex zipped report file:\t" + usedRxZippedReportFile);
+                    LOGGER.println("\tRanorex zipped report dir:\t" + usedRxZippedReportDirectory);
+                    LOGGER.println("\tRanorex zipped report file:\t" + usedRxZippedReportFile);
                 }
                 LOGGER.println("Ranorex Test Rail Integration:\t" + rxTestRail);
                 if (rxTestRail) {
-                    LOGGER.println("Ranorex Test Rail User:\t\t" + rxTestRailUser);
-                    LOGGER.println("Ranorex Test Rail Password:\t" + "*****************");
-                    LOGGER.println("Ranorex Test Rail Run ID:\t" + rxTestRailRID);
-                    LOGGER.println("Ranorex Test Rail Run Name:\t" + rxTestRailRunName);
+                    LOGGER.println("\tRanorex Test Rail User:\t\t" + rxTestRailUser);
+                    LOGGER.println("\tRanorex Test Rail Password:\t" + "*****************");
+                    LOGGER.println("\tRanorex Test Rail Run ID:\t" + rxTestRailRID);
+                    LOGGER.println("\tRanorex Test Rail Run Name:\t" + rxTestRailRunName);
                 }
                 LOGGER.println("Ranorex global parameters:");
                 if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
@@ -332,9 +332,9 @@ public class RanorexRunnerBuilder extends Builder {
                         try {
                             RanorexParameter rxParam = new RanorexParameter(param);
                             rxParam.trim();
-                            LOGGER.println("\t\t" + rxParam.toString());
+                            LOGGER.println("\t*" + rxParam.toString());
                         } catch (InvalidParameterException e) {
-                            LOGGER.println("\t\t!!Parameter '" + param + "' will be ignored");
+                            LOGGER.println("\t" + param + " will be ignored");
                         }
                     }
                 } else {
@@ -346,9 +346,9 @@ public class RanorexRunnerBuilder extends Builder {
                         try {
                             CmdArgument arg = new CmdArgument(argument);
                             arg.trim();
-                            LOGGER.println("\t\t" + arg.toString());
+                            LOGGER.println("\t*" + arg.toString());
                         } catch (InvalidParameterException e) {
-                            LOGGER.println("\t\tArgument '" + argument + "' will be ignored ");
+                            LOGGER.println("\t" + argument + " will be ignored ");
                         }
                     }
                 } else {

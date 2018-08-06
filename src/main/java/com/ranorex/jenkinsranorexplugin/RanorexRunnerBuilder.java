@@ -316,8 +316,8 @@ public class RanorexRunnerBuilder extends Builder {
                 LOGGER.println("Junit-compatible report:\t" + rxJUnitReport);
                 LOGGER.println("Ranorex report compression:\t" + rxZippedReport);
                 if (rxZippedReport) {
-                    LOGGER.println("Ranorex zipped report dir:\t\t" + usedRxZippedReportDirectory);
-                    LOGGER.println("Ranorex zipped report file:\t\t" + usedRxZippedReportFile);
+                    LOGGER.println("Ranorex zipped report dir:\t" + usedRxZippedReportDirectory);
+                    LOGGER.println("Ranorex zipped report file:\t" + usedRxZippedReportFile);
                 }
                 LOGGER.println("Ranorex Test Rail Integration:\t" + rxTestRail);
                 if (rxTestRail) {

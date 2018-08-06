@@ -295,11 +295,10 @@ public class RanorexRunnerBuilder extends Builder {
             if (! StringUtil.isNullOrSpace(cmdLineArgs)) {
                 for (String argument : StringUtil.splitBy(cmdLineArgs, ARGUMENT_SEPARATOR)) {
                     try {
-                        //Check if argument is not ignored
                         CmdArgument arg = new CmdArgument(argument);
-                        LOGGER.println(argument + " ->  " + arg.toString());
+                        jArguments.add(arg.toString());
                     } catch (InvalidParameterException e) {
-
+                        LOGGER.println("Argument '" + argument + "' will be ignored ");
                     }
                 }
             }
@@ -325,25 +324,32 @@ public class RanorexRunnerBuilder extends Builder {
                 LOGGER.println("Ranorex Test Rail Run Name:\t" + rxTestRailRunName);
                 LOGGER.println("Ranorex global parameters:");
                 if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
-                    for (String param : StringUtil.splitBy(rxGlobalParameter, "\t\r\n;")) {
-                        RanorexParameter rxParam = new RanorexParameter(param);
-                        rxParam.trim();
-                        LOGGER.println("\t*" + rxParam.toString());
+                    for (String param : StringUtil.splitBy(rxGlobalParameter, ARGUMENT_SEPARATOR)) {
+                        try {
+                            RanorexParameter rxParam = new RanorexParameter(param);
+                            rxParam.trim();
+                            LOGGER.println("\t\t" + rxParam.toString());
+                        } catch (InvalidParameterException e) {
+                            LOGGER.println("\t\t!!Parameter '" + param + "' will be ignored");
+                        }
                     }
                 } else {
                     LOGGER.println("\t*No global parameters entered");
                 }
                 LOGGER.println("Command line arguments:");
                 if (! StringUtil.isNullOrSpace(cmdLineArgs)) {
-                    //for (String value : getParamArgs(build, env, cmdLineArgs, false, IGNORE_PARAMS, true)) {
-                    /*for (String argument : RxUtil.parseCommandLineArguments(build, env, cmdLineArgs)) {
-                        LOGGER.println("\t*" + argument);
-                    }*/
+                    for (String argument : StringUtil.splitBy(cmdLineArgs, ARGUMENT_SEPARATOR)) {
+                        try {
+                            CmdArgument arg = new CmdArgument(argument);
+                            arg.trim();
+                            LOGGER.println("\t\t" + arg.toString());
+                        } catch (InvalidParameterException e) {
+                            LOGGER.println("\t\tArgument '" + argument + "' will be ignored ");
+                        }
+                    }
                 } else {
                     LOGGER.println("\t*No command line arguments entered");
                 }
-                LOGGER.println("Final Arguments");
-                LOGGER.println(jArguments);
                 LOGGER.println("*************End of Ranorex Summary*************\n");
             }
             r = exec(build, launcher, listener, env); // Start the given exe file with all arguments added before

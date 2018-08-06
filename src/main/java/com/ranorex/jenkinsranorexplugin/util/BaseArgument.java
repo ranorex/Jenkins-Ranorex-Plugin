@@ -24,7 +24,7 @@ public abstract class BaseArgument {
 
     public static String tryExtractFlag(String argumentString) {
         if (StringUtil.isNullOrSpace(argumentString)) {
-            throw new IllegalArgumentException("Argument must not be null");
+            throw new IllegalArgumentException("Argument must not be null or empty");
         }
         int separatorPosition = argumentString.indexOf(SEPARATOR);
         String flag;

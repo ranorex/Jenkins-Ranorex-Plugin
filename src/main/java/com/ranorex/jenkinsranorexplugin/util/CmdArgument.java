@@ -39,70 +39,68 @@ public class CmdArgument {
     }
 
     public CmdArgument(String argumentString) {
-        //Check if Argument is in valid format and if argument is ignored
-        if (isValid(argumentString) && ! isIgnored(argumentString)) {
+        if (StringUtil.isNullOrSpace(argumentString)) {
+            throw new IllegalArgumentException("Argument must be not null or empty!");
+        }
+        //isValid(argumentString) &&
+        if (! isIgnored(argumentString)) {
+            try {
+                String splitArgument[] = trySplitArgumentString(argumentString);
+                switch (splitArgument.length) {
+                    case 3:
+                        this.argumentValue = splitArgument[2];
+                    case 2:
+                        this.argumentName = splitArgument[1];
+                    case 1:
+                        this.argumentFlag = splitArgument[0];
+                        break;
+                }
+            } catch (InvalidParameterException e) {
+                throw e;
+            }
+        } else {
+            throw new InvalidParameterException("Argument '" + argumentString + "' will be ignored");
+        }
+    }
+
+    //Tested
+    protected static boolean isIgnored(String argumentString) {
+        if (StringUtil.isNullOrSpace(argumentString)) {
+            throw new IllegalArgumentException("Argument must be not null or empty!");
         }
         try {
-            String splitArgument[] = trySplitArgumentString(argumentString);
-            switch (splitArgument.length) {
-                case 3:
-                    this.argumentValue = splitArgument[2];
-                case 2:
-                    this.argumentName = splitArgument[1];
-                case 1:
-                    this.argumentFlag = splitArgument[0];
-                    break;
-            }
-        } catch (InvalidParameterException e) {
-            throw e;
+            String flag = tryExtractFlag(argumentString);
+            return IGNORE_ARGUMENTS.contains(flag);
+        } catch (IllegalArgumentException e) {
+            return true;
         }
     }
 
-    protected static boolean isIgnored(String argumentString) {
-        String flag = tryExtractFlag(argumentString);
-        return IGNORE_ARGUMENTS.contains(flag);
-    }
-
+    //Tested
     protected static String tryExtractFlag(String argumentString) {
-
+        if (StringUtil.isNullOrSpace(argumentString)) {
+            throw new IllegalArgumentException("Cannot extract flag from empty or null string");
+        }
+        String flag;
         int separatorPosition = argumentString.indexOf(SEPARATOR);
         if (separatorPosition > 0) {
-            String flag;
             flag = argumentString.substring(0, separatorPosition);
-            flag = StringUtil.removeHeadingSlash(flag);
-            return flag;
         } else {
-            throw new InvalidParameterException("Test");
+            flag = argumentString;
         }
+        flag = StringUtil.removeHeadingSlash(flag);
+        return flag;
     }
 
 
     public void trim() {
-        this.argumentFlag.trim();
-        this.argumentName.trim();
-        this.argumentValue.trim();
-
-    }
-
-    protected static boolean isValid(String argumentString) {
-        boolean hasValidNameValuePair = hasValidNameValuePair(argumentString);
-        boolean hasValiFlagNamePair = hasValidFlagNamePair(argumentString);
-        return ! isIgnored(argumentString) && hasValidNameValuePair
-                || ! isIgnored(argumentString) && hasValiFlagNamePair;
-        //Check if format is valid (/flag:name=value || /flag:name)
-    }
-
-    protected static boolean hasValidNameValuePair(String argumentString) {
-        int equalPosition = argumentString.indexOf("=");
-        return equalPosition > 1 && equalPosition < argumentString.length() - 1;
-    }
-
-    protected static boolean hasValidFlagNamePair(String argumentString) {
         try {
-            String flag = tryExtractFlag(argumentString);
-        } catch (Exception e) {
+            this.argumentFlag.trim();
+            this.argumentName.trim();
+            this.argumentValue.trim();
+        } catch (NullPointerException e) {
+            System.out.println("Exception " + e.getMessage());
         }
-        return true;
     }
 
     protected static String[] trySplitArgumentString(String argumentString) {
@@ -132,9 +130,6 @@ public class CmdArgument {
             flag = StringUtil.removeHeadingSlash(flag);
         } catch (InvalidParameterException e) {
             throw e;
-        }
-        if (! isValid(flag)) {
-            throw new InvalidParameterException("Argument '" + flag + "' is not allowed");
         }
         splitArgument[0] = flag;
         return splitArgument;

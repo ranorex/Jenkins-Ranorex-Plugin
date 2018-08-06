@@ -9,6 +9,26 @@ import static org.junit.jupiter.api.Assertions.*;
 class CmdArgumentTest {
     //Constuctors
     @Test
+    void Constructor_EmptyString_ThrowsException() {
+        try {
+            CmdArgument empty = new CmdArgument("");
+
+        } catch (IllegalArgumentException e) {
+            assertEquals("Argument must be not null or empty!", e.getMessage());
+        }
+    }
+
+    @Test
+    void Constructor_Null_ThrowsException() {
+        try {
+            CmdArgument empty = new CmdArgument(null);
+
+        } catch (IllegalArgumentException e) {
+            assertEquals("Argument must be not null or empty!", e.getMessage());
+        }
+    }
+
+    @Test
     void Constructor_ValidArgumentFlagWithoutSlash_CorrectFlag() {
         CmdArgument cmdArg = new CmdArgument("banana");
         assertEquals("banana", cmdArg.getArgumentFlag());
@@ -39,7 +59,7 @@ class CmdArgumentTest {
         try {
             CmdArgument cmdArg = new CmdArgument("/param:test");
         } catch (InvalidParameterException e) {
-            assertEquals("Argument 'param' is not allowed", e.getMessage());
+            assertEquals("Argument '/param:test' will be ignored", e.getMessage());
         }
     }
 
@@ -48,7 +68,7 @@ class CmdArgumentTest {
         try {
             CmdArgument cmdArg = new CmdArgument("param:test");
         } catch (InvalidParameterException e) {
-            assertEquals("Argument 'param' is not allowed", e.getMessage());
+            assertEquals("Argument 'param:test' will be ignored", e.getMessage());
         }
     }
 
@@ -57,7 +77,7 @@ class CmdArgumentTest {
         try {
             CmdArgument cmdArg = new CmdArgument("param");
         } catch (InvalidParameterException e) {
-            assertEquals("Argument 'param' is not allowed", e.getMessage());
+            assertEquals("Argument 'param' will be ignored", e.getMessage());
         }
     }
 
@@ -66,11 +86,10 @@ class CmdArgumentTest {
         try {
             CmdArgument cmdArg = new CmdArgument("/param");
         } catch (InvalidParameterException e) {
-            assertEquals("Argument 'param' is not allowed", e.getMessage());
+            assertEquals("Argument '/param' will be ignored", e.getMessage());
         }
     }
 
-    ////
     @Test
     void Constructor_ValidArgumentFlagAndNameAndValueWithSlash_CorrectFlagAndName() {
         CmdArgument cmdArg = new CmdArgument("/banana:test=value");
@@ -92,7 +111,7 @@ class CmdArgumentTest {
         try {
             CmdArgument cmdArg = new CmdArgument("/param:test=value");
         } catch (InvalidParameterException e) {
-            assertEquals("Argument 'param' is not allowed", e.getMessage());
+            assertEquals("Argument '/param:test=value' will be ignored", e.getMessage());
         }
     }
 
@@ -101,249 +120,311 @@ class CmdArgumentTest {
         try {
             CmdArgument cmdArg = new CmdArgument("param:test=value");
         } catch (InvalidParameterException e) {
-            assertEquals("Argument 'param' is not allowed", e.getMessage());
+            assertEquals("Argument 'param:test=value' will be ignored", e.getMessage());
         }
     }
-    ////
+
+    ///isIgnored
 
     @Test
-    void isValid_InvalidArgumentParam_False() {
-        boolean result = CmdArgument.isValid("param");
-        assertFalse(result);
+    void isIgnored_EmptyString_ThrowsIllegalArgumentException() {
+        try {
+            CmdArgument.isIgnored("");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Argument must be not null or empty!", e.getMessage());
+        }
     }
 
     @Test
-    void isValid_InvalidArgumentPa_False() {
-        boolean result = CmdArgument.isValid("pa");
-        assertFalse(result);
+    void isIgnored_NULL_ThrowsIllegalArgumentException() {
+        try {
+            CmdArgument.isIgnored(null);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Argument must be not null or empty!", e.getMessage());
+        }
     }
 
     @Test
-    void isValid_InvalidArgumentListConfigParams_False() {
-        boolean result = CmdArgument.isValid("listconfigparams");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentLcp_False() {
-        boolean result = CmdArgument.isValid("lcp");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentReportFile_False() {
-        boolean result = CmdArgument.isValid("reportfile");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentRf_False() {
-        boolean result = CmdArgument.isValid("rf");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentZipReport_False() {
-        boolean result = CmdArgument.isValid("zipreport");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentZr_False() {
-        boolean result = CmdArgument.isValid("zr");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentJunit_False() {
-        boolean result = CmdArgument.isValid("junit");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentJu_False() {
-        boolean result = CmdArgument.isValid("ju");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentListGlobalParams_False() {
-        boolean result = CmdArgument.isValid("listglobalparams");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentLp_False() {
-        boolean result = CmdArgument.isValid("lp");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentListTestCaseParams_False() {
-        boolean result = CmdArgument.isValid("listtestcaseparams");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentLtcpa_False() {
-        boolean result = CmdArgument.isValid("ltcpa");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentRunConfig_False() {
-        boolean result = CmdArgument.isValid("runconfig");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentRc_False() {
-        boolean result = CmdArgument.isValid("rc");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentTestRail_False() {
-        boolean result = CmdArgument.isValid("testrail");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentTrUser_False() {
-        boolean result = CmdArgument.isValid("truser");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentTrPass_False() {
-        boolean result = CmdArgument.isValid("trpass");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentTrRunId_False() {
-        boolean result = CmdArgument.isValid("trrunid");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_InvalidArgumentTrRunName_False() {
-        boolean result = CmdArgument.isValid("trrunname");
-        assertFalse(result);
-    }
-
-    @Test
-    void isValid_ValidArgumentEp_True() {
-        boolean result = CmdArgument.isValid("ep");
+    void isIgnored_InvalidArgumentParam_True() {
+        boolean result = CmdArgument.isIgnored("param");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentEndpointconfig_True() {
-        boolean result = CmdArgument.isValid("endpointconfig");
+    void isIgnored_InvalidArgumentPa_True() {
+        boolean result = CmdArgument.isIgnored("pa");
+        assertTrue(result);
+    }
+
+
+    @Test
+    void isIgnored_InvalidArgumentListConfigParams_True() {
+        boolean result = CmdArgument.isIgnored("listconfigparams");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentEpc_True() {
-        boolean result = CmdArgument.isValid("epc");
+    void isIgnored_InvalidArgumentLcp_True() {
+        boolean result = CmdArgument.isIgnored("lcp");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentEndpointconfigfilepath_True() {
-        boolean result = CmdArgument.isValid("endpointconfigfilepath");
+    void isIgnored_param_true() {
+        boolean result = CmdArgument.isIgnored("param");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentEpcfp_True() {
-        boolean result = CmdArgument.isValid("epcfp");
+    void isIgnored_pa_true() {
+        boolean result = CmdArgument.isIgnored("pa");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentReportLevel_True() {
-        boolean result = CmdArgument.isValid("reportlevel");
+    void isIgnored_banana_false() {
+        boolean result = CmdArgument.isIgnored("banana");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_ArgumentWithColon_false() {
+        boolean result = CmdArgument.isIgnored("/banana:");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_ArgumentWithColonAndName_false() {
+        boolean result = CmdArgument.isIgnored("/banana:Name");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_ArgumentWithColonAndNameAndEqual_false() {
+        boolean result = CmdArgument.isIgnored("/banana:Name=");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_ArgumentWithColonAndNameAndEqualAndValue_false() {
+        boolean result = CmdArgument.isIgnored("/banana:Name=Value");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_InvalidArgumentReportFile_True() {
+        boolean result = CmdArgument.isIgnored("reportfile");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentRl_True() {
-        boolean result = CmdArgument.isValid("rl");
+    void isIgnored_InvalidArgumentRf_True() {
+        boolean result = CmdArgument.isIgnored("rf");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentTestsuite_True() {
-        boolean result = CmdArgument.isValid("testsuite");
+    void isIgnored_InvalidArgumentZipReport_True() {
+        boolean result = CmdArgument.isIgnored("zipreport");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentTs_True() {
-        boolean result = CmdArgument.isValid("ts");
+    void isIgnored_InvalidArgumentZr_True() {
+        boolean result = CmdArgument.isIgnored("zr");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentModule_True() {
-        boolean result = CmdArgument.isValid("module");
+    void isIgnored_InvalidArgumentJunit_True() {
+        boolean result = CmdArgument.isIgnored("junit");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentMo_True() {
-        boolean result = CmdArgument.isValid("mo");
+    void isIgnored_InvalidArgumentJu_True() {
+        boolean result = CmdArgument.isIgnored("ju");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentTestcaseparam_True() {
-        boolean result = CmdArgument.isValid("testcaseparam");
+    void isIgnored_InvalidArgumentListGlobalParams_True() {
+        boolean result = CmdArgument.isIgnored("listglobalparams");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentTestcontainerparam_True() {
-        boolean result = CmdArgument.isValid("testcontainerparam");
+    void isIgnored_InvalidArgumentLp_True() {
+        boolean result = CmdArgument.isIgnored("lp");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentTcpa_True() {
-        boolean result = CmdArgument.isValid("tcpa");
+    void isIgnored_InvalidArgumentListTestCaseParams_True() {
+        boolean result = CmdArgument.isIgnored("listtestcaseparams");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentRunlabel_True() {
-        boolean result = CmdArgument.isValid("runlabel");
+    void isIgnored_InvalidArgumentLtcpa_True() {
+        boolean result = CmdArgument.isIgnored("ltcpa");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentRul_True() {
-        boolean result = CmdArgument.isValid("rul");
+    void isIgnored_InvalidArgumentRunConfig_True() {
+        boolean result = CmdArgument.isIgnored("runconfig");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentTestcasedatarange_True() {
-        boolean result = CmdArgument.isValid("testcasedatarange");
+    void isIgnored_InvalidArgumentRc_True() {
+        boolean result = CmdArgument.isIgnored("rc");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentTestcontainerdatarange_True() {
-        boolean result = CmdArgument.isValid("testcontainerdatarange");
+    void isIgnored_InvalidArgumentTestRail_True() {
+        boolean result = CmdArgument.isIgnored("testrail");
         assertTrue(result);
     }
 
     @Test
-    void isValid_ValidArgumentTcdr_True() {
-        boolean result = CmdArgument.isValid("tcdr");
+    void isIgnored_InvalidArgumentTrUser_True() {
+        boolean result = CmdArgument.isIgnored("truser");
         assertTrue(result);
+    }
+
+    @Test
+    void isIgnored_InvalidArgumentTrPass_True() {
+        boolean result = CmdArgument.isIgnored("trpass");
+        assertTrue(result);
+    }
+
+    @Test
+    void isIgnored_InvalidArgumentTrRunId_True() {
+        boolean result = CmdArgument.isIgnored("trrunid");
+        assertTrue(result);
+    }
+
+    @Test
+    void isIgnored_InvalidArgumentTrRunName_True() {
+        boolean result = CmdArgument.isIgnored("trrunname");
+        assertTrue(result);
+    }
+
+    @Test
+    void isIgnored_Ep_False() {
+        boolean result = CmdArgument.isIgnored("ep");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Endpointconfig_false() {
+        boolean result = CmdArgument.isIgnored("endpointconfig");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Epc_False() {
+        boolean result = CmdArgument.isIgnored("epc");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Endpointconfigfilepath_False() {
+        boolean result = CmdArgument.isIgnored("endpointconfigfilepath");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Epcfp_False() {
+        boolean result = CmdArgument.isIgnored("epcfp");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_ReportLevel_False() {
+        boolean result = CmdArgument.isIgnored("reportlevel");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Rl_False() {
+        boolean result = CmdArgument.isIgnored("rl");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Testsuite_False() {
+        boolean result = CmdArgument.isIgnored("testsuite");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Ts_False() {
+        boolean result = CmdArgument.isIgnored("ts");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Module_False() {
+        boolean result = CmdArgument.isIgnored("module");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Mo_False() {
+        boolean result = CmdArgument.isIgnored("mo");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Testcaseparam_False() {
+        boolean result = CmdArgument.isIgnored("testcaseparam");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Testcontainerparam_False() {
+        boolean result = CmdArgument.isIgnored("testcontainerparam");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Tcpa_False() {
+        boolean result = CmdArgument.isIgnored("tcpa");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Runlabel_False() {
+        boolean result = CmdArgument.isIgnored("runlabel");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Rul_False() {
+        boolean result = CmdArgument.isIgnored("rul");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Testcasedatarange_False() {
+        boolean result = CmdArgument.isIgnored("testcasedatarange");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Testcontainerdatarange_False() {
+        boolean result = CmdArgument.isIgnored("testcontainerdatarange");
+        assertFalse(result);
+    }
+
+    @Test
+    void isIgnored_Tcdr_False() {
+        boolean result = CmdArgument.isIgnored("tcdr");
+        assertFalse(result);
     }
 
     ///////////trySplitArgumentString
@@ -407,4 +488,66 @@ class CmdArgumentTest {
     }
 
 
+    ////TryExtractFlag
+
+    @Test
+    void tryExtractFlag_EmptyString_ThrowsIllegalArgumentException() {
+        try {
+            CmdArgument.tryExtractFlag("");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Cannot extract flag from empty or null string", e.getMessage());
+        }
+    }
+
+    @Test
+    void tryExtractFlag_NULL_ThrowsIllegalArgumentException() {
+        try {
+            CmdArgument.tryExtractFlag(null);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Cannot extract flag from empty or null string", e.getMessage());
+        }
+    }
+
+    @Test
+    void tryExtractFlag_ArgumentWithSlashAndNoColon_ValidFlag() {
+        String flag = CmdArgument.tryExtractFlag("/ValidFlag");
+        assertEquals("ValidFlag", flag);
+    }
+
+    @Test
+    void tryExtractFlag_ArgumentWithNoSlashAndNoColon_ValidFlag() {
+        String flag = CmdArgument.tryExtractFlag("ValidFlag");
+        assertEquals("ValidFlag", flag);
+    }
+
+    @Test
+    void tryExtractFlag_ArgumentWithSlashAndColon_ValidFlag() {
+        String flag = CmdArgument.tryExtractFlag("/ValidFlag:");
+        assertEquals("ValidFlag", flag);
+    }
+
+    @Test
+    void tryExtractFlag_ArgumentWithNoSlashAndColon_ValidFlag() {
+        String flag = CmdArgument.tryExtractFlag("ValidFlag:");
+        assertEquals("ValidFlag", flag);
+    }
+
+    @Test
+    void tryExtractFlag_ArgumentWithSlashAndColonAndNoEqual_ValidFlag() {
+        String flag = CmdArgument.tryExtractFlag("/ValidFlag:Test");
+        assertEquals("ValidFlag", flag);
+
+    }
+
+    @Test
+    void tryExtractFlag_ArgumentWithNoSlashAndColonAndEqual_ValidFlag() {
+        String flag = CmdArgument.tryExtractFlag("/ValidFlag:Test=");
+        assertEquals("ValidFlag", flag);
+    }
+
+    @Test
+    void tryExtractFlag_ArgumentWithNoSlashAndColonAndEqualAndValue_ValidFlag() {
+        String flag = CmdArgument.tryExtractFlag("/ValidFlag:Test=Value");
+        assertEquals("ValidFlag", flag);
+    }
 }

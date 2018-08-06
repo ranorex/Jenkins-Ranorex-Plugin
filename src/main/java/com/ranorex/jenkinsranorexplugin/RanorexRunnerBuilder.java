@@ -4,7 +4,10 @@ import com.ranorex.jenkinsranorexplugin.util.CmdArgument;
 import com.ranorex.jenkinsranorexplugin.util.FileUtil;
 import com.ranorex.jenkinsranorexplugin.util.RanorexParameter;
 import com.ranorex.jenkinsranorexplugin.util.StringUtil;
-import hudson.*;
+import hudson.EnvVars;
+import hudson.Extension;
+import hudson.FilePath;
+import hudson.Launcher;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.BuildListener;
@@ -20,11 +23,6 @@ import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringTokenizer;
 
 public class RanorexRunnerBuilder extends Builder {
 
@@ -285,7 +283,7 @@ public class RanorexRunnerBuilder extends Builder {
                         RanorexParameter rxParam = new RanorexParameter(param);
                         rxParam.trim();
                         jArguments.add(rxParam.toString());
-                    } catch (InvalidParameterException e) {
+                    } catch (Exception e) {
                         System.out.println("[INFO] [RanorexRunnerBuilder] Parameter '" + param + "' will be ignored");
                     }
                 }
@@ -297,7 +295,7 @@ public class RanorexRunnerBuilder extends Builder {
                     try {
                         CmdArgument arg = new CmdArgument(argument);
                         jArguments.add(arg.toString());
-                    } catch (InvalidParameterException e) {
+                    } catch (Exception e) {
                         System.out.println("[INFO] [RanorexRunnerBuilder] Argument '" + argument + "' will be ignored ");
                     }
                 }
@@ -333,7 +331,7 @@ public class RanorexRunnerBuilder extends Builder {
                             RanorexParameter rxParam = new RanorexParameter(param);
                             rxParam.trim();
                             LOGGER.println("\t*" + rxParam.toString());
-                        } catch (InvalidParameterException e) {
+                        } catch (Exception e) {
                             LOGGER.println("\t!" + param + " will be ignored");
                         }
                     }
@@ -347,7 +345,7 @@ public class RanorexRunnerBuilder extends Builder {
                             CmdArgument arg = new CmdArgument(argument);
                             arg.trim();
                             LOGGER.println("\t*" + arg.toString());
-                        } catch (InvalidParameterException e) {
+                        } catch (Exception e) {
                             LOGGER.println("\t!" + argument + " will be ignored ");
                         }
                     }
@@ -375,8 +373,7 @@ public class RanorexRunnerBuilder extends Builder {
      * @throws InterruptedException
      * @throws IOException
      */
-    private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener, EnvVars env) throws
-            InterruptedException, IOException {
+    private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener, EnvVars env) {
         FilePath currentWorkspace = FileUtil.getRanorexWorkingDirectory(build.getWorkspace(), rxTestSuiteFilePath);
         LOGGER.println("Executing : " + jArguments.toString());
         try {
@@ -386,58 +383,10 @@ public class RanorexRunnerBuilder extends Builder {
                 build.setResult(Result.FAILURE);
             }
             return true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace(listener.fatalError("execution failed"));
             return false;
         }
-    }
-
-    /**
-     * Separates string into substrings
-     *
-     * @param build
-     * @param env        Environmental variables to be used for launching processes for this build.
-     * @param values     string containing either parameters or arguments
-     * @param isParam    true if the string 'values' contains parameters, otherwise false
-     * @param ignoreList List of parameters to ignore
-     * @param output     true if logger should write to console
-     * @return a list of strings containing parameters or arguments
-     */
-    private List<String> getParamArgs(AbstractBuild<?, ?> build, EnvVars env, String values, boolean isParam, ArrayList<
-            String> ignoreList, Boolean output) {
-        ArrayList<String> args = new ArrayList<>();
-        StringTokenizer valuesToknzr = new StringTokenizer(values, "\t\r\n;");
-        ArrayList<String> separators = new ArrayList<>(Arrays.asList(":", "="));
-        String argumentToAdd;
-        while (valuesToknzr.hasMoreTokens()) {
-            String value = valuesToknzr.nextToken();
-            value = Util.replaceMacro(value, env);
-            value = Util.replaceMacro(value, build.getBuildVariables());
-            String pureArgument = value.replace("/", "");//Remove the '/' from the argument
-            for (String val : separators) {
-                int position = pureArgument.indexOf(val);
-                if (position > 0) {
-                    pureArgument = pureArgument.substring(0, position); //only check for the argument without value
-                }
-            }
-            if (! StringUtil.isNullOrSpace(value) && ! ignoreList.contains(pureArgument)) {
-                if (isParam) {
-                    if (! value.contains(("/pa:"))) {
-                        argumentToAdd = "/pa:" + value;
-                    } else {
-                        argumentToAdd = value;
-                    }
-                } else {
-                    argumentToAdd = value;
-                }
-                args.add(argumentToAdd.trim());
-            } else {
-                if (output) {
-                    LOGGER.println("\t" + value + " will be ignored since the argument should be set via the desired input fields");
-                }
-            }
-        }
-        return args;
     }
 
     // Overridden for better type safety.
@@ -506,24 +455,6 @@ public class RanorexRunnerBuilder extends Builder {
             }
         }
 
-        @SuppressWarnings ("rawtypes")
-        @Override
-        public boolean isApplicable(Class<? extends AbstractProject> aClass) {
-            // Indicates that this builder can be used with all kinds of project types
-            return true;
-        }
-
-        /**
-         * This human readable name is used in the configuration screen.
-         *
-         * @return a human readable string that is shown in the DropDown Menu
-         */
-        @Override
-        public String getDisplayName() {
-            return "Run a Ranorex test suite";
-        }
-
-        //Formvalidations
         // Check Test Rail Username
         public FormValidation doCheckRxTestRailUser(@QueryParameter String value) {
             if (! StringUtil.isNullOrSpace(value)) {
@@ -539,6 +470,23 @@ public class RanorexRunnerBuilder extends Builder {
                 return FormValidation.ok();
             }
             return FormValidation.error("Password is required");
+        }
+
+        @SuppressWarnings ("rawtypes")
+        @Override
+        public boolean isApplicable(Class<? extends AbstractProject> aClass) {
+            // Indicates that this builder can be used with all kinds of project types
+            return true;
+        }
+
+        /**
+         * This human readable name is used in the configuration screen.
+         *
+         * @return a human readable string that is shown in the DropDown Menu
+         */
+        @Override
+        public String getDisplayName() {
+            return "Run a Ranorex test suite";
         }
 
 

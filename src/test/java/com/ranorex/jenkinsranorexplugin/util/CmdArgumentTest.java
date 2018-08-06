@@ -12,7 +12,6 @@ class CmdArgumentTest {
     void Constructor_EmptyString_ThrowsException() {
         try {
             CmdArgument empty = new CmdArgument("");
-
         } catch (IllegalArgumentException e) {
             assertEquals("Argument must be not null or empty!", e.getMessage());
         }

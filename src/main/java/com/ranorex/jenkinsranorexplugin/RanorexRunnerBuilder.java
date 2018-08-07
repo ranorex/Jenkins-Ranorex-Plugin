@@ -262,8 +262,8 @@ public class RanorexRunnerBuilder extends Builder {
                 jArguments.add("/testrail");
                 //TODO: Use Credentialmanager instead
                 if (! StringUtil.isNullOrSpace(rxTestRailUser) && ! StringUtil.isNullOrSpace(rxTestRailPassword)) {
-                    jArguments.add("/truser=" + rxTestRailUser);
-                    jArguments.add("/trpass=" + rxTestRailPassword);
+                    jArguments.addMasked("/truser=" + rxTestRailUser);
+                    jArguments.addMasked("/trpass=" + rxTestRailPassword);
                 } else {
                     LOGGER.println("Testrail username and password are required");
                     return false;

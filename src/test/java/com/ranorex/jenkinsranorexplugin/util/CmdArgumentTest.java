@@ -554,4 +554,11 @@ class CmdArgumentTest {
         String flag = CmdArgument.tryExtractFlag("/ValidFlag:Test=Value");
         assertEquals("ValidFlag", flag);
     }
+
+    ///toString
+    @Test
+    void toString_ValidInput_ValidString() {
+        CmdArgument cmdArg = new CmdArgument("/flag : name = value ");
+        assertEquals("/flag : name = value ", cmdArg.toString());
+    }
 }

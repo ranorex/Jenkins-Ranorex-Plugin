@@ -260,7 +260,6 @@ public class RanorexRunnerBuilder extends Builder {
             //Test Rail
             if (rxTestRail) {
                 jArguments.add("/testrail");
-                //TODO: Use Credentialmanager instead
                 if (! StringUtil.isNullOrSpace(rxTestRailUser) && ! StringUtil.isNullOrSpace(rxTestRailPassword)) {
                     jArguments.addMasked("/truser=" + rxTestRailUser);
                     jArguments.addMasked("/trpass=" + rxTestRailPassword);

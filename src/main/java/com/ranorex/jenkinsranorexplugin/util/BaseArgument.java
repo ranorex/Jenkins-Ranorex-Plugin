@@ -36,9 +36,9 @@ public abstract class BaseArgument {
 
     public void trim() {
         try {
-            flag.trim();
-            name.trim();
-            value.trim();
+            flag = flag.trim();
+            name = name.trim();
+            value = value.trim();
         } catch (NullPointerException e) {
             System.out.println("[WARNING] [CmdArgument] - Method trim() threw NullPointerException because part of the Argument where null or empty");
         }

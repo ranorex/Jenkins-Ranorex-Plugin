@@ -4,23 +4,20 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RanorexParameter {
+public class RanorexParameter extends BaseArgument {
     private static final ArrayList<String> WHITELIST_PARAM_FLAGS = new ArrayList<>(Arrays.asList(
             "pa", "param"
     ));
     private static final String SEPARATOR = ":";
 
-    private String parameterFlag;
-    private String parameterName;
-    private String parameterValue;
 
     public RanorexParameter(String parameterString) {
         if (isValid(parameterString)) {
             try {
-                String[] splitParam = trySplitParameterString(parameterString);
-                this.parameterFlag = splitParam[0];
-                this.parameterName = splitParam[1];
-                this.parameterValue = splitParam[2];
+                String[] splitParam = trySplitArgument(parameterString);
+                this.flag = splitParam[0];
+                this.name = splitParam[1];
+                this.value = splitParam[2];
             } catch (InvalidParameterException e) {
                 throw e;
             }
@@ -29,16 +26,16 @@ public class RanorexParameter {
         }
     }
 
-    protected static String[] trySplitParameterString(String parameterString) {
+    protected static String[] trySplitArgument(String parameterString) {
         if (StringUtil.isNullOrSpace(parameterString)) {
-            throw new InvalidParameterException("parameterString is null or empty");
+            throw new InvalidParameterException("Cannot split empty string");
         }
 
         String splitParam[] = new String[3];
         try {
             splitParam[0] = tryExtractFlag(parameterString);
         } catch (InvalidParameterException e) {
-            System.out.println(e.getMessage() + " use 'pa' instead");
+            System.out.println("[INFO] [RanorexParameter]: Method tryExtractFlag() threw an InvalidParameterException \n\t" + e.getMessage() + "\n\tParameterflag 'pa' will be used as default");
             splitParam[0] = "pa";
         }
         if (containsValidNameValuePair(parameterString)) {
@@ -81,41 +78,5 @@ public class RanorexParameter {
         } else {
             throw new InvalidParameterException("Parameter '" + parameterString + "' does not contain a separator!");
         }
-    }
-
-    public String getParameterFlag() {
-        return parameterFlag;
-    }
-
-    public String getParameterName() {
-        return parameterName;
-    }
-
-    public String getParameterValue() {
-        return parameterValue;
-    }
-
-    public void trim() {
-        if (StringUtil.isNullOrSpace(parameterFlag) || StringUtil.isNullOrSpace(parameterName) || StringUtil.isNullOrSpace(parameterValue)) {
-            throw new InvalidParameterException("Parameter is null or empty");
-        }
-        parameterFlag = parameterFlag.trim();
-        parameterName = parameterName.trim();
-        parameterValue = parameterValue.trim();
-    }
-
-    @Override
-    public String toString() {
-        if (StringUtil.isNullOrSpace(parameterFlag) || StringUtil.isNullOrSpace(parameterName) || StringUtil.isNullOrSpace(parameterValue)) {
-            throw new InvalidParameterException("Parameter is not valid");
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append("/");
-        sb.append(this.parameterFlag);
-        sb.append(this.SEPARATOR);
-        sb.append(this.parameterName);
-        sb.append("=");
-        sb.append(this.parameterValue);
-        return sb.toString();
     }
 }

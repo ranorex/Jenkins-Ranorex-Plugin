@@ -4,7 +4,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CmdArgument {
+public class CmdArgument extends BaseArgument {
     private static final ArrayList<String> IGNORE_ARGUMENTS = new ArrayList<>(Arrays.asList(
             "param", "pa",
             "listconfigparams", "lcp",
@@ -22,22 +22,6 @@ public class CmdArgument {
     ));
     private static final String SEPARATOR = ":";
 
-    private String argumentFlag;
-    private String argumentName;
-    private String argumentValue;
-
-    public String getArgumentFlag() {
-        return argumentFlag;
-    }
-
-    public String getArgumentName() {
-        return argumentName;
-    }
-
-    public String getArgumentValue() {
-        return argumentValue;
-    }
-
     public CmdArgument(String argumentString) {
         if (StringUtil.isNullOrSpace(argumentString)) {
             throw new IllegalArgumentException("Argument must be not null or empty!");
@@ -45,14 +29,14 @@ public class CmdArgument {
         //isValid(argumentString) &&
         if (! isIgnored(argumentString)) {
             try {
-                String splitArgument[] = trySplitArgumentString(argumentString);
+                String splitArgument[] = trySplitArgument(argumentString);
                 switch (splitArgument.length) {
                     case 3:
-                        this.argumentValue = splitArgument[2];
+                        this.value = splitArgument[2];
                     case 2:
-                        this.argumentName = splitArgument[1];
+                        this.name = splitArgument[1];
                     case 1:
-                        this.argumentFlag = splitArgument[0];
+                        this.flag = splitArgument[0];
                         break;
                 }
             } catch (InvalidParameterException e) {
@@ -61,6 +45,21 @@ public class CmdArgument {
         } else {
             throw new InvalidParameterException("Argument '" + argumentString + "' will be ignored");
         }
+    }
+
+    public static String tryExtractFlag(String argumentString) {
+        if (StringUtil.isNullOrSpace(argumentString)) {
+            throw new IllegalArgumentException("Argument must not be null or empty");
+        }
+        int separatorPosition = argumentString.indexOf(SEPARATOR);
+        String flag;
+        if (separatorPosition > 0) {
+            flag = argumentString.substring(0, separatorPosition);
+        } else {
+            flag = argumentString;
+        }
+        flag = StringUtil.removeHeadingSlash(flag);
+        return flag;
     }
 
     //Tested
@@ -76,36 +75,9 @@ public class CmdArgument {
         }
     }
 
-    //Tested
-    protected static String tryExtractFlag(String argumentString) {
+    protected static String[] trySplitArgument(String argumentString) {
         if (StringUtil.isNullOrSpace(argumentString)) {
-            throw new IllegalArgumentException("Cannot extract flag from empty or null string");
-        }
-        String flag;
-        int separatorPosition = argumentString.indexOf(SEPARATOR);
-        if (separatorPosition > 0) {
-            flag = argumentString.substring(0, separatorPosition);
-        } else {
-            flag = argumentString;
-        }
-        flag = StringUtil.removeHeadingSlash(flag);
-        return flag;
-    }
-
-
-    public void trim() {
-        try {
-            this.argumentFlag.trim();
-            this.argumentName.trim();
-            this.argumentValue.trim();
-        } catch (NullPointerException e) {
-            System.out.println("Exception " + e.getMessage());
-        }
-    }
-
-    protected static String[] trySplitArgumentString(String argumentString) {
-        if (StringUtil.isNullOrSpace(argumentString)) {
-            throw new InvalidParameterException("Can't split empty string");
+            throw new InvalidParameterException("Cannot split empty string");
         }
         String flag;
         String[] splitArgument;
@@ -133,21 +105,5 @@ public class CmdArgument {
         }
         splitArgument[0] = flag;
         return splitArgument;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("/");
-        sb.append(this.argumentFlag);
-        if (! StringUtil.isNullOrSpace(this.argumentName)) {
-            sb.append(SEPARATOR);
-            sb.append(this.argumentName);
-        }
-        if (! StringUtil.isNullOrSpace(this.argumentValue)) {
-            sb.append("=");
-            sb.append(this.argumentValue);
-        }
-        return sb.toString();
     }
 }

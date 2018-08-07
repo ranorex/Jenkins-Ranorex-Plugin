@@ -1,10 +1,24 @@
 package com.ranorex.jenkinsranorexplugin.util;
 
+import java.security.InvalidParameterException;
+
 public abstract class BaseArgument {
     protected final static String SEPARATOR = ":";
     protected String flag;
     protected String name;
     protected String value;
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getValue() {
+        return value;
+    }
 
     @Override
     public String toString() {
@@ -22,29 +36,13 @@ public abstract class BaseArgument {
         return sb.toString();
     }
 
-    public static String tryExtractFlag(String argumentString) {
-        if (StringUtil.isNullOrSpace(argumentString)) {
-            throw new IllegalArgumentException("Argument must not be null or empty");
-        }
-        int separatorPosition = argumentString.indexOf(SEPARATOR);
-        String flag;
-        if (separatorPosition > 0) {
-            flag = argumentString.substring(0, separatorPosition);
-        } else {
-            flag = argumentString;
-        }
-        flag = StringUtil.removeHeadingSlash(flag);
-        return flag;
-    }
-
-    public static boolean containsValidNameValuePair(String argumentString) {
-        int equalPosition = argumentString.indexOf("=");
-        return equalPosition > 1 && equalPosition < argumentString.length() - 1;
-    }
-
     public void trim() {
-        flag.trim();
-        name.trim();
-        value.trim();
+        try {
+            flag.trim();
+            name.trim();
+            value.trim();
+        } catch (NullPointerException e) {
+            System.out.println("[WARNING] [CmdArgument] - Method trim() threw NullPointerException because part of the Argument where null or empty");
+        }
     }
 }

@@ -79,22 +79,22 @@ public class RanorexRunnerBuilder extends Builder {
     @DataBoundConstructor
 
     public RanorexRunnerBuilder(String rxTestSuiteFilePath, String rxRunConfiguration, String rxReportDirectory, String rxReportFile, String rxReportExtension, Boolean rxJUnitReport, Boolean rxZippedReport, String rxZippedReportDirectory, String rxZippedReportFile, Boolean rxTestRail, String rxTestRailUser, String rxTestRailPassword, String rxTestRailRID, String rxTestRailRunName, String rxGlobalParameter, String cmdLineArgs) {
-        this.rxTestSuiteFilePath = rxTestSuiteFilePath;
-        this.rxRunConfiguration = rxRunConfiguration;
-        this.rxReportDirectory = rxReportDirectory;
-        this.rxReportFile = rxReportFile;
-        this.rxReportExtension = rxReportExtension;
+        this.rxTestSuiteFilePath = rxTestSuiteFilePath.trim();
+        this.rxRunConfiguration = rxRunConfiguration.trim();
+        this.rxReportDirectory = rxReportDirectory.trim();
+        this.rxReportFile = rxReportFile.trim();
+        this.rxReportExtension = rxReportExtension.trim();
         this.rxJUnitReport = rxJUnitReport;
         this.rxZippedReport = rxZippedReport;
-        this.rxZippedReportDirectory = rxZippedReportDirectory;
-        this.rxZippedReportFile = rxZippedReportFile;
+        this.rxZippedReportDirectory = rxZippedReportDirectory.trim();
+        this.rxZippedReportFile = rxZippedReportFile.trim();
         this.rxTestRail = rxTestRail;
-        this.rxTestRailUser = rxTestRailUser;
-        this.rxTestRailPassword = rxTestRailPassword;
-        this.rxTestRailRID = rxTestRailRID;
-        this.rxTestRailRunName = rxTestRailRunName;
-        this.rxGlobalParameter = rxGlobalParameter;
-        this.cmdLineArgs = cmdLineArgs;
+        this.rxTestRailUser = rxTestRailUser.trim();
+        this.rxTestRailPassword = rxTestRailPassword.trim();
+        this.rxTestRailRID = rxTestRailRID.trim();
+        this.rxTestRailRunName = rxTestRailRunName.trim();
+        this.rxGlobalParameter = rxGlobalParameter.trim();
+        this.cmdLineArgs = cmdLineArgs.trim();
 
     }
 

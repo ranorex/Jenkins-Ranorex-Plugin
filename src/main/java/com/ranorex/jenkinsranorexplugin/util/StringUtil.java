@@ -7,9 +7,6 @@ import java.util.StringTokenizer;
 
 public abstract class StringUtil {
 
-    private StringUtil() {
-    }
-
     /**
      * Appends quote to the input string
      *
@@ -68,7 +65,9 @@ public abstract class StringUtil {
         ArrayList<String> splitInput = new ArrayList<>();
         while (valuesToknzr.hasMoreTokens()) {
             String value = valuesToknzr.nextToken();
-            splitInput.add(value);
+            if (! StringUtil.isNullOrSpace(value)) {
+                splitInput.add(value);
+            }
         }
         return splitInput;
 

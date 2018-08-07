@@ -1,7 +1,5 @@
 package com.ranorex.jenkinsranorexplugin.util;
 
-import java.security.InvalidParameterException;
-
 public abstract class BaseArgument {
     protected final static String SEPARATOR = ":";
     protected String flag;

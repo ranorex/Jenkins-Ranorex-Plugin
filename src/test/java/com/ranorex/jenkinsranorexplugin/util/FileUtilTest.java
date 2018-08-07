@@ -131,6 +131,17 @@ class FileUtilTest {
         assertTrue(actualResult);
     }
 
+    @Test
+    void isAbsolutePath_RelativePath_False() {
+        boolean result = FileUtil.isAbsolutePath("./Test/banana.exe");
+        assertFalse(result);
+    }
+
+    @Test
+    void isAbsolutePath_EmptyString_False() {
+        assertFalse(FileUtil.isAbsolutePath(""));
+    }
+
 
     @Test
     void IsAbsolutePath_RelativePathWithoutSpace_False() {
@@ -206,6 +217,12 @@ class FileUtilTest {
     void GetAbsoluteReportDirectory_AbsolutePathWithSpace_AbsolutePathWithSpace() {
         String actualResult = FileUtil.getAbsoluteReportDirectory(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace, _absoluteTestSuiteDirectoryOutsideJenkinsWithSpace);
         assertEquals(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace, actualResult);
+    }
+
+    @Test
+    void GetAbsoluteReportDirectory_AbsolutePath_() {
+        String actualResult = FileUtil.getAbsoluteReportDirectory(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace, "./Test/banana");
+        assertEquals(FileUtil.combinePath(_absoluteTestSuiteDirectoryOutsideJenkinsWithSpace, "./Test/banana"), actualResult);
     }
 
 

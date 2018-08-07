@@ -483,7 +483,12 @@ class CmdArgumentTest {
     ///////////trim
     @Test
     void trim_ValidArgument_TrimmedArgument() {
-        CmdArgument cmdarg = new CmdArgument("/tcdr:testcase=25");
+        CmdArgument cmdarg = new CmdArgument("   /tcdr : testcase = 25    ");
+        cmdarg.trim();
+        assertEquals("tcdr", cmdarg.getFlag());
+        assertEquals("testcase", cmdarg.getName());
+        assertEquals("25", cmdarg.getValue());
+
     }
 
 
@@ -548,5 +553,12 @@ class CmdArgumentTest {
     void tryExtractFlag_ArgumentWithNoSlashAndColonAndEqualAndValue_ValidFlag() {
         String flag = CmdArgument.tryExtractFlag("/ValidFlag:Test=Value");
         assertEquals("ValidFlag", flag);
+    }
+
+    ///toString
+    @Test
+    void toString_ValidInput_ValidString() {
+        CmdArgument cmdArg = new CmdArgument("/flag : name = value ");
+        assertEquals("/flag : name = value ", cmdArg.toString());
     }
 }

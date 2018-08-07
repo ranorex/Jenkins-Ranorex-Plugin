@@ -483,7 +483,12 @@ class CmdArgumentTest {
     ///////////trim
     @Test
     void trim_ValidArgument_TrimmedArgument() {
-        CmdArgument cmdarg = new CmdArgument("/tcdr:testcase=25");
+        CmdArgument cmdarg = new CmdArgument("   /tcdr : testcase = 25    ");
+        cmdarg.trim();
+        assertEquals("tcdr", cmdarg.getFlag());
+        assertEquals("testcase", cmdarg.getName());
+        assertEquals("25", cmdarg.getValue());
+
     }
 
 

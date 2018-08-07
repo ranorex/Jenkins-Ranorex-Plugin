@@ -30,27 +30,27 @@ class CmdArgumentTest {
     @Test
     void Constructor_ValidArgumentFlagWithoutSlash_CorrectFlag() {
         CmdArgument cmdArg = new CmdArgument("banana");
-        assertEquals("banana", cmdArg.getArgumentFlag());
+        assertEquals("banana", cmdArg.getFlag());
     }
 
     @Test
     void Constructor_ValidArgumentFlagWithSlash_CorrectFlag() {
         CmdArgument cmdArg = new CmdArgument("/banana");
-        assertEquals("banana", cmdArg.getArgumentFlag());
+        assertEquals("banana", cmdArg.getFlag());
     }
 
     @Test
     void Constructor_ValidArgumentFlagAndNameWithSlash_CorrectFlagAndName() {
         CmdArgument cmdArg = new CmdArgument("/banana:test");
-        assertEquals("banana", cmdArg.getArgumentFlag());
-        assertEquals("test", cmdArg.getArgumentName());
+        assertEquals("banana", cmdArg.getFlag());
+        assertEquals("test", cmdArg.getName());
     }
 
     @Test
     void Constructor_ValidArgumentFlagAndNameWithoutSlash_CorrectFlagAndName() {
         CmdArgument cmdArg = new CmdArgument("banana:test");
-        assertEquals("banana", cmdArg.getArgumentFlag());
-        assertEquals("test", cmdArg.getArgumentName());
+        assertEquals("banana", cmdArg.getFlag());
+        assertEquals("test", cmdArg.getName());
     }
 
     @Test
@@ -92,17 +92,17 @@ class CmdArgumentTest {
     @Test
     void Constructor_ValidArgumentFlagAndNameAndValueWithSlash_CorrectFlagAndName() {
         CmdArgument cmdArg = new CmdArgument("/banana:test=value");
-        assertEquals("banana", cmdArg.getArgumentFlag());
-        assertEquals("test", cmdArg.getArgumentName());
-        assertEquals("value", cmdArg.getArgumentValue());
+        assertEquals("banana", cmdArg.getFlag());
+        assertEquals("test", cmdArg.getName());
+        assertEquals("value", cmdArg.getValue());
     }
 
     @Test
     void Constructor_ValidArgumentFlagAndNameAndValueWithoutSlash_CorrectFlagAndName() {
         CmdArgument cmdArg = new CmdArgument("banana:test=value");
-        assertEquals("banana", cmdArg.getArgumentFlag());
-        assertEquals("test", cmdArg.getArgumentName());
-        assertEquals("value", cmdArg.getArgumentValue());
+        assertEquals("banana", cmdArg.getFlag());
+        assertEquals("test", cmdArg.getName());
+        assertEquals("value", cmdArg.getValue());
     }
 
     @Test
@@ -426,29 +426,29 @@ class CmdArgumentTest {
         assertFalse(result);
     }
 
-    ///////////trySplitArgumentString
+    ///////////trySplitArgument
     @Test
     void splitArgumentString_Empty_ThrowsInvalidParameterException() {
         try {
-            CmdArgument.trySplitArgumentString("");
-        } catch (InvalidParameterException e) {
-            assertEquals("Can't split empty string", e.getMessage());
+            CmdArgument.trySplitArgument("");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Cannot split empty string", e.getMessage());
         }
     }
 
     @Test
     void splitArgumentString_NULL_ThrowsInvalidParameterException() {
         try {
-            CmdArgument.trySplitArgumentString(null);
-        } catch (InvalidParameterException e) {
-            assertEquals("Can't split empty string", e.getMessage());
+            CmdArgument.trySplitArgument(null);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Cannot split empty string", e.getMessage());
         }
     }
 
     @Test
     void splitArgumentString_IncorrectArgument_ThrowsInvalidParameterException() {
         try {
-            CmdArgument.trySplitArgumentString("NotValid=Value");
+            CmdArgument.trySplitArgument("NotValid=Value");
         } catch (InvalidParameterException e) {
             assertEquals("Argument 'NotValid=Value' is not valid", e.getMessage());
         }
@@ -456,7 +456,7 @@ class CmdArgumentTest {
 
     @Test
     void splitArgumentString_CorrectFlagWithName_SplitArguments() {
-        String[] splitArgs = CmdArgument.trySplitArgumentString("/rul:MyRunLabel");
+        String[] splitArgs = CmdArgument.trySplitArgument("/rul:MyRunLabel");
         assertEquals(2, splitArgs.length);
         assertEquals("rul", splitArgs[0]);
         assertEquals("MyRunLabel", splitArgs[1]);
@@ -464,7 +464,7 @@ class CmdArgumentTest {
 
     @Test
     void splitArgumentString_CorrectFlagWithNameAndValue_SplitArguments() {
-        String[] splitArgs = CmdArgument.trySplitArgumentString("/testcaseparam:MyParam=MyValue");
+        String[] splitArgs = CmdArgument.trySplitArgument("/testcaseparam:MyParam=MyValue");
         assertEquals(3, splitArgs.length);
         assertEquals("testcaseparam", splitArgs[0]);
         assertEquals("MyParam", splitArgs[1]);
@@ -474,7 +474,7 @@ class CmdArgumentTest {
     @Test
     void splitArgumentString_CorrectFlagWithNameAndValue_Exception() {
         try {
-            CmdArgument.trySplitArgumentString("/testcaseparam:MyParam=");
+            CmdArgument.trySplitArgument("/testcaseparam:MyParam=");
         } catch (Exception e) {
             assertEquals("Value must not be null or empty", e.getMessage());
         }
@@ -494,7 +494,7 @@ class CmdArgumentTest {
         try {
             CmdArgument.tryExtractFlag("");
         } catch (IllegalArgumentException e) {
-            assertEquals("Cannot extract flag from empty or null string", e.getMessage());
+            assertEquals("Argument must not be null or empty", e.getMessage());
         }
     }
 
@@ -503,7 +503,7 @@ class CmdArgumentTest {
         try {
             CmdArgument.tryExtractFlag(null);
         } catch (IllegalArgumentException e) {
-            assertEquals("Cannot extract flag from empty or null string", e.getMessage());
+            assertEquals("Argument must not be null or empty", e.getMessage());
         }
     }
 

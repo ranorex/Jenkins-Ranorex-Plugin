@@ -29,16 +29,16 @@ class RanorexParameterTest {
     @Test
     void splitParameterString_Emtpy_ThrowsInvalidParameterException() {
         try {
-            RanorexParameter.trySplitParameterString("");
-        } catch (InvalidParameterException e) {
-            assertEquals("parameterString is null or empty", e.getMessage());
+            RanorexParameter.trySplitArgument("");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Cannot split empty string", e.getMessage());
         }
     }
 
     @Test
     void splitParameterString_InvalidFlag_ThrowsInvalidParameterException() {
         try {
-            RanorexParameter.trySplitParameterString("/banana:paramName=test");
+            RanorexParameter.trySplitArgument("/banana:paramName=test");
         } catch (InvalidParameterException e) {
             assertEquals("Parameter flag is not valid", e.getMessage());
         }
@@ -46,7 +46,7 @@ class RanorexParameterTest {
 
     @Test
     void splitParameterString_ValidStringWithPa_ValidParameter() {
-        String[] splitParam = RanorexParameter.trySplitParameterString("/pa:paramName=test");
+        String[] splitParam = RanorexParameter.trySplitArgument("/pa:paramName=test");
         assertEquals(3, splitParam.length);
         assertEquals("pa", splitParam[0]);
         assertEquals("paramName", splitParam[1]);
@@ -55,7 +55,7 @@ class RanorexParameterTest {
 
     @Test
     void splitParameterString_ValidStringWithoutPa_ValidParameter() {
-        String[] splitParam = RanorexParameter.trySplitParameterString("paramName=test");
+        String[] splitParam = RanorexParameter.trySplitArgument("paramName=test");
         assertEquals(3, splitParam.length);
         assertEquals("pa", splitParam[0]);
         assertEquals("paramName", splitParam[1]);
@@ -65,7 +65,7 @@ class RanorexParameterTest {
     @Test
     void splitParameterString_InvalidParameterStringWithPa_ThrowsInvalidParameterException() {
         try {
-            String[] splitParam = RanorexParameter.trySplitParameterString("/pa:paramNametest");
+            String[] splitParam = RanorexParameter.trySplitArgument("/pa:paramNametest");
         } catch (InvalidParameterException e) {
             assertEquals("Parameter is not valid", e.getMessage());
         }
@@ -74,7 +74,7 @@ class RanorexParameterTest {
     @Test
     void splitParameterString_InvalidParameterStringWithouPa_ThrowsInvalidParameterException() {
         try {
-            String[] splitParam = RanorexParameter.trySplitParameterString("paramNametest");
+            String[] splitParam = RanorexParameter.trySplitArgument("paramNametest");
         } catch (InvalidParameterException e) {
             assertEquals("Parameter is not valid", e.getMessage());
         }
@@ -84,25 +84,25 @@ class RanorexParameterTest {
     @Test
     void Constructor_ValidInputStringPa_ValidRanorexParameter() {
         RanorexParameter valid = new RanorexParameter("/pa:TestName=TestValue");
-        assertEquals(valid.getParameterFlag(), "pa");
-        assertEquals(valid.getParameterName(), "TestName");
-        assertEquals(valid.getParameterValue(), "TestValue");
+        assertEquals(valid.getFlag(), "pa");
+        assertEquals(valid.getName(), "TestName");
+        assertEquals(valid.getValue(), "TestValue");
     }
 
     @Test
     void Constructor_ValidInputStringWithoutPa_ValidRanorexParameter() {
         RanorexParameter valid = new RanorexParameter("TestName=TestValue");
-        assertEquals(valid.getParameterFlag(), "pa");
-        assertEquals(valid.getParameterName(), "TestName");
-        assertEquals(valid.getParameterValue(), "TestValue");
+        assertEquals(valid.getFlag(), "pa");
+        assertEquals(valid.getName(), "TestName");
+        assertEquals(valid.getValue(), "TestValue");
     }
 
     @Test
     void Constructor_ValidInputStringParam_ValidRanorexParameter() {
         RanorexParameter valid = new RanorexParameter("/param:TestName=TestValue");
-        assertEquals(valid.getParameterFlag(), "param");
-        assertEquals(valid.getParameterName(), "TestName");
-        assertEquals(valid.getParameterValue(), "TestValue");
+        assertEquals(valid.getFlag(), "param");
+        assertEquals(valid.getName(), "TestName");
+        assertEquals(valid.getValue(), "TestValue");
     }
 
     @Test

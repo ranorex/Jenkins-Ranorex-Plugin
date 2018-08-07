@@ -3,6 +3,7 @@ package com.ranorex.jenkinsranorexplugin.util;
 import org.junit.jupiter.api.Test;
 
 import java.security.InvalidParameterException;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -111,5 +112,16 @@ public class StringUtilTest {
     public void RemoveHeadingSlash_ValidInputWithoutSlash_ValidOutputWithoutSlash() {
         String result = StringUtil.removeHeadingSlash("bananaRama");
         assertEquals("bananaRama", result);
+    }
+
+    @Test
+    public void splitBy_ValidInput_ListOfSplitItems() {
+        List<String> result = StringUtil.splitBy("This,is,Sparta;Test\tBanana", ",;\t");
+        assertEquals(5, result.size());
+        assertEquals("This", result.get(0));
+        assertEquals("is", result.get(1));
+        assertEquals("Sparta", result.get(2));
+        assertEquals("Test", result.get(3));
+        assertEquals("Banana", result.get(4));
     }
 }

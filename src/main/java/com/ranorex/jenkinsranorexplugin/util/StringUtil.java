@@ -65,8 +65,10 @@ public abstract class StringUtil {
         ArrayList<String> splitInput = new ArrayList<>();
         while (valuesToknzr.hasMoreTokens()) {
             String value = valuesToknzr.nextToken();
+            if (! StringUtil.isNullOrSpace(value)) {
                 splitInput.add(value);
             }
+        }
         return splitInput;
 
     }

@@ -60,7 +60,7 @@
                 </f:entry>
                 <!--Test Rail Password-->
                 <f:entry title="${%Test Rail Password}" field="rxTestRailPassword">
-                    <f:textbox/>
+                    <f:password/>
                 </f:entry>
                 <!--Test Rail Run ID-->
                 <f:entry title="${%Test Rail Run ID}" field="rxTestRailRID">

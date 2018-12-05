@@ -50,7 +50,7 @@ Separate parameters with semicolons or newlines.
 
 
 #### Command line arguments
-Allows you to add Ranorex command line arguments. Some of the most important ones include:
+Allows you to add Ranorex command line arguments. You have to write a slash in front of each argument, since the arguments are going to be passed directly to the commandline without modification. Some of the most important ones include:
 * config | cfg:<config parameter name>=<value>
 ..* Set values for configuration parameters.
 * reportlevel | rl: Debug|Info|Warn|Error|Success|Failure|<any integer>

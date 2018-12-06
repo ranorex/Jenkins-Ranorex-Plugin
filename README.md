@@ -50,22 +50,22 @@ Separate parameters with semicolons or newlines.
 
 
 #### Command line arguments
-Allows you to add Ranorex command line arguments. Some of the most important ones include:
-* config | cfg:<config parameter name>=<value>
+Allows you to add Ranorex command line arguments in the following format "/argument". Some of the most important ones include:
+* /config | cfg:<config parameter name>=<value>
 ..* Set values for configuration parameters.
-* reportlevel | rl: Debug|Info|Warn|Error|Success|Failure|<any integer>
+* /reportlevel | rl: Debug|Info|Warn|Error|Success|Failure|<any integer>
 ..* Sets the minimum report level that log messages need to have in order to be included in the log file. Specify 'None' to completely disable reporting. These levels correspond to the following integer values: Debug=10,Info=20,Warn=30,Error=40,Success=110,Failure=120
-* testcase | tc:<name or guid of test case>
+* /testcase | tc:<name or guid of test case>
 ..* Runs this test case only.
-* testsuite | ts:<path to test suite file>
+* /testsuite | ts:<path to test suite file>
 ..* Runs the test cases defined by the test suite (rxtst) file. By default the rxtst file with the same name as the <TestSuiteExe> is used or the first rxtst file in the same folder as <TestSuiteExe>.
-* module | mo:<module name or guid>
+* /module | mo:<module name or guid>
 ..* Runs the module with the specified name or guid. Assemblies loaded by <TestSuiteExe> and assemblies referenced in the rxtst file are searched.
-* testcaseparam | tcpa:<name or guid of test case>:<parameter name>=<value>
+* /testcaseparam | tcpa:<name or guid of test case>:<parameter name>=<value>
 ..* Creates or overrides values for test case parameters specified in the test suite.
-* runlabel | rul:<custom value>
+* /runlabel | rul:<custom value>
 ..* Sets a custom run label for the test run.
-* testcasedatarange | tcdr:<name or guid of test case>=<data range>
+* /testcasedatarange | tcdr:<name or guid of test case>=<data range>
 ..* Sets the data range for a test case.
 
 Please find additional information in the following blog [Integrate Ranorex test automation into Jenkins continuous integration process](https://www.ranorex.com/blog/integrating-ranorex-automation-in-jenkins-continuous-integration-process/)

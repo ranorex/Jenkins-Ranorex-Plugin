@@ -12,10 +12,13 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.BuildListener;
 import hudson.model.Result;
+import hudson.model.Run;
+import hudson.model.TaskListener;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.ArgumentListBuilder;
 import hudson.util.FormValidation;
+import jenkins.tasks.SimpleBuildStep;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
@@ -24,7 +27,9 @@ import org.kohsuke.stapler.StaplerRequest;
 import java.io.IOException;
 import java.io.PrintStream;
 
-public class RanorexRunnerBuilder extends Builder {
+import javax.annotation.Nonnull;
+
+public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
 
     private static final String ZIPPED_REPORT_EXTENSION = ".rxzlog";
     private static final String ARGUMENT_SEPARATOR = "\t\r\n;";
@@ -61,24 +66,34 @@ public class RanorexRunnerBuilder extends Builder {
     private ArgumentListBuilder jArguments;
 
     /**
-     * When this builder is created in the project configuration step, the
-     * builder object will be created from the strings below
+     * When this builder is created in the project configuration step, the builder
+     * object will be created from the strings below
      *
-     * @param rxTestSuiteFilePath     The name/location of the Ranorex Test Suite / Ranorex Test Exe File
-     * @param rxRunConfiguration      The Ranorex Run configuration which will be executed
-     * @param rxReportDirectory       The directory where the Ranorex Report should be saved
+     * @param rxTestSuiteFilePath     The name/location of the Ranorex Test Suite /
+     *                                Ranorex Test Exe File
+     * @param rxRunConfiguration      The Ranorex Run configuration which will be
+     *                                executed
+     * @param rxReportDirectory       The directory where the Ranorex Report should
+     *                                be saved
      * @param rxReportFile            The name of the Ranorex Report
      * @param rxReportExtension       The extension of your Ranorex Report
-     * @param rxJUnitReport           If true, a JUnit compatible Report will be saved
-     * @param rxZippedReport          If true, the report will also be saved as RXZLOG
-     * @param rxZippedReportDirectory The directory where the Ranorex Zipped Report should be saved
+     * @param rxJUnitReport           If true, a JUnit compatible Report will be
+     *                                saved
+     * @param rxZippedReport          If true, the report will also be saved as
+     *                                RXZLOG
+     * @param rxZippedReportDirectory The directory where the Ranorex Zipped Report
+     *                                should be saved
      * @param rxZippedReportFile      The name of the zipped Ranorex Report
      * @param rxGlobalParameter       Global test suite parameters
      * @param cmdLineArgs             Additional CMD line arguments
      */
     @DataBoundConstructor
 
-    public RanorexRunnerBuilder(String rxTestSuiteFilePath, String rxRunConfiguration, String rxReportDirectory, String rxReportFile, String rxReportExtension, Boolean rxJUnitReport, Boolean rxZippedReport, String rxZippedReportDirectory, String rxZippedReportFile, Boolean rxTestRail, String rxTestRailUser, String rxTestRailPassword, String rxTestRailRID, String rxTestRailRunName, String rxGlobalParameter, String cmdLineArgs) {
+    public RanorexRunnerBuilder(String rxTestSuiteFilePath, String rxRunConfiguration, String rxReportDirectory,
+            String rxReportFile, String rxReportExtension, Boolean rxJUnitReport, Boolean rxZippedReport,
+            String rxZippedReportDirectory, String rxZippedReportFile, Boolean rxTestRail, String rxTestRailUser,
+            String rxTestRailPassword, String rxTestRailRID, String rxTestRailRunName, String rxGlobalParameter,
+            String cmdLineArgs) {
         this.rxTestSuiteFilePath = rxTestSuiteFilePath.trim();
         this.rxRunConfiguration = rxRunConfiguration.trim();
         this.rxReportDirectory = rxReportDirectory.trim();
@@ -166,6 +181,197 @@ public class RanorexRunnerBuilder extends Builder {
     // {
     // return this.rxExecuteableFile;
     // }
+
+    @Override
+    public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath workspace, @Nonnull Launcher launcher,
+            @Nonnull TaskListener listener) throws InterruptedException, IOException {
+        jArguments = new ArgumentListBuilder("cmd.exe", "/C");
+        WorkSpace = FileUtil.getRanorexWorkingDirectory(workspace, rxTestSuiteFilePath).getRemote();
+        WorkSpace = StringUtil.appendBackslash(WorkSpace);
+        LOGGER = listener.getLogger();
+
+        EnvVars env;
+        if (run instanceof AbstractBuild) {
+            env = run.getEnvironment(listener);
+            env.overrideAll(((AbstractBuild<?,?>) run).getBuildVariables());
+        } else {
+            env = new EnvVars();
+        }
+
+        if (! StringUtil.isNullOrSpace(rxTestSuiteFilePath)) {
+            rxExecuteableFile = FileUtil.getExecutableFromTestSuite(rxTestSuiteFilePath);
+            jArguments.add(rxExecuteableFile);
+            // Ranorex Run Configuration
+            if (! StringUtil.isNullOrSpace(rxRunConfiguration)) {
+                jArguments.add("/runconfig:" + rxRunConfiguration);
+            }
+
+            // Ranorex Reportdirectory
+            if (! StringUtil.isNullOrSpace(rxReportDirectory)) {
+                LOGGER.println("Reportpath to merge. Base: " + WorkSpace + " Relative: " + rxReportDirectory);
+                usedRxReportDirectory = FileUtil.getAbsoluteReportDirectory(WorkSpace, rxReportDirectory);
+                LOGGER.println("Merged path: " + usedRxReportDirectory);
+            } else {
+                usedRxReportDirectory = WorkSpace;
+            }
+            usedRxReportDirectory = StringUtil.appendBackslash(usedRxReportDirectory);
+
+            // ReportFilename
+            if (! StringUtil.isNullOrSpace(rxReportFile)) {
+                if (! FileUtil.isAbsolutePath(rxReportFile)) {
+                    usedRxReportFile = FileUtil.removeFileExtension(rxReportFile);
+                } else {
+                    LOGGER.println("'" + rxReportFile + "' is not a valid Ranorex Report filename");
+                    return;
+                }
+            } else {
+                usedRxReportFile = "%S_%Y%M%D_%T";
+            }
+            jArguments.add("/reportfile:" + usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension);
+
+            // JUnit compatible Report
+            if (rxJUnitReport) {
+                jArguments.add("/junit");
+            }
+
+            // Compressed copy of Ranorex report
+            if (rxZippedReport) {
+                jArguments.add("/zipreport");
+                // Zipped Ranorex Reportdirectory
+                if (! StringUtil.isNullOrSpace(rxZippedReportDirectory)) {
+                    usedRxZippedReportDirectory = FileUtil.getAbsoluteReportDirectory(WorkSpace, rxZippedReportDirectory);
+                } else {
+                    usedRxZippedReportDirectory = WorkSpace;
+                }
+                usedRxZippedReportDirectory = StringUtil.appendBackslash(usedRxZippedReportDirectory);
+
+                // Zipped Report File Name
+                if (! StringUtil.isNullOrSpace(rxZippedReportFile)) {
+                    if (! FileUtil.isAbsolutePath(rxZippedReportFile)) {
+                        usedRxZippedReportFile = FileUtil.removeFileExtension(rxZippedReportFile);
+                    } else {
+                        LOGGER.println("'" + rxZippedReportFile + "' is not a valid Ranorex Report filename");
+                        return;
+                    }
+                } else {
+                    usedRxZippedReportFile = usedRxReportFile;
+                }
+
+                jArguments.add("/zipreportfile:" + usedRxZippedReportDirectory + usedRxZippedReportFile + ZIPPED_REPORT_EXTENSION);
+            }
+
+            //Test Rail
+            if (rxTestRail) {
+                jArguments.add("/testrail");
+                if (! StringUtil.isNullOrSpace(rxTestRailUser) && ! StringUtil.isNullOrSpace(rxTestRailPassword)) {
+                    jArguments.addMasked("/truser=" + rxTestRailUser);
+                    jArguments.addMasked("/trpass=" + rxTestRailPassword);
+                } else {
+                    LOGGER.println("Testrail username and password are required");
+                    return;
+                }
+                if (! StringUtil.isNullOrSpace(rxTestRailRID)) {
+                    jArguments.add("/trrunid=" + rxTestRailRID);
+                }
+                if (! StringUtil.isNullOrSpace(rxTestRailRunName)) {
+                    jArguments.add("/trrunname=" + rxTestRailRunName);
+                }
+            }
+
+            // Parse Global Parameters
+            if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
+                for (String param : StringUtil.splitBy(rxGlobalParameter, ARGUMENT_SEPARATOR)) {
+                    try {
+                        RanorexParameter rxParam = new RanorexParameter(param);
+                        rxParam.trim();
+                        jArguments.add(rxParam.toString());
+                    } catch (Exception e) {
+                        System.out.println("[INFO] [RanorexRunnerBuilder] Parameter '" + param + "' will be ignored");
+                    }
+                }
+            }
+
+            // Additional cmd arguments
+            if (! StringUtil.isNullOrSpace(cmdLineArgs)) {
+                for (String argument : StringUtil.splitBy(cmdLineArgs, ARGUMENT_SEPARATOR)) {
+                    try {
+                        CmdArgument arg = new CmdArgument(argument);
+                        jArguments.add(arg.toString());
+                    } catch (Exception e) {
+                        System.out.println("[INFO] [RanorexRunnerBuilder] Argument '" + argument + "' will be ignored ");
+                    }
+                }
+            }
+            // Summarize Output
+            if (getDescriptor().isUseSummarize()) {
+                LOGGER.println("\n*************Start of Ranorex Summary*************");
+                LOGGER.println("Current Plugin version:\t\t" + getClass().getPackage().getImplementationVersion());
+                LOGGER.println("Ranorex Working Directory:\t" + WorkSpace);
+                LOGGER.println("Ranorex test suite file:\t" + rxTestSuiteFilePath);
+                LOGGER.println("Ranorex test exe file:\t\t" + rxExecuteableFile);
+                LOGGER.println("Ranorex run configuration:\t" + rxRunConfiguration);
+                LOGGER.println("Ranorex report directory:\t" + usedRxReportDirectory);
+                LOGGER.println("Ranorex report filename:\t" + usedRxReportFile);
+                LOGGER.println("Ranorex report extension:\t" + rxReportExtension);
+                LOGGER.println("Junit-compatible report:\t" + rxJUnitReport);
+                LOGGER.println("Ranorex report compression:\t" + rxZippedReport);
+                if (rxZippedReport) {
+                    LOGGER.println("\tRanorex zipped report dir:\t" + usedRxZippedReportDirectory);
+                    LOGGER.println("\tRanorex zipped report file:\t" + usedRxZippedReportFile);
+                }
+                LOGGER.println("Ranorex Test Rail Integration:\t" + rxTestRail);
+                if (rxTestRail) {
+                    LOGGER.println("\tRanorex Test Rail User:\t\t" + rxTestRailUser);
+                    LOGGER.println("\tRanorex Test Rail Password:\t" + "*****************");
+                    LOGGER.println("\tRanorex Test Rail Run ID:\t" + rxTestRailRID);
+                    LOGGER.println("\tRanorex Test Rail Run Name:\t" + rxTestRailRunName);
+                }
+                LOGGER.println("Ranorex global parameters:");
+                if (! StringUtil.isNullOrSpace(rxGlobalParameter)) {
+                    for (String param : StringUtil.splitBy(rxGlobalParameter, ARGUMENT_SEPARATOR)) {
+                        try {
+                            RanorexParameter rxParam = new RanorexParameter(param);
+                            rxParam.trim();
+                            LOGGER.println("\t*" + rxParam.toString());
+                        } catch (Exception e) {
+                            LOGGER.println("\t!" + param + " will be ignored");
+                        }
+                    }
+                } else {
+                    LOGGER.println("\t*No global parameters entered");
+                }
+                LOGGER.println("Command line arguments:");
+                if (! StringUtil.isNullOrSpace(cmdLineArgs)) {
+                    for (String argument : StringUtil.splitBy(cmdLineArgs, ARGUMENT_SEPARATOR)) {
+                        try {
+                            CmdArgument arg = new CmdArgument(argument);
+                            arg.trim();
+                            LOGGER.println("\t*" + arg.toString());
+                        } catch (Exception e) {
+                            LOGGER.println("\t!" + argument + " will be ignored ");
+                        }
+                    }
+                } else {
+                    LOGGER.println("\t*No command line arguments entered");
+                }
+                LOGGER.println("*************End of Ranorex Summary*************\n");
+            }
+            
+            FilePath currentWorkspace = FileUtil.getRanorexWorkingDirectory(workspace, rxTestSuiteFilePath);
+            LOGGER.println("Executing : " + jArguments.toString());
+            try {
+                int r = launcher.launch().cmds(jArguments).envs(env).stdout(listener).pwd(currentWorkspace).join();
+    
+                if (r != 0) {
+                    run.setResult(Result.FAILURE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace(listener.fatalError("execution failed"));
+            }
+        } else {
+            LOGGER.println("No TestSuite file given");
+        }
+    }
 
 
     /**

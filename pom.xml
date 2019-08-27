@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>2.28</version>
+        <version>3.49</version>
     </parent>
 
     <artifactId>ranorex-integration</artifactId>
     <packaging>hpi</packaging>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.3.0</version>
     <name>Ranorex Test Execution Plugin</name>
     <description>This plugin provides an easy way to run a Ranorex test suite as a build step in your Jenkins job. You
         can run a test suite as is without any need for configuration, or you can make several different advanced
@@ -32,7 +32,19 @@
             <name>Markus Stoegerer</name>
             <email>markus.stoegerer@gmail.com</email>
         </developer>
+        <developer>
+            <id>dlujic</id>
+            <name>Dejan Lujic</name>
+        </developer>
     </developers>
+
+    <properties>
+		<!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to
+    run. -->
+		<jenkins.version>2.7.4</jenkins.version>
+		<!-- Java Level to use. Java 7 required when using core >= 1.612 -->
+		<java.level>8</java.level>
+	</properties>
 
     <scm>
         <connection>scm:git:ssh://github.com/jenkinsci/ranorex-integration-plugin.git</connection>
@@ -59,7 +71,7 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <scope>test</scope>
-            <version>2.44.0</version>
+            <version>3.141.59</version>
         </dependency>
         <dependency>
             <groupId>com.opera</groupId>
@@ -77,13 +89,23 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-            <version>4.11</version>
-        </dependency>
+            </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.3.1</version>
+            <version>5.3.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <reporting>
+    	<plugins>
+    		<plugin>
+    			<groupId>com.github.spotbugs</groupId>
+    			<artifactId>spotbugs-maven-plugin</artifactId>
+    			<configuration>
+    				<excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </reporting>
 </project>

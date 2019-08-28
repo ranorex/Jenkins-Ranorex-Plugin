@@ -33,7 +33,6 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
 
     private static final String ZIPPED_REPORT_EXTENSION = ".rxzlog";
     private static final String ARGUMENT_SEPARATOR = "\t\r\n;";
-    private static PrintStream LOGGER;
     /*
      * Builder GUI Fields
      */
@@ -64,26 +63,26 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
     private String usedRxZippedReportDirectory;
     private String usedRxZippedReportFile;
     private ArgumentListBuilder jArguments;
+    private PrintStream LOGGER;
 
     /**
      * When this builder is created in the project configuration step, the builder
      * object will be created from the strings below
      *
-     * @param rxTestSuiteFilePath     The name/location of the Ranorex Test Suite /
-     *                                Ranorex Test Exe File
-     * @param rxRunConfiguration      The Ranorex Run configuration which will be
-     *                                executed
-     * @param rxReportDirectory       The directory where the Ranorex Report should
-     *                                be saved
+     * @param rxTestSuiteFilePath     The name/location of the Ranorex Test Suite / Ranorex Test Exe File
+     * @param rxRunConfiguration      The Ranorex Run configuration which will be executed
+     * @param rxReportDirectory       The directory where the Ranorex Report should be saved
      * @param rxReportFile            The name of the Ranorex Report
      * @param rxReportExtension       The extension of your Ranorex Report
-     * @param rxJUnitReport           If true, a JUnit compatible Report will be
-     *                                saved
-     * @param rxZippedReport          If true, the report will also be saved as
-     *                                RXZLOG
-     * @param rxZippedReportDirectory The directory where the Ranorex Zipped Report
-     *                                should be saved
+     * @param rxJUnitReport           If true, a JUnit compatible Report will be saved
+     * @param rxZippedReport          If true, the report will also be saved as RXZLOG
+     * @param rxZippedReportDirectory The directory where the Ranorex Zipped Report should be saved
      * @param rxZippedReportFile      The name of the zipped Ranorex Report
+     * @param rxTestRail              True when test rail is used
+     * @param rxTestRailUser          Username for connecting to TestRail
+     * @param rxTestRailPassword      Password for connecting to TestRail
+     * @param rxTestRailRID           TestRail RID
+     * @param rxTestRailRunName       TestRail run name
      * @param rxGlobalParameter       Global test suite parameters
      * @param cmdLineArgs             Additional CMD line arguments
      */
@@ -378,7 +377,7 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
      * Runs the step over the given build and reports the progress to the
      * listener
      *
-     * @param build
+     * @param build AbstractBuild instance
      * @param launcher Starts a process
      * @param listener Receives events that happen during a build
      * @return Receives events that happen during a build

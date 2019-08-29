@@ -8,6 +8,7 @@ import hudson.EnvVars;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
+import hudson.Util;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.BuildListener;
@@ -20,13 +21,18 @@ import hudson.util.ArgumentListBuilder;
 import hudson.util.FormValidation;
 import jenkins.tasks.SimpleBuildStep;
 import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.BooleanUtils;
+import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
 import java.io.PrintStream;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
@@ -36,22 +42,38 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
     /*
      * Builder GUI Fields
      */
-    private final String rxTestSuiteFilePath;
-    private final String rxRunConfiguration;
-    private final String rxReportDirectory;
-    private final String rxReportFile;
-    private final String rxReportExtension;
-    private final Boolean rxJUnitReport;
-    private final Boolean rxZippedReport;
-    private final String rxZippedReportDirectory;
-    private final String rxZippedReportFile;
-    private final String rxGlobalParameter;
-    private final String cmdLineArgs;
-    private final Boolean rxTestRail;
-    private final String rxTestRailUser;
-    private final String rxTestRailPassword;
-    private final String rxTestRailRID;
-    private final String rxTestRailRunName;
+    @CheckForNull
+    private String rxTestSuiteFilePath;
+    @CheckForNull
+    private String rxRunConfiguration;
+    @CheckForNull
+    private String rxReportDirectory;
+    @CheckForNull
+    private String rxReportFile;
+    @CheckForNull
+    private String rxReportExtension;
+    @CheckForNull
+    private Boolean rxJUnitReport;
+    @CheckForNull
+    private Boolean rxZippedReport;
+    @CheckForNull
+    private String rxZippedReportDirectory;
+    @CheckForNull
+    private String rxZippedReportFile;
+    @CheckForNull
+    private String rxGlobalParameter;
+    @CheckForNull
+    private String cmdLineArgs;
+    @CheckForNull
+    private Boolean rxTestRail;
+    @CheckForNull
+    private String rxTestRailUser;
+    @CheckForNull
+    private String rxTestRailPassword;
+    @CheckForNull
+    private String rxTestRailRID;
+    @CheckForNull
+    private String rxTestRailRunName;
 
     /*
      * Other Variables
@@ -65,6 +87,15 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
     private ArgumentListBuilder jArguments;
     private PrintStream LOGGER;
 
+    /**
+     * When this builder is created in the project configuration step, the builder
+     * object will be created from the string below
+     *
+     * @param rxTestSuiteFilePath     The name/location of the Ranorex Test Suite / Ranorex Test Exe File
+     **/
+    @DataBoundConstructor
+    public RanorexRunnerBuilder() { }
+    
     /**
      * When this builder is created in the project configuration step, the builder
      * object will be created from the strings below
@@ -86,8 +117,7 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
      * @param rxGlobalParameter       Global test suite parameters
      * @param cmdLineArgs             Additional CMD line arguments
      */
-    @DataBoundConstructor
-
+    @Deprecated
     public RanorexRunnerBuilder(String rxTestSuiteFilePath, String rxRunConfiguration, String rxReportDirectory,
             String rxReportFile, String rxReportExtension, Boolean rxJUnitReport, Boolean rxZippedReport,
             String rxZippedReportDirectory, String rxZippedReportFile, Boolean rxTestRail, String rxTestRailUser,
@@ -112,66 +142,67 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
 
     }
 
+    @CheckForNull
     public String getRxTestSuiteFilePath() {
         return this.rxTestSuiteFilePath;
     }
-
+    @CheckForNull
     public String getRxRunConfiguration() {
         return this.rxRunConfiguration;
     }
-
+    @CheckForNull
     public String getRxReportDirectory() {
         return this.rxReportDirectory;
     }
-
+    @CheckForNull
     public String getRxReportFile() {
         return this.rxReportFile;
     }
-
+    @CheckForNull
     public String getRxReportExtension() {
         return this.rxReportExtension;
     }
-
-    public Boolean getrxJUnitReport() {
+    @CheckForNull
+    public Boolean getRxJUnitReport() {
         return this.rxJUnitReport;
     }
-
+    @CheckForNull
     public Boolean getRxZippedReport() {
         return this.rxZippedReport;
     }
-
+    @CheckForNull
     public String getRxZippedReportDirectory() {
         return this.rxZippedReportDirectory;
     }
-
+    @CheckForNull
     public String getRxZippedReportFile() {
         return this.rxZippedReportFile;
     }
-
+    @CheckForNull
     public Boolean getRxTestRail() {
         return this.rxTestRail;
     }
-
+    @CheckForNull
     public String getRxTestRailUser() {
         return this.rxTestRailUser;
     }
-
+    @CheckForNull
     public String getRxTestRailPassword() {
         return this.rxTestRailPassword;
     }
-
+    @CheckForNull
     public String getRxTestRailRID() {
         return this.rxTestRailRID;
     }
-
+    @CheckForNull
     public String getRxTestRailRunName() {
         return this.rxTestRailRunName;
     }
-
+    @CheckForNull
     public String getRxGlobalParameter() {
         return this.rxGlobalParameter;
     }
-
+    @CheckForNull
     public String getCmdLineArgs() {
         return this.cmdLineArgs;
     }
@@ -180,6 +211,71 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
     // {
     // return this.rxExecuteableFile;
     // }
+    
+    @DataBoundSetter
+    public void setRxTestSuiteFilePath(@CheckForNull String rxTestSuiteFilePath) {
+    	this.rxTestSuiteFilePath = Util.fixNull(rxTestSuiteFilePath);
+    }
+    @DataBoundSetter
+    public void setRxRunConfiguration(@CheckForNull String rxRunConfiguration) {
+    	this.rxRunConfiguration = Util.fixNull(rxRunConfiguration);
+    }
+    @DataBoundSetter
+    public void setRxReportDirectory(@CheckForNull String rxReportDirectory) {
+    	this.rxReportDirectory = Util.fixNull(rxReportDirectory);
+    }
+    @DataBoundSetter
+    public void setRxReportFile(@CheckForNull String rxReportFile) {
+    	this.rxReportFile = Util.fixNull(rxReportFile);
+    }
+    @DataBoundSetter
+    public void setRxReportExtension(@CheckForNull String rxReportExtension) {
+    	this.rxReportExtension = Util.fixNull(rxReportExtension);
+    }
+    @DataBoundSetter
+    public void setRxJUnitReport(@CheckForNull Boolean rxJUnitReport) {
+    	this.rxJUnitReport = BooleanUtils.isTrue(rxJUnitReport);
+    }
+    @DataBoundSetter
+    public void setRxZippedReport(Boolean rxZippedReport) {
+    	this.rxZippedReport = BooleanUtils.isTrue(rxZippedReport);
+    }
+    @DataBoundSetter
+    public void setRxZippedReportDirectory(@CheckForNull String rxZippedReportDirectory) {
+    	this.rxZippedReportDirectory = Util.fixNull(rxZippedReportDirectory);
+    }
+    @DataBoundSetter
+    public void setRxZippedReportFile(@CheckForNull String rxZippedReportFile) {
+    	this.rxZippedReportFile = Util.fixNull(rxZippedReportFile);
+    }
+    @DataBoundSetter
+    public void setRxTestRail(Boolean rxTestRail) {
+    	this.rxTestRail = BooleanUtils.isTrue(rxTestRail);
+    }
+    @DataBoundSetter
+    public void setRxTestRailUser(@CheckForNull String rxTestRailUser) {
+    	this.rxTestRailUser = Util.fixNull(rxTestRailUser);
+    }
+    @DataBoundSetter
+    public void setRxTestRailPassword(@CheckForNull String rxTestRailPassword) {
+    	this.rxTestRailPassword = Util.fixNull(rxTestRailPassword);
+    }
+    @DataBoundSetter
+    public void setRxTestRailRID(@CheckForNull String rxTestRailRID) {
+    	this.rxTestRailRID = Util.fixNull(rxTestRailRID);
+    }
+    @DataBoundSetter
+    public void setRxTestRailRunName(@CheckForNull String rxTestRailRunName) {
+    	this.rxTestRailRunName = Util.fixNull(rxTestRailRunName);
+    }
+    @DataBoundSetter
+    public void setRxGlobalParameter(@CheckForNull String rxGlobalParameter) {
+    	this.rxGlobalParameter = Util.fixNull(rxGlobalParameter);
+    }
+    @DataBoundSetter
+    public void setCmdLineArgs(@CheckForNull String CmdLineArgs) {
+    	this.cmdLineArgs = Util.fixNull(CmdLineArgs);
+    }
     
     /**
      * Runs the step over the given build and reports the progress to the
@@ -251,12 +347,12 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
             jArguments.add("/reportfile:" + usedRxReportDirectory + usedRxReportFile + "." + rxReportExtension);
 
             // JUnit compatible Report
-            if (rxJUnitReport) {
+            if (BooleanUtils.isTrue(rxJUnitReport)) {
                 jArguments.add("/junit");
             }
 
             // Compressed copy of Ranorex report
-            if (rxZippedReport) {
+            if (BooleanUtils.isTrue(rxZippedReport)) {
                 jArguments.add("/zipreport");
                 // Zipped Ranorex Reportdirectory
                 if (! StringUtil.isNullOrSpace(rxZippedReportDirectory)) {
@@ -282,7 +378,7 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
             }
 
             //Test Rail
-            if (rxTestRail) {
+            if (BooleanUtils.isTrue(rxTestRail)) {
                 jArguments.add("/testrail");
                 if (! StringUtil.isNullOrSpace(rxTestRailUser) && ! StringUtil.isNullOrSpace(rxTestRailPassword)) {
                     jArguments.addMasked("/truser=" + rxTestRailUser);
@@ -430,6 +526,7 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
 
     }
 
+    @Symbol("ranorex")
     @Extension // This indicates to Jenkins that this is an implementation of an extension point.
     public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
 
@@ -520,7 +617,6 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
         public String getDisplayName() {
             return "Run a Ranorex test suite";
         }
-
 
         @Override
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {

@@ -490,33 +490,6 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
         }
     }
 
-    /**
-     * Starts the given executeable file with all arguments and parameters
-     *
-     * @param build
-     * @param launcher Starts a process
-     * @param listener Receives events that happen during a build
-     * @param env      Environmental variables to be used for launching processes for this build.
-     * @return true if execution was succesfull; otherwise false
-     * @throws InterruptedException
-     * @throws IOException
-     */
-    private boolean exec(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener, EnvVars env) {
-        FilePath currentWorkspace = FileUtil.getRanorexWorkingDirectory(build.getWorkspace(), rxTestSuiteFilePath);
-        LOGGER.println("Executing : " + jArguments.toString());
-        try {
-            int r = launcher.launch().cmds(jArguments).envs(env).stdout(listener).pwd(currentWorkspace).join();
-
-            if (r != 0) {
-                build.setResult(Result.FAILURE);
-            }
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace(listener.fatalError("execution failed"));
-            return false;
-        }
-    }
-
     // Overridden for better type safety.
     // If your plugin doesn't really define any property on Descriptor,
     // you don't have to do this.

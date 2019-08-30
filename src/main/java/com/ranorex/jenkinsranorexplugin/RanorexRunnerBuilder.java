@@ -89,9 +89,7 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
 
     /**
      * When this builder is created in the project configuration step, the builder
-     * object will be created from the string below
-     *
-     * @param rxTestSuiteFilePath     The name/location of the Ranorex Test Suite / Ranorex Test Exe File
+     * object will be created
      **/
     @DataBoundConstructor
     public RanorexRunnerBuilder() { }
@@ -206,11 +204,6 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
     public String getCmdLineArgs() {
         return this.cmdLineArgs;
     }
-
-    // public String getRxExecuteableFile()
-    // {
-    // return this.rxExecuteableFile;
-    // }
     
     @DataBoundSetter
     public void setRxTestSuiteFilePath(@CheckForNull String rxTestSuiteFilePath) {
@@ -281,7 +274,8 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
      * Runs the step over the given build and reports the progress to the
      * listener
      *
-     * @param build AbstractBuild instance
+     * @param run Run instance
+     * @param workspace Current workspace
      * @param launcher Starts a process
      * @param listener Receives events that happen during a build
      * @return Receives events that happen during a build

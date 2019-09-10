@@ -1,0 +1,11 @@
+<FindBugsFilter>
+    <!-- We use switch case fallthrough on purpose -->
+    <Match>
+        <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
+    </Match>
+
+    <!-- Only appears because switch cases have no break statements-->
+    <Match>
+        <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+    </Match>
+</FindBugsFilter>

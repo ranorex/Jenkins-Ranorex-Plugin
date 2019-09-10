@@ -2,7 +2,7 @@
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
     <!-- Ranorex Test Suite File-->
     <f:entry title="${%Ranorex test suite file}" field="rxTestSuiteFilePath">
-        <f:textbox name="RanorexRunnerBuilder.rxTestSuiteFilePath"/>
+        <f:textbox name="rxTestSuiteFilePath"/>
     </f:entry>
     <!-- Advanced Section -->
     <f:advanced>
@@ -32,14 +32,14 @@
         </f:block>
 
         <!-- JUnit Report-->
-        <f:entry title="${%JUnit-compatible report}" description="Available in Ranorex 7.0 and later.">
-            <f:checkbox name="RanorexRunnerBuilder.rxJUnitReport" value="${instance.rxJUnitReport}"
+        <f:entry title="${%JUnit-compatible report}" description="Available in Ranorex 7.0 and later." field="rxJUnitReport">
+            <f:checkbox name="rxJUnitReport" value="${instance.rxJUnitReport}"
                         checked="${instance.rxJUnitReport}"/>
         </f:entry>
 
         <!-- Ranorex Zipped Report with optional Block-->
         <f:block>
-            <f:optionalBlock name="RanorexRunnerBuilder.rxZippedReport" field="rxZippedReport"
+            <f:optionalBlock name="rxZippedReport" field="rxZippedReport"
                              title="${%Compressed copy of Ranorex report}" inline="true">
                 <f:entry title="${%Compressed report directory}" field="rxZippedReportDirectory">
                     <f:textbox/>
@@ -52,7 +52,7 @@
 
         <!--TestRail Integration-->
         <f:block>
-            <f:optionalBlock name="RanorexRunnerBuilder.rxTestRail" field="rxTestRail" title="${%TestRail integration}"
+            <f:optionalBlock name="rxTestRail" field="rxTestRail" title="${%TestRail integration}"
                              inline="true">
                 <!--Test Rail User-->
                 <f:entry title="${%Test Rail User}" field="rxTestRailUser">

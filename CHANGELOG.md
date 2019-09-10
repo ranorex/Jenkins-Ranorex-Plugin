@@ -1,4 +1,9 @@
 # Changelog
+## 0.3.0
+### 2019-08-30
+* Fix compatibility with Snippet Generator
+* Add Pipeline support
+
 ## 0.2.0
 ### 2018-04-05
 * Add Unit Tests

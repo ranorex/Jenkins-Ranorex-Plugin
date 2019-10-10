@@ -16,15 +16,15 @@ This plugin provides an easy way to run a [Ranorex](https://www.ranorex.com/ "Te
 The test suite is now ready and can be run as a build step in your Jenkins job. You can also make additional advanced settings.
 
 ### Pipeline usage
-When setting up Jenkins Pipelines, Ranorex plugin can be invoked via pipeline step "ranorex", for example: ranorex rxTestSuiteFilePath: 'C:\\MyTestPath\\MyTest.rxtst'
+When setting up Jenkins Pipelines, the Ranorex plugin can be invoked via pipeline step "ranorex", for example: ranorex rxTestSuiteFilePath: 'C:\\MyTestPath\\MyTest.rxtst'
 
-Plugin is also compatible with Snippet Generator. In order to generate the pipeline script, please follow the steps outlined below:
+The plugin is also compatible with the Snippet Generator. In order to generate the pipeline script, please follow the steps outlined below:
 1. Go to Pipeline Syntax (under Pipeline).
 2. Select ranorex - Run a Ranorex test suite from the drop-down menu.
 3. Enter the path to the test suite file (*.rxtst) and any optional settings under Advanced settings.
 4. Click Generate Pipeline Script.
 
-Advanced field options documentation can be found under Steps Reference (Snippet Generator left sidebar).
+The documentation for advanced field options can be found under Steps Reference (Snippet Generator left sidebar).
 
 ### Advanced settings
 Once you have provided the path to your Ranorex test suite file, click on “Advanced…” below the path field. The following settings will appear. Configure them according to your requirements and save your Jenkins job configuration to activate them.

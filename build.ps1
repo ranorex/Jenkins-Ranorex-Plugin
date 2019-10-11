@@ -1,12 +1,10 @@
 <#
 .Synopsis
-   Short description
-.DESCRIPTION
-   Long description
+   A simple script for build and/or release plugin
 .EXAMPLE
-   Example of how to use this cmdlet
+   Local Build: build.ps1 -clean
 .EXAMPLE
-   Another example of how to use this cmdlet
+   Release: build.ps1 -release -u USERNAME -p PASSWORD
 #>
     [CmdletBinding(DefaultParameterSetName="none", SupportsShouldProcess=$true)]
     Param
@@ -20,7 +18,10 @@
         [Alias("r")]
         [Parameter(Mandatory=$false)]
         [switch]$release,
-
+		
+		[Alias("d")]
+		[Parameter(Mandatory=$false)]
+		[switch]$dryRun,
         # Skip Tests
         [Alias("s")]
         [Parameter(Mandatory=$false)]
@@ -53,7 +54,18 @@
     if($release)
     {
     # Add release parameter Write-Output "release Project!"
+	if($username)
+	{
+		$parameters+="-Dusername "+$username+" "
+	}
+	
+	$parameters+="release:prepare release:perform "
+	
     }
+	if($dryRun)
+	{
+	$parameters+="-DdryRun=true release:prepare "
+	}
     if($skipTests)
     {
         $parameters+="-DskipTests "
@@ -69,7 +81,7 @@
     }
     $parameters +="package "
     $parameters = $parameters.Trim()
-    Write-Output "Executing Command: mvn '$parameters'"
+    Write-Output "Executing Command: mvn $parameters"
 
     Invoke-Expression "mvn $parameters"
 

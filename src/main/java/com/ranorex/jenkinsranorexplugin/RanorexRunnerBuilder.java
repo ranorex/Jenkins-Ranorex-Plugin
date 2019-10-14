@@ -520,6 +520,7 @@ public class RanorexRunnerBuilder extends Builder implements SimpleBuildStep {
 				}
 			} catch (Exception e) {
 				e.printStackTrace(listener.fatalError("execution failed"));
+				run.setResult(Result.FAILURE);
 			}
 		} else {
 			logger.println("No TestSuite file given");

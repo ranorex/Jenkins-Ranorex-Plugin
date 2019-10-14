@@ -98,6 +98,19 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.github.spotbugs</groupId>
+					<artifactId>spotbugs-maven-plugin</artifactId>
+					<configuration>
+						<excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+					</configuration>
+				</plugin>
+    		</plugins>
+    	</pluginManagement>
+	</build>
     <reporting>
     	<plugins>
     		<plugin>

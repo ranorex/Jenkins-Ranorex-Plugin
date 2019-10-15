@@ -18,8 +18,8 @@
     </description>
     <url>http://wiki.jenkins-ci.org/display/JENKINS/Ranorex+Integration+Plugin</url>
     <organization>
-    	<name>Ranorex</name>
-    	<url>https://www.ranorex.com</url>
+        <name>Ranorex</name>
+        <url>https://www.ranorex.com</url>
     </organization>
 
     <licenses>
@@ -42,10 +42,10 @@
     </developers>
 
     <properties>
-		<jenkins.version>2.7.4</jenkins.version>
-		<!-- Java Level to use. Java 7 required when using core >= 1.612 -->
-		<java.level>8</java.level>
-	</properties>
+        <jenkins.version>2.7.4</jenkins.version>
+        <!-- Java Level to use. Java 7 required when using core >= 1.612 -->
+        <java.level>8</java.level>
+    </properties>
 
     <scm>
         <connection>scm:git:ssh://github.com/jenkinsci/ranorex-integration-plugin.git</connection>
@@ -90,7 +90,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-            </dependency>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -98,28 +98,49 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>com.github.spotbugs</groupId>
-					<artifactId>spotbugs-maven-plugin</artifactId>
-					<configuration>
-						<excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
-					</configuration>
-				</plugin>
-    		</plugins>
-    	</pluginManagement>
-	</build>
+    <build>
+        <finalName>${project.artifactId}-${project.version}-git.${git.commit.id.abbrev}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                        <phase>validate</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dotGitDirectory>${project.basedir}\.git</dotGitDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <configuration>
+                        <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
     <reporting>
-    	<plugins>
-    		<plugin>
-    			<groupId>com.github.spotbugs</groupId>
-    			<artifactId>spotbugs-maven-plugin</artifactId>
-    			<configuration>
-    				<excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
-    			</configuration>
-    		</plugin>
-    	</plugins>
+        <plugins>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <configuration>
+                    <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+                </configuration>
+            </plugin>
+        </plugins>
     </reporting>
 </project>

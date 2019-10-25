@@ -14,7 +14,7 @@
         can run a test suite as is without any need for configuration, or you can make several different advanced
         settings.
     </description>
-    <url>http://wiki.jenkins-ci.org/display/JENKINS/Ranorex+Integration+Plugin</url>
+    <url>https://github.com/jenkinsci/ranorex-integration-plugin</url>
     <organization>
         <name>Ranorex</name>
         <url>https://www.ranorex.com</url>

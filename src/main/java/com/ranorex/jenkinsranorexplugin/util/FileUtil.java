@@ -52,7 +52,7 @@ public abstract class FileUtil {
         }
 
         for (String name : splitName) {
-            if (! ".".equals(name) && ! name.contains(".rxtst")) {
+            if (! ".".equals(name) && ! name.contains(".rxtst") && ! name.contains(".exe")) {
                 if (name.toCharArray().length > 1 && (name.toCharArray())[1] == ':') {
                     directory.append(name);
                 } else {
